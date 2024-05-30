@@ -1,13 +1,15 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class DigitKeyboard : MonoBehaviour
 {
     public GameObject buttonPrefab;
     public Transform buttonsParent;
     private sudokuGrid grid;
-
+    private string sudokuLog="";
+    private string whichSet;
+    private int number;
     private void Start()
     {
         grid = FindObjectOfType<sudokuGrid>();
@@ -68,8 +70,47 @@ public class DigitKeyboard : MonoBehaviour
 
     private void OnDigitButtonClick(int digit)
     {
-       // Debug.Log("Clicked digit: " + digit);
-        if(digit!=10)grid.UpdateSelectedCell(digit);
+        // Debug.Log("Clicked digit: " + digit);
+        if (digit != 10) grid.UpdateSelectedCell(digit);
+
+        else {
+            whichSet = PlayerPrefs.GetString("whichSet");
+            number = PlayerPrefs.GetInt("number");
+
+            for (int a=0; a < 9; a++)
+            {
+                for(int b=0; b < 9; b++) {
+                    sudokuLog= sudokuLog + grid.currentGridInt[a, b];
+                
+                }
+            }
+            PlayerPrefs.SetString("Sudoku", sudokuLog);
+            if (whichSet == "set")
+            {
+                switch (number)
+                {
+                    case 1:
+                        PlayerPrefs.SetString("Sudoku1", sudokuLog);
+                        break;
+                    case 2:
+                        PlayerPrefs.SetString("Sudoku2", sudokuLog);
+                        break;
+                    case 3:
+                        PlayerPrefs.SetString("Sudoku3", sudokuLog);
+                        break;
+                    case 4:
+                        PlayerPrefs.SetString("Sudoku4", sudokuLog);
+                        break;
+                    case 5:
+                        PlayerPrefs.SetString("Sudoku5", sudokuLog);
+                        break;
+
+                }
+                sudokuLog = "";
+                SceneManager.LoadScene("mainMenu");
+            }
+        } 
+
         // Handle the digit click event here, you can use it to input the digit into your application
     }
 }

@@ -12,7 +12,7 @@ public class sudokuGrid : MonoBehaviour
 {
     private int[,] grid = new int[9, 9];
     private string[,] currentGrid = new string[9, 9];
-    private char[,] currentGridInt = new char[9, 9];
+    public char[,] currentGridInt = new char[9, 9];
     private char[,] temp = new char[9, 9];
     public int columns = 9;
     public int rows = 9;
@@ -34,14 +34,39 @@ public class sudokuGrid : MonoBehaviour
     private int g;
     private bool ifOk = false;
     private Color redHexColor = new Color32(180, 44, 15, 255);
+    private int customNumber;
+    private string sudokuLog;
 
     void Start()
     {
+        customNumber = PlayerPrefs.GetInt("number");
+
+        switch (customNumber)
+        {
+            case 1:
+                sudokuLog = PlayerPrefs.GetString("Sudoku1");
+            
+                break;
+            case 2:
+                sudokuLog = PlayerPrefs.GetString("Sudoku2");
+                break;
+            case 3:
+                sudokuLog = PlayerPrefs.GetString("Sudoku3");
+                break;
+            case 4:
+                sudokuLog = PlayerPrefs.GetString("Sudoku4");
+                break;
+            case 5:
+                sudokuLog = PlayerPrefs.GetString("Sudoku5");
+                break;
+        }
+        Debug.Log(sudokuLog);
+        resolveLog();
         currentSceneName = SceneManager.GetActiveScene().name;
         if (grid_square.GetComponent<GridSquare>() == null)
             Debug.LogError("grid_square object needs to have GridSquare script attached");
         CreateGrid();
-        if (currentSceneName != "set")
+        if (currentSceneName != "set" && currentSceneName!= "Custom")
         {
             do
             {
@@ -51,6 +76,14 @@ public class sudokuGrid : MonoBehaviour
             } while (ifOk == false);
 
         }
+
+        if (currentSceneName == "Custom")
+        {
+            ConvertTables();
+           // PrintGrid2(grid);
+            SetGridNumbers();
+        }
+
         GetCurrentGridState();
         
 
@@ -96,6 +129,17 @@ public class sudokuGrid : MonoBehaviour
         if (selectedSquare != null)
         {
             selectedSquare.SetNumber(number);
+        }
+    }
+
+    public void resolveLog()
+    {
+        for(int i = 0; i < 9; i++)
+        {
+            for(int j= 0; j < 9; j++)
+            {
+                currentGridInt[i,j] = sudokuLog[i * 9 + j];
+            }
         }
     }
 
@@ -335,6 +379,26 @@ public class sudokuGrid : MonoBehaviour
         }
     }
 
+    private void SetGridNumbers2()
+    {
+        for (int row = 0; row < 9; row++)
+        {
+            for (int col = 0; col < 9; col++)
+            {
+                int index = row * 9 + col;
+                var square = grid_squares_[index];
+                var gridSquare = square.GetComponent<GridSquare>();
+                gridSquare.SetNumber(currentGridInt[row, col]);
+
+                if (!IsValidPlacement(row, col, currentGridInt[row, col]))
+                {
+                    Color redHexColor = new Color32(180, 44, 15, 255);
+                    gridSquare.ChangeTextColor(redHexColor);
+                }
+            }
+        }
+    }
+
     private void DeleteSquaresFromEachSubgrid(int totalSquaresToDelete)
     {
         if (totalSquaresToDelete <= 0)
@@ -540,7 +604,52 @@ public class sudokuGrid : MonoBehaviour
         return currentGridInt;
     }
 
+    private int[,] ConvertTables()
+    {
+        for (int row = 0; row < 9; row++)
+        {
+            for (int col = 0; col < 9; col++)
+            {
+                
+                switch (currentGridInt[row, col])
+                {
+                    default:
+                        grid[row, col] = 0;
 
+                        break;
+                    case '1':
+                        grid[row, col] = 1;
+                        break;
+                    case '2':
+                        grid[row, col] = 2;
+                        break;
+                    case '3':
+                        grid[row, col] = 3;
+                        break;
+                    case '4':
+                        grid[row, col] = 4;
+                        break;
+                    case '5':
+                        grid[row, col] = 5;
+                        break;
+                    case '6':
+                        grid[row, col] = 6;
+                        break;
+                    case '7':
+                        grid[row, col] = 7;
+                        break;
+                    case '8':
+                        grid[row, col] = 8;
+                        break;
+                    case '9':
+                        grid[row, col] = 9;
+                        break;
+                }
+            }
+        }
+
+        return grid;
+    }
 
 
     private void ClearGrid()
