@@ -14,6 +14,8 @@ public class TouchToChangeScene : MonoBehaviour
     private string sudoku3;
     private string sudoku4;
     private string sudoku5;
+    public LoadingManager loadingManager;
+    private sudokuGrid sudokuGrid;
     // Start is called before t
     // Update is called once per frame
 
@@ -87,19 +89,20 @@ public class TouchToChangeScene : MonoBehaviour
                     {
                         PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
                         // Change the scene to "solve"
-                        SceneManager.LoadScene("easy");
+                        SceneManager.LoadScene("LoadEasy");
                     }
                     else if (hit.collider != null && hit.collider.gameObject.CompareTag("medium"))
                     {
                         PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
                         // Change the scene to "solve"
-                        SceneManager.LoadScene("medium");
+                        SceneManager.LoadScene("LoadMed");
                     }
                     else if (hit.collider != null && hit.collider.gameObject.CompareTag("hard"))
                     {
                         PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
                         // Change the scene to "solve"
-                        SceneManager.LoadScene("hard");
+
+                        SceneManager.LoadScene("LoadingScene");
                     }
                     else if (hit.collider != null && hit.collider.gameObject.CompareTag("custom"))
                     {
@@ -168,6 +171,13 @@ public class TouchToChangeScene : MonoBehaviour
                             PlayerPrefs.SetInt("number", 5);
                             SceneManager.LoadScene("Custom");
 
+                    }
+                    else if (hit.collider != null && hit.collider.gameObject.CompareTag("restart"))
+                    {
+                        
+                        PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                        // Change the scene to "solve"
+                        SceneManager.LoadScene(sudokuGrid.currentSceneName);
                     }
                 }
             }

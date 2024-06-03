@@ -10,9 +10,11 @@ public class DigitKeyboard : MonoBehaviour
     private string sudokuLog="";
     private string whichSet;
     private int number;
+    private string sceneName;
     private void Start()
     {
         grid = FindObjectOfType<sudokuGrid>();
+        sceneName=SceneManager.GetActiveScene().name;
         CreateButtons();
         PositionKeyboard();
     }
@@ -32,28 +34,34 @@ public class DigitKeyboard : MonoBehaviour
             {
                 int digit = i * columns + j + 1;
                 digit = digit - i;
-                if((i==0)&&(j==3))digit = 0;
+                if ((i == 0) && (j == 3)) digit = 0;
                 if ((i == 1) && (j == 3)) digit = 10;
-                if ((i == 0) || (i==1) ||(j != 3)) { 
+                if ((i != 1) || (j != 3) || (sceneName == "Custom")) { 
+                if ((i == 0) || (i == 1) || (j != 3))
+                {
 
-                GameObject buttonGO = Instantiate(buttonPrefab, buttonsParent);
-                Button button = buttonGO.GetComponent<Button>();
-                button.onClick.AddListener(() => OnDigitButtonClick(digit));
-                button.GetComponentInChildren<TextMeshProUGUI>().text = digit.ToString();
-                    if(digit==0) button.GetComponentInChildren<TextMeshProUGUI>().text ="back";
-                    if (digit == 10) {
+                    GameObject buttonGO = Instantiate(buttonPrefab, buttonsParent);
+                    Button button = buttonGO.GetComponent<Button>();
+                    button.onClick.AddListener(() => OnDigitButtonClick(digit));
+                    button.GetComponentInChildren<TextMeshProUGUI>().text = digit.ToString();
+                    if (digit == 0) button.GetComponentInChildren<TextMeshProUGUI>().text = "back";
+                    if (digit == 10)
+                    {
                         button.GetComponentInChildren<TextMeshProUGUI>().text = "save";
                         buttonHeight = 310f;
                     }
                     RectTransform rectTransform = button.GetComponent<RectTransform>();
-                rectTransform.sizeDelta = new Vector2(buttonWidth, buttonHeight);
-                    if(digit==10) 
+                    rectTransform.sizeDelta = new Vector2(buttonWidth, buttonHeight);
+
+                    if (digit == 10)
                     {
                         rectTransform.anchoredPosition = new Vector2((buttonWidth + padding) * j, -((buttonHeight + padding) * i - 80f));
                     }
                     else rectTransform.anchoredPosition = new Vector2((buttonWidth + padding) * j, -((buttonHeight + padding) * i));
                 }
+
                 buttonHeight = 150f; // Adjust as needed
+            }
             }
         }
     }
