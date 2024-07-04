@@ -36,11 +36,13 @@ public class sudokuGrid : MonoBehaviour
     private Color redHexColor = new Color32(180, 44, 15, 255);
     private int customNumber;
     private string sudokuLog;
+    public HashSet<int> lockedDigits = new HashSet<int>();
+    public bool isFinished;
 
     void Start()
     {
         customNumber = PlayerPrefs.GetInt("number");
-
+        isFinished = false;
         switch (customNumber)
         {
             case 1:
@@ -60,7 +62,6 @@ public class sudokuGrid : MonoBehaviour
                 sudokuLog = PlayerPrefs.GetString("Sudoku5");
                 break;
         }
-        Debug.Log(sudokuLog);
         resolveLog();
         currentSceneName = SceneManager.GetActiveScene().name;
         if (grid_square.GetComponent<GridSquare>() == null)
@@ -74,7 +75,7 @@ public class sudokuGrid : MonoBehaviour
                 SetGridNumbers();
                 DeleteSquaresFromEachSubgrid(squaresToDelete);
             } while (ifOk == false);
-
+            UnclickableDigits();
         }
 
         if (currentSceneName == "Custom")
@@ -87,7 +88,7 @@ public class sudokuGrid : MonoBehaviour
         GetCurrentGridState();
         
 
-
+        isFinished = true;
 
 
 
@@ -128,6 +129,7 @@ public class sudokuGrid : MonoBehaviour
     {
         if (selectedSquare != null)
         {
+            
             selectedSquare.SetNumber(number);
         }
     }
@@ -354,6 +356,7 @@ public class sudokuGrid : MonoBehaviour
 
     private IEnumerator LoadMainMenuAfterDelay()
     {
+        PlayerPrefs.SetString("PreviousScene",currentSceneName);
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene("end");
     }
@@ -369,6 +372,7 @@ public class sudokuGrid : MonoBehaviour
                 var square = grid_squares_[index];
                 var gridSquare = square.GetComponent<GridSquare>();
                 gridSquare.SetNumber(grid[row, col]);
+                gridSquare.SetGrid(row, col);
 
                 if (!IsValidPlacement(row, col, currentGridInt[row, col]))
                 {
@@ -385,16 +389,9 @@ public class sudokuGrid : MonoBehaviour
         {
             for (int col = 0; col < 9; col++)
             {
-                int index = row * 9 + col;
-                var square = grid_squares_[index];
-                var gridSquare = square.GetComponent<GridSquare>();
-                gridSquare.SetNumber(currentGridInt[row, col]);
+                grid_squares_[(row*9) + col].GetComponent<GridSquare>().SetNumber(grid[row,col]);
+                
 
-                if (!IsValidPlacement(row, col, currentGridInt[row, col]))
-                {
-                    Color redHexColor = new Color32(180, 44, 15, 255);
-                    gridSquare.ChangeTextColor(redHexColor);
-                }
             }
         }
     }
@@ -460,7 +457,7 @@ public class sudokuGrid : MonoBehaviour
         }
         RunSolver();
         if (g == 1) ifOk = true;
-
+        
         Debug.Log("Number of unique grids: " + g);
 
     }
@@ -746,14 +743,18 @@ public class sudokuGrid : MonoBehaviour
                                 }
                             }
                             if (endChecker2 == true) uniqueGrids.Add(solvedGrid);
+                            if (uniqueGrids.Count > 1) break;
                             Reverse();
                         }
 
-
+                        if (uniqueGrids.Count > 1) break;
 
                     }
+                    if (uniqueGrids.Count > 1) break;
                 }
+                if (uniqueGrids.Count > 1) break;
             }
+            if (uniqueGrids.Count > 1) break;
         }
 
     }
@@ -781,6 +782,25 @@ public class sudokuGrid : MonoBehaviour
             }
         }
     }
+    private void UnclickableDigits()
 
+    {
+        for(int row = 0; row < 9; row++)
+        {
+            for(int col = 0;col < 9; col++)
+            {
+                if (currentGridInt[row, col] != '0')
+                {
+                    lockedDigits.Add((row * 9) + col);
+                }
+            }
+        }
+        Debug.Log("Contents of lockedDigits:");
+
+        foreach (int digit in lockedDigits)
+        {
+            Debug.Log(digit);
+        }
+    }
 
 }

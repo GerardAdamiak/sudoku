@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -15,6 +16,12 @@ public class GridSquare : MonoBehaviour, IPointerClickHandler
     // Define variables to hold the textures
     public Texture selectedTexture;
     private Texture originalTexture;
+    private int index;
+    public int gridRow;
+    public int gridColumn;
+    private bool ifAble;
+
+
 
     void Start()
     {
@@ -23,6 +30,7 @@ public class GridSquare : MonoBehaviour, IPointerClickHandler
 
         // Store the original texture
         originalTexture = squareRawImage.texture;
+
     }
 
     void Update()
@@ -49,9 +57,21 @@ public class GridSquare : MonoBehaviour, IPointerClickHandler
 
     public void Select()
     {
-        // Change the texture of the square when selected
         squareRawImage.texture = selectedTexture;
     }
+
+    public void Check()
+    {
+        ifAble = true;
+        grid = FindObjectOfType<sudokuGrid>();
+        // Change the texture of the square when selected
+
+        foreach (int digit in grid.lockedDigits)
+        {
+            if (digit == (gridRow * 9 * gridColumn)) ifAble = false;
+        }
+    }
+
 
     public void Deselect()
     {
@@ -61,12 +81,46 @@ public class GridSquare : MonoBehaviour, IPointerClickHandler
 
     public void SetNumber(int number)
     {
-        if (number_ != number) number_ = number;
-        else number_ = 0;
+        grid = FindObjectOfType<sudokuGrid>();
+        if (grid.isFinished == true)
+        {
+            ifAble = true;
+            grid = FindObjectOfType<sudokuGrid>();
+            // Change the texture of the square when selected
+
+            foreach (int digit in grid.lockedDigits)
+            {
+                
+                if (digit == (gridRow * 9 + gridColumn)) ifAble = false;
+            }
+        }
+        
+        if (ifAble == true || grid.isFinished==false)
+        {
+            if (number_ != number) number_ = number;
+            else number_ = 0;
+            
+        }
         DisplayText();
+    }
+    public void SetGrid(int row, int column)
+    {
+
+        gridRow = row;
+        gridColumn = column;
+
     }
     public string GetNumber()
     {
         return number_text.GetComponent<TextMeshProUGUI>().text;
+    }
+    public void SetIndex(int idx)
+    {
+        index = idx;
+    }
+
+    public int GetIndex()
+    {
+        return index;
     }
 }

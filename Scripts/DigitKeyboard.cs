@@ -11,6 +11,7 @@ public class DigitKeyboard : MonoBehaviour
     private string whichSet;
     private int number;
     private string sceneName;
+    
     private void Start()
     {
         grid = FindObjectOfType<sudokuGrid>();

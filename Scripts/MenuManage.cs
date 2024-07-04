@@ -104,6 +104,13 @@ public class TouchToChangeScene : MonoBehaviour
 
                         SceneManager.LoadScene("LoadingScene");
                     }
+                    else if (hit.collider != null && hit.collider.gameObject.CompareTag("variants"))
+                    {
+                        PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                        // Change the scene to "solve"
+
+                        SceneManager.LoadScene("variants");
+                    }
                     else if (hit.collider != null && hit.collider.gameObject.CompareTag("custom"))
                     {
                         PlayerPrefs.SetString("whichSet", "custom");
@@ -174,10 +181,10 @@ public class TouchToChangeScene : MonoBehaviour
                     }
                     else if (hit.collider != null && hit.collider.gameObject.CompareTag("restart"))
                     {
-                        
-                        PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+
+                        string test = PlayerPrefs.GetString("PreviousScene");
                         // Change the scene to "solve"
-                        SceneManager.LoadScene(sudokuGrid.currentSceneName);
+                        SceneManager.LoadScene(test);
                     }
                 }
             }
