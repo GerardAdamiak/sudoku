@@ -38,6 +38,7 @@ public class sudokuGrid : MonoBehaviour
     private string sudokuLog;
     public HashSet<int> lockedDigits = new HashSet<int>();
     public bool isFinished;
+    public Stack<(int row, int column, int previousNumber)> moveStack = new Stack<(int, int, int)>();
 
     void Start()
     {
@@ -101,7 +102,7 @@ public class sudokuGrid : MonoBehaviour
         GetCurrentGridState();
 
         ChangeColor(currentGridInt);
-        if (counter % 200 == 0)
+        if (counter % 200 == 0) 
             //PrintGrid2(currentGridInt);
             if (Input.GetMouseButtonDown(0))
             {
@@ -145,6 +146,15 @@ public class sudokuGrid : MonoBehaviour
         }
     }
 
+    public void LogMoveStack()
+    {
+        Debug.Log("Current Move Stack:");
+        foreach (var move in moveStack)
+        {
+            Debug.Log($"Row: {move.row}, Column: {move.column}, Previous Number: {move.previousNumber}");
+        }
+    }
+
     public void SelectGridSquare(GridSquare gridSquare)
     {
         if (selectedSquare != null)
@@ -154,6 +164,13 @@ public class sudokuGrid : MonoBehaviour
 
         selectedSquare = gridSquare;
         selectedSquare.Select();
+    }
+
+    public void SetNumberAt(int row, int column, int number)
+    {
+        grid[row, column] = number;
+        grid_squares_[(row * 9) + column].GetComponent<GridSquare>().SetNumber2(number);
+        
     }
 
     private void CreateGrid()

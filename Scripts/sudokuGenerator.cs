@@ -20,7 +20,8 @@ public class GridSquare : MonoBehaviour, IPointerClickHandler
     public int gridRow;
     public int gridColumn;
     private bool ifAble;
-
+    private string moveHistory="";
+    
 
 
     void Start()
@@ -90,19 +91,53 @@ public class GridSquare : MonoBehaviour, IPointerClickHandler
 
             foreach (int digit in grid.lockedDigits)
             {
-                
                 if (digit == (gridRow * 9 + gridColumn)) ifAble = false;
             }
         }
-        
-        if (ifAble == true || grid.isFinished==false)
+
+        if (ifAble == true || grid.isFinished == false)
         {
-            if (number_ != number) number_ = number;
-            else number_ = 0;
-            
+            if (grid.isFinished == true && number != 0)
+            {
+                grid.moveStack.Push((gridRow, gridColumn, number_));
+            }
+
+            if (number_ != number)
+            {
+                number_ = number;
+            }
+            else
+            {
+                number_ = 0;
+            }
+
+            if (grid.isFinished == true && number == 0 && grid.moveStack.Count > 0)
+            {
+                var lastMove = grid.moveStack.Pop();
+                grid.SetNumberAt(lastMove.row, lastMove.column, lastMove.previousNumber);
+            }
         }
         DisplayText();
     }
+
+
+    public void SetNumber2(int number)
+    {
+     
+
+            if (number_ != number)
+            {
+                number_ = number;
+            }
+            else
+            {
+                number_ = 0;
+            }
+
+        
+        DisplayText();
+    }
+
     public void SetGrid(int row, int column)
     {
 
