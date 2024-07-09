@@ -14,6 +14,7 @@ public class DigitKeyboard : MonoBehaviour
     
     private void Start()
     {
+        whichSet = PlayerPrefs.GetString("whichSet", "");
         grid = FindObjectOfType<sudokuGrid>();
         sceneName=SceneManager.GetActiveScene().name;
         CreateButtons();
@@ -37,6 +38,10 @@ public class DigitKeyboard : MonoBehaviour
                 digit = digit - i;
                 if ((i == 0) && (j == 3)) digit = 0;
                 if ((i == 1) && (j == 3)) digit = 10;
+                if (digit == 10 && whichSet == "custom")
+                {
+                    continue; // Skip creating this button
+                }
                 if ((i != 1) || (j != 3) || (sceneName == "Custom")) { 
                 if ((i == 0) || (i == 1) || (j != 3))
                 {
@@ -89,7 +94,7 @@ public class DigitKeyboard : MonoBehaviour
             for (int a=0; a < 9; a++)
             {
                 for(int b=0; b < 9; b++) {
-                    sudokuLog= sudokuLog + grid.currentGridInt[a, b];
+                    sudokuLog = sudokuLog + grid.currentGridInt[a, b];
                 
                 }
             }

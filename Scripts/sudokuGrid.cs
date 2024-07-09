@@ -7,9 +7,22 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
+using System.Diagnostics;
+
 
 public class sudokuGrid : MonoBehaviour
 {
+    //dodac:
+    //-zaznaczanie paru komorek
+    //-notatki moze w 2 rzedach po 5 dla kazdej komorki? ciezko zdecydowac   
+    //-wpisywanie ile jest rozwiazan przy tworzeniu custom  TYM SIE TERAZ ZAJMUJEMY!!!!!!!!!!!
+    //-ilosc rozwiazanych dla kazdego trybu (?)
+    //-warianty trzeba bedzie zaczac, mozliwe ze zaczne od killera, ale bedzie duzo z tym roboty XD
+    //-dzwieki przy klikaniu odpowienich przyciskow (pomysl z 304, mozna wlaczac  dzwiek po prostu od razu po wlaceniu sceny ale to moze byc zle jak sie bedzie dlugo ladowac)
+    //-wiadomo jakies ogolne poprawki zeby wszystko smigalo, przede wszystkim to ze animacja sie laduje dlugo przy pierwszym wlaczeniu
+    //-a no i ogarniecie zeby na pewno dzialalo na wszystkich urzadzeniach, bo igor mial jakies problemy :cc
+
+
     private int[,] grid = new int[9, 9];
     private string[,] currentGrid = new string[9, 9];
     public char[,] currentGridInt = new char[9, 9];
@@ -31,7 +44,7 @@ public class sudokuGrid : MonoBehaviour
     public static bool endChecker;
     private int e;
     private HashSet<Grid> set;
-    private int g;
+    public int g;
     private bool ifOk = false;
     private Color redHexColor = new Color32(180, 44, 15, 255);
     private int customNumber;
@@ -39,6 +52,12 @@ public class sudokuGrid : MonoBehaviour
     public HashSet<int> lockedDigits = new HashSet<int>();
     public bool isFinished;
     public Stack<(int row, int column, int previousNumber)> moveStack = new Stack<(int, int, int)>();
+    public GameObject leaderboardText;
+    private string unique = "Unique Solution";
+    private string notUnique = "Not A Unique Solution";
+    private string notSolvable = "No Solution";
+    private string notEnough = "Not Enough Digits To Check";
+    private int digitCount = 0;
 
     void Start()
     {
@@ -66,7 +85,7 @@ public class sudokuGrid : MonoBehaviour
         resolveLog();
         currentSceneName = SceneManager.GetActiveScene().name;
         if (grid_square.GetComponent<GridSquare>() == null)
-            Debug.LogError("grid_square object needs to have GridSquare script attached");
+            UnityEngine.Debug.LogError("grid_square object needs to have GridSquare script attached");
         CreateGrid();
         if (currentSceneName != "set" && currentSceneName!= "Custom")
         {
@@ -84,6 +103,7 @@ public class sudokuGrid : MonoBehaviour
             ConvertTables();
            // PrintGrid2(grid);
             SetGridNumbers();
+           // UnclickableDigits();
         }
 
         GetCurrentGridState();
@@ -101,8 +121,10 @@ public class sudokuGrid : MonoBehaviour
         counter++;
         GetCurrentGridState();
 
+            
+        
         ChangeColor(currentGridInt);
-        if (counter % 200 == 0) 
+        
             //PrintGrid2(currentGridInt);
             if (Input.GetMouseButtonDown(0))
             {
@@ -146,12 +168,14 @@ public class sudokuGrid : MonoBehaviour
         }
     }
 
+    
+
     public void LogMoveStack()
     {
-        Debug.Log("Current Move Stack:");
+        UnityEngine.Debug.Log("Current Move Stack:");
         foreach (var move in moveStack)
         {
-            Debug.Log($"Row: {move.row}, Column: {move.column}, Previous Number: {move.previousNumber}");
+            UnityEngine.Debug.Log($"Row: {move.row}, Column: {move.column}, Previous Number: {move.previousNumber}");
         }
     }
 
@@ -195,7 +219,17 @@ public class sudokuGrid : MonoBehaviour
             }
         }
     }
-
+    private void DigitCounter()
+    {
+        digitCount = 0;
+        for (int row = 0; row < 9; row++)
+        {
+            for (int col = 0; col < 9; col++)
+            {
+                if(currentGridInt[row, col] != '0')digitCount++;
+            }
+        }
+    }
     private void SetSquaresPosition()
     {
         var square_rect = grid_squares_[0].GetComponent<RectTransform>();
@@ -237,11 +271,11 @@ public class sudokuGrid : MonoBehaviour
 
         if (GenerateRandomSudoku(0, 0))
         {
-            Debug.Log("Sudoku generated successfully!");
+            UnityEngine.Debug.Log("Sudoku generated successfully!");
         }
         else
         {
-            Debug.LogError("Failed to generate Sudoku.");
+            UnityEngine.Debug.LogError("Failed to generate Sudoku.");
         }
     }
 
@@ -417,7 +451,7 @@ public class sudokuGrid : MonoBehaviour
     {
         if (totalSquaresToDelete <= 0)
         {
-            Debug.LogError("Invalid number of squares to delete.");
+            UnityEngine.Debug.LogError("Invalid number of squares to delete.");
             return;
         }
 
@@ -475,7 +509,7 @@ public class sudokuGrid : MonoBehaviour
         RunSolver();
         if (g == 1) ifOk = true;
         
-        Debug.Log("Number of unique grids: " + g);
+        UnityEngine.Debug.Log("Number of unique grids: " + g);
 
     }
 
@@ -541,7 +575,7 @@ public class sudokuGrid : MonoBehaviour
                 line += grid[i, j];
 
             }
-            Debug.Log(line);
+            UnityEngine.Debug.Log(line);
         }
     }
 
@@ -557,7 +591,7 @@ public class sudokuGrid : MonoBehaviour
             }
         }
     }
-    private void Reverse()
+    public void Reverse()
     {
         for (int row = 0; row < 9; row++)
         {
@@ -728,61 +762,73 @@ public class sudokuGrid : MonoBehaviour
         return true;
     }
 
-    public void CountSolutions(HashSet<Grid> uniqueGrids)
-    {
-
-        ArrayCopy();
-
-        for (int i = 0; i < 9; i++)
-        {
-            for (int j = 0; j < 9; j++)
-            {
-                if (currentGridInt[i, j] == '0')
-                {
-
-                    for (char k = '1'; k <= '9'; k++)
-                    {
-                        if (isValid(currentGridInt, i, j, k))
-                        {
-                            currentGridInt[i, j] = k;
-                            //PrintGrid2(currentGridInt);
-                            solveSudoku(currentGridInt);
-
-                            var solvedGrid = new Grid(currentGridInt);
-                            bool endChecker2 = true;
-                            for (int l = 0; l < 9; l++)
-                            {
-                                for (int m = 0; m < 9; m++)
-                                {
-                                    if (currentGridInt[l, m] == '0')
-                                        endChecker2 = false;
-
-                                }
-                            }
-                            if (endChecker2 == true) uniqueGrids.Add(solvedGrid);
-                            if (uniqueGrids.Count > 1) break;
-                            Reverse();
-                        }
-
-                        if (uniqueGrids.Count > 1) break;
-
-                    }
-                    if (uniqueGrids.Count > 1) break;
-                }
-                if (uniqueGrids.Count > 1) break;
-            }
-            if (uniqueGrids.Count > 1) break;
-        }
-
-    }
-
     public void RunSolver()
     {
         set = new HashSet<Grid>();
-        CountSolutions(set);
-        g = set.Count;
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        if (CountSolutions(set, stopwatch) == 0)
+        {
+            g = 0;
+        }
+        else
+        {
+            g = set.Count;
+        }
         Console.WriteLine("Number of unique grids: " + set.Count);
     }
+
+    public int CountSolutions(HashSet<Grid> uniqueGrids, Stopwatch stopwatch)
+    {
+        ArrayCopy();
+        return SolveAndCount(uniqueGrids, 0, 0, stopwatch);
+    }
+
+    private int SolveAndCount(HashSet<Grid> uniqueGrids, int row, int col, Stopwatch stopwatch)
+    {
+        // Check for timeout
+        if (stopwatch.Elapsed.TotalSeconds > 1 && uniqueGrids.Count == 0)
+        {
+            return 0;
+        }
+
+        // Find the next empty cell
+        while (row < 9 && currentGridInt[row, col] != '0')
+        {
+            col++;
+            if (col == 9)
+            {
+                col = 0;
+                row++;
+            }
+        }
+
+        // If no empty cell is found, we have a complete grid
+        if (row == 9)
+        {
+            var solvedGrid = new Grid(currentGridInt);
+            uniqueGrids.Add(solvedGrid);
+            return uniqueGrids.Count;
+        }
+
+        // Try each number from 1 to 9
+        for (char k = '1'; k <= '9'; k++)
+        {
+            if (isValid(currentGridInt, row, col, k))
+            {
+                currentGridInt[row, col] = k;
+
+                // Recursive call
+                int result = SolveAndCount(uniqueGrids, row, col, stopwatch);
+                if (result > 1) return result; // Early exit if more than one solution is found
+
+                // Backtrack
+                currentGridInt[row, col] = '0';
+            }
+        }
+
+        return uniqueGrids.Count;
+    }
+
 
     private void RestoreDigits()
     {
@@ -812,11 +858,11 @@ public class sudokuGrid : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Contents of lockedDigits:");
+        UnityEngine.Debug.Log("Contents of lockedDigits:");
 
         foreach (int digit in lockedDigits)
         {
-            Debug.Log(digit);
+            UnityEngine.Debug.Log(digit);
         }
     }
 
