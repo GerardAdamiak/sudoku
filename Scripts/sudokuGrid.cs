@@ -53,11 +53,7 @@ public class sudokuGrid : MonoBehaviour
     public bool isFinished;
     public Stack<(int row, int column, int previousNumber)> moveStack = new Stack<(int, int, int)>();
     public GameObject leaderboardText;
-    private string unique = "Unique Solution";
-    private string notUnique = "Not A Unique Solution";
-    private string notSolvable = "No Solution";
-    private string notEnough = "Not Enough Digits To Check";
-    private int digitCount = 0;
+    
 
     void Start()
     {
@@ -219,17 +215,7 @@ public class sudokuGrid : MonoBehaviour
             }
         }
     }
-    private void DigitCounter()
-    {
-        digitCount = 0;
-        for (int row = 0; row < 9; row++)
-        {
-            for (int col = 0; col < 9; col++)
-            {
-                if(currentGridInt[row, col] != '0')digitCount++;
-            }
-        }
-    }
+   
     private void SetSquaresPosition()
     {
         var square_rect = grid_squares_[0].GetComponent<RectTransform>();

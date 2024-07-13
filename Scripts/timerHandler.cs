@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour
 {
@@ -10,10 +11,12 @@ public class Timer : MonoBehaviour
     private sudokuGrid sudokuGrid;
     private float currentTime;
     public static float finalTime;
+    private string currentSceneName;
 
     private void Start()
     {
         currentTime = startTime;
+        currentSceneName = SceneManager.GetActiveScene().name;
     }
 
     private void Update()
@@ -21,6 +24,16 @@ public class Timer : MonoBehaviour
         if (sudokuGrid.endChecker == true) finalTime=currentTime;
         currentTime += Time.deltaTime;
         UpdateTimerText();
+
+
+        string whichSet = PlayerPrefs.GetString("whichSet", "");
+
+        if ((whichSet != "custom") && (currentSceneName!="easy") && (currentSceneName != "medium") && (currentSceneName != "hard"))
+        {
+            // If whichSet is "custom", hide the sprite and make it unclickable
+            gameObject.SetActive(false); // Hide the GameObject
+            return; // Exit Start() early
+        }
     }
 
     private void UpdateTimerText()

@@ -31,10 +31,10 @@ public class SpriteUpperCorner : MonoBehaviour
         switch (corner)
         {
             case Corner.UpperLeft:
-                screenCorner = mainCamera.ScreenToWorldPoint(new Vector3(0, Screen.height, 0));
+                screenCorner = mainCamera.ScreenToWorldPoint(new Vector3(0, Screen.height, 1));
                 break;
             case Corner.UpperRight:
-                screenCorner = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+                screenCorner = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 1));
                 break;
         }
 
@@ -45,11 +45,11 @@ public class SpriteUpperCorner : MonoBehaviour
 
         if (corner == Corner.UpperLeft)
         {
-            newPosition = new Vector3(screenCorner.x + offsetX, screenCorner.y - offsetY - 0.1f, 0); // Subtract 0.1f from the y-coordinate
+            newPosition = new Vector3(screenCorner.x + offsetX, screenCorner.y - offsetY - 0.1f, 1); // Subtract 0.1f from the y-coordinate
         }
         else if (corner == Corner.UpperRight)
         {
-            newPosition = new Vector3(screenCorner.x - offsetX, screenCorner.y - offsetY, 0);
+            newPosition = new Vector3(screenCorner.x - offsetX, screenCorner.y - offsetY, 1);
         }
 
         // Set the position of the GameObject

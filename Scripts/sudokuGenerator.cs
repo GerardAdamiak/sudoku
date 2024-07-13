@@ -20,7 +20,7 @@ public class GridSquare : MonoBehaviour, IPointerClickHandler
     public int gridRow;
     public int gridColumn;
     private bool ifAble;
-    private string moveHistory="";
+    
     
 
 
