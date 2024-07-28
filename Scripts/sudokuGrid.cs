@@ -53,11 +53,12 @@ public class sudokuGrid : MonoBehaviour
     public bool isFinished;
     public Stack<(int row, int column, int previousNumber)> moveStack = new Stack<(int, int, int)>();
     public GameObject leaderboardText;
-    
+    private string whichSet;
 
     void Start()
     {
         customNumber = PlayerPrefs.GetInt("number");
+        whichSet = PlayerPrefs.GetString("whichSet");
         isFinished = false;
         switch (customNumber)
         {
@@ -140,8 +141,7 @@ public class sudokuGrid : MonoBehaviour
                     }
                 }
             }
-
-        EndCheck();
+        if(currentSceneName != "Custom" || whichSet!="set") EndCheck();
     }
 
     public void UpdateSelectedCell(int number)

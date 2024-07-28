@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class LeaderboardHard : MonoBehaviour
 {
@@ -12,9 +13,20 @@ public class LeaderboardHard : MonoBehaviour
     private const int maxEntries = 10;
     private Timer timer;
     public static bool ifAddedHard = false;
+    private string previousScene;
+    private float mostRecentTime; // Store the most recent time
+    private int isLight;
 
     private void Start()
     {
+        isLight = PlayerPrefs.GetInt("IsLight");
+        previousScene = PlayerPrefs.GetString("PreviousScene");
+        if ((previousScene == "Custom"))
+        {
+            // If whichSet is "custom", hide the sprite and make it unclickable
+            gameObject.SetActive(false); // Hide the GameObject
+            return; // Exit Start() early
+        }
     }
 
     public void LoadData()
@@ -73,14 +85,41 @@ public class LeaderboardHard : MonoBehaviour
 
     }
 
-    private void UpdateLeaderboard()//git (raczej)
+    private void UpdateLeaderboard()
     {
-        leaderboardText.text = "Best Times Hard:\n";
+        string headerColor = isLight == 0 ? "#EFEFD0" : "#2E3138";
+        leaderboardText.text = $"<color={headerColor}>Best Times Hard:</color>\n";
         for (int i = 0; i < bestTimesHard.Count; i++)
         {
-            leaderboardText.text += (i + 1) + ". " + FormatTime(bestTimesHard[i]) + "\n";
-        }
+            if (isLight == 0)
+            {
+                if (bestTimesHard[i] == mostRecentTime)
+                {
+                    // Use rich text to color the most recent time differently
 
+                    leaderboardText.text += $"<color=#EFEFD0>{i + 1}. {FormatTime(bestTimesHard[i])}</color>\n";
+                }
+                else
+                {
+                    leaderboardText.text += $"{i + 1}. {FormatTime(bestTimesHard[i])}\n";
+
+                }
+            }
+            else
+            {
+                if (bestTimesHard[i] == mostRecentTime)
+                {
+                    // Use rich text to color the most recent time differently
+                    leaderboardText.text += $"<color=#2E3138>{i + 1}. {FormatTime(bestTimesHard[i])}</color>\n";
+
+                }
+                else
+                {
+                    leaderboardText.text += $"{i + 1}. {FormatTime(bestTimesHard[i])}\n";
+
+                }
+            }
+        }
     }
 
     private string FormatTime(float time)//git
