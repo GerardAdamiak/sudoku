@@ -20,8 +20,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     public int gridRow;
     public int gridColumn;
     private bool ifAble;
-
-    private static List<GridSquare> selectedCells = new List<GridSquare>(); // List to hold selected cells
+    public static List<GridSquare> selectedCells = new List<GridSquare>(); // List to hold selected cells
     private bool isSelecting = false;
 
 
@@ -54,6 +53,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     {
         // Start selecting
         ClearSelectedCells();
+        grid.DeselectAllGridSquares();
         SelectCell();
         isSelecting = true;
     }
@@ -73,36 +73,36 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     private void SelectCell()
     {
-        Debug.Log("SelectCell");
+        
         GridSquare gridSquare = this;
+
         
-            Debug.Log("SelectCell.EventSystem");
-            RaycastHit2D hit = Physics2D.Raycast(
-                Camera.main.ScreenToWorldPoint(Input.mousePosition),
-                Vector2.zero
-            );
-            
-            if (hit.collider != null && hit.collider.CompareTag("GridSquare"))
-            {
-                Debug.Log("SelectCell.Hit");
-                gridSquare = hit.collider.GetComponent<GridSquare>();
-                
-            }
-        
+        RaycastHit2D hit = Physics2D.Raycast(
+            Camera.main.ScreenToWorldPoint(Input.mousePosition),
+            Vector2.zero
+        );
+
+        if (hit.collider != null && hit.collider.CompareTag("GridSquare"))
+        {
+           
+            gridSquare = hit.collider.GetComponent<GridSquare>();
+
+        }
+
 
         if (!selectedCells.Contains(gridSquare))
         {
-            Debug.Log("SelectCell.Contain");
+           
             grid.SelectGridSquare(gridSquare);
             selectedCells.Add(gridSquare);
             Select();
         }
-        
+
     }
 
     private void ClearSelectedCells()
     {
-        Debug.Log("ClearSeletedCells");
+        
         foreach (var cell in selectedCells)
         {
             cell.Deselect();
@@ -185,18 +185,18 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void SetNumber2(int number)
     {
-     
 
-            if (number_ != number)
-            {
-                number_ = number;
-            }
-            else
-            {
-                number_ = 0;
-            }
 
-        
+        if (number_ != number)
+        {
+            number_ = number;
+        }
+        else
+        {
+            number_ = 0;
+        }
+
+
         DisplayText();
     }
 

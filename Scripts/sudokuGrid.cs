@@ -35,6 +35,7 @@ public class sudokuGrid : MonoBehaviour
     public float square_scale = 1.0f;
     public int squaresToDelete;
     private GridSquare selectedSquare;
+    private static List<GridSquare> selectedCells = new List<GridSquare>();
     private List<GameObject> grid_squares_ = new List<GameObject>();
     private int counter = 0;
     public Canvas canvas;
@@ -64,7 +65,7 @@ public class sudokuGrid : MonoBehaviour
         {
             case 1:
                 sudokuLog = PlayerPrefs.GetString("Sudoku1");
-            
+
                 break;
             case 2:
                 sudokuLog = PlayerPrefs.GetString("Sudoku2");
@@ -84,7 +85,7 @@ public class sudokuGrid : MonoBehaviour
         if (grid_square.GetComponent<GridSquare>() == null)
             UnityEngine.Debug.LogError("grid_square object needs to have GridSquare script attached");
         CreateGrid();
-        if (currentSceneName != "set" && currentSceneName!= "Custom")
+        if (currentSceneName != "set" && currentSceneName != "Custom")
         {
             do
             {
@@ -98,13 +99,13 @@ public class sudokuGrid : MonoBehaviour
         if (currentSceneName == "Custom")
         {
             ConvertTables();
-           // PrintGrid2(grid);
+            // PrintGrid2(grid);
             SetGridNumbers();
-           // UnclickableDigits();
+            // UnclickableDigits();
         }
 
         GetCurrentGridState();
-        
+
 
         isFinished = true;
 
@@ -118,79 +119,83 @@ public class sudokuGrid : MonoBehaviour
         counter++;
         GetCurrentGridState();
 
-            
-        
+
+
         ChangeColor(currentGridInt);
-        
-            //PrintGrid2(currentGridInt);
-            if (Input.GetMouseButtonDown(0))
+
+        //PrintGrid2(currentGridInt);
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
-                if (!EventSystem.current.IsPointerOverGameObject())
+                RaycastHit2D hit = Physics2D.Raycast(
+                    Camera.main.ScreenToWorldPoint(Input.mousePosition),
+                    Vector2.zero
+                );
+                if (hit.collider != null && hit.collider.CompareTag("GridSquare"))
                 {
-                    RaycastHit2D hit = Physics2D.Raycast(
-                        Camera.main.ScreenToWorldPoint(Input.mousePosition),
-                        Vector2.zero
-                    );
-                    if (hit.collider != null && hit.collider.CompareTag("GridSquare"))
+                    GridSquare gridSquare = hit.collider.GetComponent<GridSquare>();
+                    if (gridSquare != null)
                     {
-                        GridSquare gridSquare = hit.collider.GetComponent<GridSquare>();
-                        if (gridSquare != null)
-                        {
-                            SelectGridSquare(gridSquare);
-                        }
+                        SelectGridSquare(gridSquare);
                     }
                 }
             }
-        if(currentSceneName != "Custom" || whichSet!="set") EndCheck();
+        }
+        if (currentSceneName != "Custom" || whichSet != "set") EndCheck();
     }
 
     public void UpdateSelectedCell(int number)
     {
-        if (selectedSquare != null)
+        foreach (var square in selectedCells)
         {
-            
-            selectedSquare.SetNumber(number);
+            square.SetNumber(number);
         }
+    }
+
+    public void DeselectAllGridSquares()
+    {
+        foreach (var square in selectedCells)
+        {
+            square.Deselect();
+        }
+        selectedCells.Clear();
+    }
+
+    public List<GridSquare> GetSelectedSquares()
+    {
+        return selectedCells;
     }
 
     public void resolveLog()
     {
-        for(int i = 0; i < 9; i++)
+        for (int i = 0; i < 9; i++)
         {
-            for(int j= 0; j < 9; j++)
+            for (int j = 0; j < 9; j++)
             {
-                currentGridInt[i,j] = sudokuLog[i * 9 + j];
+                currentGridInt[i, j] = sudokuLog[i * 9 + j];
             }
         }
     }
 
-    
 
-    public void LogMoveStack()
-    {
-        UnityEngine.Debug.Log("Current Move Stack:");
-        foreach (var move in moveStack)
-        {
-            UnityEngine.Debug.Log($"Row: {move.row}, Column: {move.column}, Previous Number: {move.previousNumber}");
-        }
-    }
+
 
     public void SelectGridSquare(GridSquare gridSquare)
     {
-        //if (selectedSquare != null)
-        //{
-        //    selectedSquare.Deselect();
-        //}
-        UnityEngine.Debug.Log("SelectGridSquare");
-        selectedSquare = gridSquare;
-        selectedSquare.Select();
+        if (!selectedCells.Contains(gridSquare))
+        {
+            selectedCells.Add(gridSquare);
+            gridSquare.Select();
+        }
     }
+
 
     public void SetNumberAt(int row, int column, int number)
     {
         grid[row, column] = number;
         grid_squares_[(row * 9) + column].GetComponent<GridSquare>().SetNumber2(number);
-        
+
     }
 
     private void CreateGrid()
@@ -215,7 +220,7 @@ public class sudokuGrid : MonoBehaviour
             }
         }
     }
-   
+
     private void SetSquaresPosition()
     {
         var square_rect = grid_squares_[0].GetComponent<RectTransform>();
@@ -393,7 +398,7 @@ public class sudokuGrid : MonoBehaviour
 
     private IEnumerator LoadMainMenuAfterDelay()
     {
-        PlayerPrefs.SetString("PreviousScene",currentSceneName);
+        PlayerPrefs.SetString("PreviousScene", currentSceneName);
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene("end");
     }
@@ -426,8 +431,8 @@ public class sudokuGrid : MonoBehaviour
         {
             for (int col = 0; col < 9; col++)
             {
-                grid_squares_[(row*9) + col].GetComponent<GridSquare>().SetNumber(grid[row,col]);
-                
+                grid_squares_[(row * 9) + col].GetComponent<GridSquare>().SetNumber(grid[row, col]);
+
 
             }
         }
@@ -494,8 +499,8 @@ public class sudokuGrid : MonoBehaviour
         }
         RunSolver();
         if (g == 1) ifOk = true;
+
         
-        UnityEngine.Debug.Log("Number of unique grids: " + g);
 
     }
 
@@ -551,20 +556,7 @@ public class sudokuGrid : MonoBehaviour
         }
     }
 
-    private void PrintGrid2(int[,] grid)
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            string line = "";
-            for (int j = 0; j < 9; j++)
-            {
-                line += grid[i, j];
-
-            }
-            UnityEngine.Debug.Log(line);
-        }
-    }
-
+   
 
 
     private void ArrayCopy()
@@ -644,7 +636,7 @@ public class sudokuGrid : MonoBehaviour
         {
             for (int col = 0; col < 9; col++)
             {
-                
+
                 switch (currentGridInt[row, col])
                 {
                     default:
@@ -834,9 +826,9 @@ public class sudokuGrid : MonoBehaviour
     private void UnclickableDigits()
 
     {
-        for(int row = 0; row < 9; row++)
+        for (int row = 0; row < 9; row++)
         {
-            for(int col = 0;col < 9; col++)
+            for (int col = 0; col < 9; col++)
             {
                 if (currentGridInt[row, col] != '0')
                 {
@@ -844,12 +836,9 @@ public class sudokuGrid : MonoBehaviour
                 }
             }
         }
-        UnityEngine.Debug.Log("Contents of lockedDigits:");
+        
 
-        foreach (int digit in lockedDigits)
-        {
-            UnityEngine.Debug.Log(digit);
-        }
+        
     }
 
 }
