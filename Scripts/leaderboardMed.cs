@@ -82,12 +82,14 @@ public class LeaderboardMed : MonoBehaviour
         {
             bestTimesMed.RemoveAt(bestTimesMed.Count - 1);
         }
+
+        mostRecentTime = time;
     }
 
     private void UpdateLeaderboard()
     {
         string headerColor = isLight == 0 ? "#EFEFD0" : "#2E3138";
-        leaderboardText.text = $"<color={headerColor}>Best Times Easy:</color>\n";
+        leaderboardText.text = $"<color={headerColor}>Best Times Medium:</color>\n";
         for (int i = 0; i < bestTimesMed.Count; i++)
         {
             if (isLight == 0)

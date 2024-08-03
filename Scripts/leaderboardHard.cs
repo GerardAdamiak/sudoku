@@ -82,7 +82,7 @@ public class LeaderboardHard : MonoBehaviour
             bestTimesHard.RemoveAt(bestTimesHard.Count - 1);
         }
 
-
+        mostRecentTime = time;
     }
 
     private void UpdateLeaderboard()
