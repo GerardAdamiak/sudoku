@@ -177,11 +177,11 @@ public class sudokuGrid : MonoBehaviour
 
     public void SelectGridSquare(GridSquare gridSquare)
     {
-        if (selectedSquare != null)
-        {
-            selectedSquare.Deselect();
-        }
-
+        //if (selectedSquare != null)
+        //{
+        //    selectedSquare.Deselect();
+        //}
+        UnityEngine.Debug.Log("SelectGridSquare");
         selectedSquare = gridSquare;
         selectedSquare.Select();
     }

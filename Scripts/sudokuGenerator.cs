@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class GridSquare : MonoBehaviour, IPointerClickHandler
+public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     public GameObject number_text;
     private int number_ = 0;
@@ -20,8 +20,10 @@ public class GridSquare : MonoBehaviour, IPointerClickHandler
     public int gridRow;
     public int gridColumn;
     private bool ifAble;
-    
-    
+
+    private static List<GridSquare> selectedCells = new List<GridSquare>(); // List to hold selected cells
+    private bool isSelecting = false;
+
 
 
     void Start()
@@ -42,10 +44,70 @@ public class GridSquare : MonoBehaviour, IPointerClickHandler
     {
         textMeshProComponent.color = color; // Assuming textMeshProComponent is the reference to your TextMeshPro component
     }
-    public void OnPointerClick(PointerEventData eventData)
+    //public void OnPointerClick(PointerEventData eventData)
+    //{
+    //    // Handle grid square click
+    //    grid.SelectGridSquare(this);
+    //}
+
+    public void OnPointerDown(PointerEventData eventData)
     {
-        // Handle grid square click
-        grid.SelectGridSquare(this);
+        // Start selecting
+        ClearSelectedCells();
+        SelectCell();
+        isSelecting = true;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        // Finish selecting
+        isSelecting = false;
+        PrintSelectedCells();
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+
+        SelectCell();
+    }
+
+    private void SelectCell()
+    {
+        Debug.Log("SelectCell");
+        GridSquare gridSquare = this;
+        
+            Debug.Log("SelectCell.EventSystem");
+            RaycastHit2D hit = Physics2D.Raycast(
+                Camera.main.ScreenToWorldPoint(Input.mousePosition),
+                Vector2.zero
+            );
+            
+            if (hit.collider != null && hit.collider.CompareTag("GridSquare"))
+            {
+                Debug.Log("SelectCell.Hit");
+                gridSquare = hit.collider.GetComponent<GridSquare>();
+                
+            }
+        
+
+        if (!selectedCells.Contains(gridSquare))
+        {
+            Debug.Log("SelectCell.Contain");
+            grid.SelectGridSquare(gridSquare);
+            selectedCells.Add(gridSquare);
+            Select();
+        }
+        
+    }
+
+    private void ClearSelectedCells()
+    {
+        Debug.Log("ClearSeletedCells");
+        foreach (var cell in selectedCells)
+        {
+            cell.Deselect();
+        }
+        selectedCells.Clear();
     }
 
     public void DisplayText()
@@ -157,5 +219,14 @@ public class GridSquare : MonoBehaviour, IPointerClickHandler
     public int GetIndex()
     {
         return index;
+    }
+
+    private void PrintSelectedCells()
+    {
+        Debug.Log("Selected Cells:");
+        foreach (var cell in selectedCells)
+        {
+            Debug.Log($"Row: {cell.gridRow}, Column: {cell.gridColumn}, Number: {cell.number_}");
+        }
     }
 }
