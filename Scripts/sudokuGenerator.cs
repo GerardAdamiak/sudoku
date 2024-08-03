@@ -19,7 +19,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     private int index;
     public int gridRow;
     public int gridColumn;
-    private bool ifAble;
+    private bool ifAble=true;
     public static List<GridSquare> selectedCells = new List<GridSquare>(); // List to hold selected cells
     private bool isSelecting = false;
 
@@ -157,22 +157,26 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             }
         }
 
-        if (ifAble == true || grid.isFinished == false)
+        if (ifAble == true || grid.isFinished == false || (ifAble==false && number==0))
         {
             if (grid.isFinished == true && number != 0)
             {
                 grid.moveStack.Push((gridRow, gridColumn, number_));
             }
-
-            if (number_ != number)
+            Debug.Log(ifAble);
+            Debug.Log(grid.isFinished);
+            Debug.Log(number);
+            if (ifAble == true)
             {
-                number_ = number;
+                if (number_ != number)
+                {
+                    number_ = number;
+                }
+                else
+                {
+                    number_ = 0;
+                }
             }
-            else
-            {
-                number_ = 0;
-            }
-
             if (grid.isFinished == true && number == 0 && grid.moveStack.Count > 0)
             {
                 var lastMove = grid.moveStack.Pop();

@@ -13,9 +13,8 @@ using System.Diagnostics;
 public class sudokuGrid : MonoBehaviour
 {
     //dodac:
-    //-zaznaczanie paru komorek
+    //-przycisk back dzialajacy zawsze, teraz nie dziala przy niepustych komorkach
     //-notatki moze w 2 rzedach po 5 dla kazdej komorki? ciezko zdecydowac   
-    //-wpisywanie ile jest rozwiazan przy tworzeniu custom  TYM SIE TERAZ ZAJMUJEMY!!!!!!!!!!!
     //-ilosc rozwiazanych dla kazdego trybu (?)
     //-warianty trzeba bedzie zaczac, mozliwe ze zaczne od killera, ale bedzie duzo z tym roboty XD
     //-dzwieki przy klikaniu odpowienich przyciskow (pomysl z 304, mozna wlaczac  dzwiek po prostu od razu po wlaceniu sceny ale to moze byc zle jak sie bedzie dlugo ladowac)
