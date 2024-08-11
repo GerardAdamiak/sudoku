@@ -78,7 +78,7 @@ public class Leaderboard : MonoBehaviour
     private void UpdateLeaderboard()
     {
         string headerColor = isLight == 0 ? "#EFEFD0" : "#2E3138";
-        leaderboardText.text = $"<color={headerColor}>Best Times Easy:</color>\n";
+        leaderboardText.text = $"<color={headerColor}><size=120>Best Times Easy:</size></color>\n\n";
         for (int i = 0; i < bestTimes.Count; i++)
         {
             if (isLight == 0)

@@ -13,11 +13,9 @@ using System.Diagnostics;
 public class sudokuGrid : MonoBehaviour
 {
     //dodac:
-    //-przycisk back dzialajacy zawsze, teraz nie dziala przy niepustych komorkach
     //-notatki moze w 2 rzedach po 5 dla kazdej komorki? ciezko zdecydowac   
     //-ilosc rozwiazanych dla kazdego trybu (?)
     //-warianty trzeba bedzie zaczac, mozliwe ze zaczne od killera, ale bedzie duzo z tym roboty XD
-    //-dzwieki przy klikaniu odpowienich przyciskow (pomysl z 304, mozna wlaczac  dzwiek po prostu od razu po wlaceniu sceny ale to moze byc zle jak sie bedzie dlugo ladowac)
     //-wiadomo jakies ogolne poprawki zeby wszystko smigalo, przede wszystkim to ze animacja sie laduje dlugo przy pierwszym wlaczeniu
     //-a no i ogarniecie zeby na pewno dzialalo na wszystkich urzadzeniach, bo igor mial jakies problemy :cc
 
@@ -149,6 +147,14 @@ public class sudokuGrid : MonoBehaviour
         foreach (var square in selectedCells)
         {
             square.SetNumber(number);
+        }
+    }
+
+    public void UpdateSelectedCellNote(int number)
+    {
+        foreach (var square in selectedCells)
+        {
+            square.SetNumberNote(number);
         }
     }
 

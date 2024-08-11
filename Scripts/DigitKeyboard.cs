@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+//using UnityEngine.UIElements;
 public class DigitKeyboard : MonoBehaviour
 {
     public GameObject buttonPrefab;
@@ -11,6 +12,10 @@ public class DigitKeyboard : MonoBehaviour
     private string whichSet;
     private int number;
     private string sceneName;
+    public Sprite buttonImage;
+    public Sprite buttonImageNote1;
+    public Sprite buttonImageNote2;
+    public bool ifNote = false;
     
     private void Start()
     {
@@ -38,28 +43,45 @@ public class DigitKeyboard : MonoBehaviour
                 digit = digit - i;
                 if ((i == 0) && (j == 3)) digit = 0;
                 if ((i == 1) && (j == 3)) digit = 10;
+                
                 if (digit == 10 && whichSet == "custom")
                 {
                     continue; // Skip creating this button
                 }
-                if ((i != 1) || (j != 3) || (sceneName == "Custom")) { 
+                
+                
                 if ((i == 0) || (i == 1) || (j != 3))
                 {
 
                     GameObject buttonGO = Instantiate(buttonPrefab, buttonsParent);
                     Button button = buttonGO.GetComponent<Button>();
-                    button.onClick.AddListener(() => OnDigitButtonClick(digit));
+                    button.onClick.AddListener(() => OnDigitButtonClick(digit, button));
                     button.GetComponentInChildren<TextMeshProUGUI>().text = digit.ToString();
-                    if (digit == 0) button.GetComponentInChildren<TextMeshProUGUI>().text = "back";
+                    if (digit == 0)
+                    {
+                        button.image.sprite = buttonImage;
+                        button.GetComponentInChildren<TextMeshProUGUI>().text = "";
+                    }
                     if (digit == 10)
                     {
-                        button.GetComponentInChildren<TextMeshProUGUI>().text = "save";
-                        buttonHeight = 310f;
+                        
+                        if (sceneName == "Custom")
+                            {
+                                button.GetComponentInChildren<TextMeshProUGUI>().text = "save";
+                                buttonHeight = 310f;
+                            }
+                            else
+                            {
+                                button.GetComponentInChildren<TextMeshProUGUI>().text = "";
+                            button.image.sprite = buttonImageNote1;
+                        }
+                        
                     }
-                    RectTransform rectTransform = button.GetComponent<RectTransform>();
+                    
+                        RectTransform rectTransform = button.GetComponent<RectTransform>();
                     rectTransform.sizeDelta = new Vector2(buttonWidth, buttonHeight);
 
-                    if (digit == 10)
+                    if (digit == 10 && sceneName == "Custom")
                     {
                         rectTransform.anchoredPosition = new Vector2((buttonWidth + padding) * j, -((buttonHeight + padding) * i - 80f));
                     }
@@ -67,7 +89,7 @@ public class DigitKeyboard : MonoBehaviour
                 }
 
                 buttonHeight = 150f; // Adjust as needed
-            }
+            
             }
         }
     }
@@ -82,12 +104,12 @@ public class DigitKeyboard : MonoBehaviour
         rectTransform.anchoredPosition = new Vector2(-160f, 470f); // Adjust Y position as needed
     }
 
-    private void OnDigitButtonClick(int digit)
+    private void OnDigitButtonClick(int digit, Button button)
     {
         // Debug.Log("Clicked digit: " + digit);
-        if (digit != 10) grid.UpdateSelectedCell(digit);
-
-        else {
+        if (digit != 10 && ifNote == false) grid.UpdateSelectedCell(digit);
+        else if (digit != 10 && ifNote == true) grid.UpdateSelectedCellNote(digit);
+        else if(digit ==10 && sceneName=="Custom") {
             whichSet = PlayerPrefs.GetString("whichSet");
             number = PlayerPrefs.GetInt("number");
 
@@ -123,8 +145,24 @@ public class DigitKeyboard : MonoBehaviour
                 sudokuLog = "";
                 SceneManager.LoadScene("mainMenu");
             }
-        } 
+        }
 
+        else if (digit == 10 && sceneName != "Custom")
+        {
+
+            
+            if (ifNote == false)
+            {
+                ifNote = true;
+                button.image.sprite = buttonImageNote2;
+            }
+            else
+            {
+                ifNote = false;
+                button.image.sprite = buttonImageNote1;
+            }
+            
+        }
         // Handle the digit click event here, you can use it to input the digit into your application
     }
 }
