@@ -46,13 +46,10 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     }
     public void ChangeTextColor(UnityEngine.Color color)
     {
+
         textMeshProComponent.color = color; // Assuming textMeshProComponent is the reference to your TextMeshPro component
     }
-    //public void OnPointerClick(PointerEventData eventData)
-    //{
-    //    // Handle grid square click
-    //    grid.SelectGridSquare(this);
-    //}
+    
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -127,15 +124,17 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             {
                 if (digitKeyboard.ifNote == true)
                 {
-                    Debug.Log("note on");
-                    // Set the text with a large font size
-                    number_text.GetComponent<TextMeshProUGUI>().text = $"<size=35>{number_.ToString()}</size>";
+                    
+                        number_text.GetComponent<TextMeshProUGUI>().text = number_.ToString();
+                    if(ifAble==true) number_text.GetComponent<TextMeshProUGUI>().fontSize = 35;
+                      
+
                 }
                 else
                 {
-                    Debug.Log("note off");
-                    // Set the text with a smaller font size
-                    number_text.GetComponent<TextMeshProUGUI>().text = $"<size=60>{number_.ToString()}</size>";
+                    
+                    number_text.GetComponent<TextMeshProUGUI>().text = number_.ToString();
+                    number_text.GetComponent<TextMeshProUGUI>().fontSize = 60;
                 }
             }
             else number_text.GetComponent<TextMeshProUGUI>().text = number_.ToString();
@@ -249,9 +248,9 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                 }
                 else
                 {
-                    Debug.Log("chuj");
+                   
                     number_string = number_string.Replace(numberStr, "");
-                    Debug.Log(number_string);
+                   
                 }
                 if(number_string != "")number_ = int.Parse(number_string);
                 else number_ = 0;
