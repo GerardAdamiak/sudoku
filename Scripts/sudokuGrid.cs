@@ -513,8 +513,11 @@ public class sudokuGrid : MonoBehaviour
 
     private bool IsValidPlacement2(int row, int col)
     {
+        int index = row * 9 + col;
+        var square = grid_squares_[index];
+        var gridSquare = square.GetComponent<GridSquare>();
         char num = currentGridInt[row, col];
-
+        if (gridSquare.number_text.GetComponent<TextMeshProUGUI>().fontSize == 35) return true;
         for (int i = 0; i < 9; i++)
         {
             if (i != col && currentGridInt[row, i] == num)
