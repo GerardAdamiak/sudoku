@@ -24,11 +24,11 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     public int gridColumn;
     private bool ifAble=true;
     public static List<GridSquare> selectedCells = new List<GridSquare>(); // List to hold selected cells
-    private bool isSelecting = false;
+   // private bool isSelecting = false;
     private DigitKeyboard digitKeyboard;
 
 
-
+        
     void Start()
     {
         digitKeyboard = FindObjectOfType<DigitKeyboard>();
@@ -57,14 +57,14 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         ClearSelectedCells();
         grid.DeselectAllGridSquares();
         SelectCell();
-        isSelecting = true;
+        //isSelecting = true;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         // Finish selecting
-        isSelecting = false;
-        PrintSelectedCells();
+       // isSelecting = false;
+        //PrintSelectedCells();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -185,7 +185,8 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         {
             if (grid.isFinished == true && number != 0)
             {
-                grid.moveStack.Push((gridRow, gridColumn, number_));
+                grid.moveStack.Push((gridRow, gridColumn, number_, digitKeyboard.ifNote));
+                grid.PrintStackContents();
             }
             
             if (ifAble == true)
@@ -202,7 +203,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             if (grid.isFinished == true && number == 0 && grid.moveStack.Count > 0)
             {
                 var lastMove = grid.moveStack.Pop();
-                grid.SetNumberAt(lastMove.row, lastMove.column, lastMove.previousNumber);
+                grid.SetNumberAt(lastMove.row, lastMove.column, lastMove.previousNumber, lastMove.ifNote);
             }
         }
         DisplayText();
@@ -227,7 +228,8 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         {
             if (grid.isFinished == true && number != 0)
             {
-                grid.moveStack.Push((gridRow, gridColumn, number_));
+                grid.moveStack.Push((gridRow, gridColumn, number_, digitKeyboard.ifNote));
+                grid.PrintStackContents();
             }
 
             if (ifAble == true)
@@ -258,16 +260,24 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             if (grid.isFinished == true && number == 0 && grid.moveStack.Count > 0)
             {
                 var lastMove = grid.moveStack.Pop();
-                grid.SetNumberAt(lastMove.row, lastMove.column, lastMove.previousNumber);
+                grid.SetNumberAt(lastMove.row, lastMove.column, lastMove.previousNumber, lastMove.ifNote);
             }
         }
         DisplayText();
     }
 
 
-    public void SetNumber2(int number)
+    public void SetNumber2(int number, bool ifNote)
     {
+        if (ifNote == false)
+        {
+            number_text.GetComponent<TextMeshProUGUI>().fontSize = 60;
 
+        }
+        else
+        {
+            number_text.GetComponent<TextMeshProUGUI>().fontSize = 35;
+        }
 
         if (number_ != number)
         {
@@ -278,8 +288,14 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             number_ = 0;
         }
 
-
-        DisplayText();
+        if (number_ <= 0)
+        {
+            number_text.GetComponent<TextMeshProUGUI>().text = "";
+        }
+        
+        else number_text.GetComponent<TextMeshProUGUI>().text = number_.ToString();
+        
+       
     }
 
     public void SetGrid(int row, int column)

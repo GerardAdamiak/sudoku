@@ -13,8 +13,8 @@ using System.Diagnostics;
 public class sudokuGrid : MonoBehaviour
 {
     //dodac:
-    //-notatki moze w 2 rzedach po 5 dla kazdej komorki? ciezko zdecydowac   
     //-ilosc rozwiazanych dla kazdego trybu (?)
+    //najlepszy wynik z kazdej trudnosci w menu
     //-warianty trzeba bedzie zaczac, mozliwe ze zaczne od killera, ale bedzie duzo z tym roboty XD
     //-wiadomo jakies ogolne poprawki zeby wszystko smigalo, przede wszystkim to ze animacja sie laduje dlugo przy pierwszym wlaczeniu
     //-a no i ogarniecie zeby na pewno dzialalo na wszystkich urzadzeniach, bo igor mial jakies problemy :cc
@@ -49,7 +49,7 @@ public class sudokuGrid : MonoBehaviour
     private string sudokuLog;
     public HashSet<int> lockedDigits = new HashSet<int>();
     public bool isFinished;
-    public Stack<(int row, int column, int previousNumber)> moveStack = new Stack<(int, int, int)>();
+    public Stack<(int row, int column, int previousNumber, bool ifNote)> moveStack = new Stack<(int, int, int, bool)>();
     public GameObject leaderboardText;
     private string whichSet;
 
@@ -196,10 +196,10 @@ public class sudokuGrid : MonoBehaviour
     }
 
 
-    public void SetNumberAt(int row, int column, int number)
+    public void SetNumberAt(int row, int column, int number, bool ifNote)
     {
         grid[row, column] = number;
-        grid_squares_[(row * 9) + column].GetComponent<GridSquare>().SetNumber2(number);
+        grid_squares_[(row * 9) + column].GetComponent<GridSquare>().SetNumber2(number, ifNote);
 
     }
 
@@ -847,6 +847,23 @@ public class sudokuGrid : MonoBehaviour
         
 
         
+    }
+
+    public void PrintStackContents()
+    {
+        // Creating a string to hold the stack contents
+        string stackContents = "Stack Contents:\n";
+        int counter = 0;
+        // Iterating through the stack without modifying it
+        foreach (var move in moveStack)
+        {
+            counter++;
+            stackContents += $"(Row: {move.row}, Column: {move.column}, Previous Number: {move.previousNumber}, If Note: {move.ifNote})\n";
+        }
+
+        // Logging the stack contents to the console
+        UnityEngine.Debug.Log(stackContents);
+        UnityEngine.Debug.Log(counter);
     }
 
 }

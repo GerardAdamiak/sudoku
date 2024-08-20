@@ -6,7 +6,7 @@ public class LoadingManager : MonoBehaviour
 {
     public string sceneToLoad;
     private bool loadScene = false;
-    private bool isLoaded = false;
+
 
     private void Start()
     {
