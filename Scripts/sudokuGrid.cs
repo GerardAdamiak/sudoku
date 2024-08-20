@@ -861,7 +861,7 @@ public class sudokuGrid : MonoBehaviour
             stackContents += $"(Row: {move.row}, Column: {move.column}, Previous Number: {move.previousNumber}, If Note: {move.ifNote})\n";
         }
 
-        // Logging the stack contents to the console
+        // Logging the stack contents to the conso
         UnityEngine.Debug.Log(stackContents);
         UnityEngine.Debug.Log(counter);
     }
