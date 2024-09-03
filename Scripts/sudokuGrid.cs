@@ -14,7 +14,7 @@ public class sudokuGrid : MonoBehaviour
 {
     //dodac:
     //-ilosc rozwiazanych dla kazdego trybu (?)
-    //najlepszy wynik z kazdej trudnosci w menu
+    //-najlepszy wynik z kazdej trudnosci w menu
     //-warianty trzeba bedzie zaczac, mozliwe ze zaczne od killera, ale bedzie duzo z tym roboty XD
     //-wiadomo jakies ogolne poprawki zeby wszystko smigalo, przede wszystkim to ze animacja sie laduje dlugo przy pierwszym wlaczeniu
     //-a no i ogarniecie zeby na pewno dzialalo na wszystkich urzadzeniach, bo igor mial jakies problemy :cc
@@ -52,6 +52,7 @@ public class sudokuGrid : MonoBehaviour
     public Stack<(int row, int column, int previousNumber, bool ifNote)> moveStack = new Stack<(int, int, int, bool)>();
     public GameObject leaderboardText;
     private string whichSet;
+    public GameObject linePrefab;
 
     void Start()
     {
@@ -89,6 +90,7 @@ public class sudokuGrid : MonoBehaviour
                 GenerateSudoku();
                 SetGridNumbers();
                 DeleteSquaresFromEachSubgrid(squaresToDelete);
+                if (currentSceneName == "whispers") ifOk = true;
             } while (ifOk == false);
             UnclickableDigits();
         }
@@ -102,8 +104,80 @@ public class sudokuGrid : MonoBehaviour
         }
 
         GetCurrentGridState();
+        //ConvertTables();
+        if (currentSceneName == "whispers")
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+
+                    if (i != 8)
+                    {
+                        if (grid[i, j] != 0 && grid[i + 1, j] != 0)
+                        {
+                            if (((grid[i, j] - grid[i + 1, j]) >= 5))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j + 9].GetComponent<GridSquare>();
+
+                                
+
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+
+                        }
+                    }
+                    if (i != 0)
+                    {
+                        if (grid[i, j] != 0 && grid[i - 1, j] != 0)
+                        {
+                            if (((grid[i, j] - grid[i - 1, j]) >= 5))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j - 9].GetComponent<GridSquare>();
+
+                                
+
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+                        }
+                    }
+                    if (j != 8)
+                    {
+                        if (grid[i, j] != 0 && grid[i, j + 1] != 0)
+                        {
+                            if (((grid[i, j] - grid[i, j + 1]) >= 5))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j + 1].GetComponent<GridSquare>();
 
 
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+                        }
+                    }
+                    if (j != 0)
+                    {
+                        if (grid[i, j] != 0 && grid[i, j - 1] != 0)
+                        {
+                            if (((grid[i, j] - grid[i, j - 1]) >= 5))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j - 1].GetComponent<GridSquare>();
+
+                               
+                               
+
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        }
         isFinished = true;
 
 
@@ -116,7 +190,7 @@ public class sudokuGrid : MonoBehaviour
         counter++;
         GetCurrentGridState();
 
-
+        fixZPosition();
 
         ChangeColor(currentGridInt);
 
@@ -148,6 +222,23 @@ public class sudokuGrid : MonoBehaviour
         {
             square.SetNumber(number);
         }
+    }
+
+    private void DrawLineBetweenSquares(GridSquare square1, GridSquare square2)
+    {
+        // Instantiate a new line
+        GameObject lineObject = Instantiate(linePrefab);
+        LineRenderer lineRenderer = lineObject.GetComponent<LineRenderer>();
+
+        // Set the start and end positions of the line
+        //Color transparentColor = new Color(0f, 1f, 0f, 0.2f); // Red with 50% transparency
+        //lineRenderer.startColor = transparentColor;
+        //lineRenderer.endColor = transparentColor;
+
+        lineRenderer.SetPosition(0, square1.transform.position);
+        lineRenderer.SetPosition(1, square2.transform.position);
+
+        
     }
 
     public void UpdateSelectedCellNote(int number)
@@ -184,7 +275,21 @@ public class sudokuGrid : MonoBehaviour
     }
 
 
+    public void fixZPosition()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                Vector3 newPosition = grid_squares_[(i * 9) + j].transform.position;
+                newPosition.z = 1f; // Set the z position to 1
+                grid_squares_[(i * 9) + j].transform.position = newPosition;
+            }
+        }
+    }
 
+
+    
 
     public void SelectGridSquare(GridSquare gridSquare)
     {
@@ -222,6 +327,7 @@ public class sudokuGrid : MonoBehaviour
                     square_scale,
                     square_scale
                 );
+                
             }
         }
     }
@@ -861,7 +967,7 @@ public class sudokuGrid : MonoBehaviour
             stackContents += $"(Row: {move.row}, Column: {move.column}, Previous Number: {move.previousNumber}, If Note: {move.ifNote})\n";
         }
 
-        // Logging the stack contents to the conso
+        // Logging the stack contents to the console
         UnityEngine.Debug.Log(stackContents);
         UnityEngine.Debug.Log(counter);
     }

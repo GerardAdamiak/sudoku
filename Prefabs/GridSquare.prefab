@@ -61,8 +61,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   number_text: {fileID: 4514190294431281118}
+  squareRawImage: {fileID: 0}
   textMeshProComponent: {fileID: 9091627867591904421}
   selectedTexture: {fileID: 2800000, guid: 2428588a17b15ef428db72470f9aba50, type: 3}
+  originalTexture: {fileID: 2800000, guid: 69f7b197b916b6641a7d6500678078d5, type: 3}
+  secondTexture: {fileID: 2800000, guid: 476542b4e041369429bf4429f4036f50, type: 3}
   gridRow: 0
   gridColumn: 0
 --- !u!61 &5818397811844253585

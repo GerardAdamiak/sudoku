@@ -12,13 +12,15 @@ using UnityEngine.Windows;
 public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     public GameObject number_text;
+    private bool ifUsed = false;
     private int number_ = 0;
     private sudokuGrid grid;
-    private RawImage squareRawImage; // Reference to the RawImage component
+    public RawImage squareRawImage; // Reference to the RawImage component
     public TextMeshProUGUI textMeshProComponent;
     // Define variables to hold the textures
     public Texture selectedTexture;
-    private Texture originalTexture;
+    public Texture originalTexture;
+    public Texture secondTexture;
     private int index;
     public int gridRow;
     public int gridColumn;
@@ -39,6 +41,8 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         originalTexture = squareRawImage.texture;
 
     }
+    
+
 
     void Update()
     {
@@ -144,7 +148,17 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void Select()
     {
-        squareRawImage.texture = selectedTexture;
+        squareRawImage = GetComponentInChildren<RawImage>();
+        
+            squareRawImage.texture = selectedTexture;
+       
+    }
+    public void Select2()
+    {
+        squareRawImage = GetComponentInChildren<RawImage>();
+
+        squareRawImage.texture = secondTexture;
+
     }
 
     public void Check()

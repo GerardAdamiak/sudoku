@@ -62,10 +62,16 @@ public class TouchToChangeScene : MonoBehaviour
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
                             sceneToLoad = "savedList";
                         }
+
                         else if (hit.collider.gameObject.CompareTag("settings"))
                         {
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
                             sceneToLoad = "settings";
+                        }
+                        else if (hit.collider.gameObject.CompareTag("whispers"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            sceneToLoad = "whispers";
                         }
                         else if (hit.collider.gameObject.CompareTag("backArrowMenu"))
                         {
@@ -110,6 +116,7 @@ public class TouchToChangeScene : MonoBehaviour
                             }
                             if (sceneToLoad == null) sceneToLoad = "solve";
                         }
+
                         else if (hit.collider.gameObject.CompareTag("sudoku1"))
                         {
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
