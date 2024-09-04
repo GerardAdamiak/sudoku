@@ -6,6 +6,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Windows;
 
@@ -153,13 +154,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             squareRawImage.texture = selectedTexture;
        
     }
-    public void Select2()
-    {
-        squareRawImage = GetComponentInChildren<RawImage>();
-
-        squareRawImage.texture = secondTexture;
-
-    }
+   
 
     public void Check()
     {
@@ -182,28 +177,32 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void SetNumber(int number)
     {
+        
         grid = FindObjectOfType<sudokuGrid>();
         if (grid.isFinished == true)
         {
+            
             ifAble = true;
             grid = FindObjectOfType<sudokuGrid>();
             // Change the texture of the square when selected
 
             foreach (int digit in grid.lockedDigits)
             {
+                
                 if (digit == (gridRow * 9 + gridColumn)) ifAble = false;
             }
         }
-
-        if (ifAble == true || grid.isFinished == false || (ifAble==false && number==0))
+        if (SceneManager.GetActiveScene().name == "whispers") ifAble = true;
+         if (ifAble == true || grid.isFinished == false || (ifAble==false && number==0))
         {
+           
             if (grid.isFinished == true && number != 0)
             {
                 grid.moveStack.Push((gridRow, gridColumn, number_, digitKeyboard.ifNote));
                 grid.PrintStackContents();
             }
             
-            if (ifAble == true)
+            if (ifAble == true )
             {
                 if (number_ != number)
                 {
@@ -237,7 +236,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                 if (digit == (gridRow * 9 + gridColumn)) ifAble = false;
             }
         }
-
+        if (SceneManager.GetActiveScene().name == "whispers") ifAble = true;
         if (ifAble == true || grid.isFinished == false || (ifAble == false && number == 0))
         {
             if (grid.isFinished == true && number != 0)

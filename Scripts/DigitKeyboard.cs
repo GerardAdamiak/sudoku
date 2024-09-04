@@ -106,7 +106,7 @@ public class DigitKeyboard : MonoBehaviour
 
     private void OnDigitButtonClick(int digit, Button button)
     {
-        // Debug.Log("Clicked digit: " + digit);
+        
         if (digit != 10 && ifNote == false) grid.UpdateSelectedCell(digit);
         else if (digit != 10 && ifNote == true) grid.UpdateSelectedCellNote(digit);
         else if(digit ==10 && sceneName=="Custom") {

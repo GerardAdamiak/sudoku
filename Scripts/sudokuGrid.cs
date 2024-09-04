@@ -218,6 +218,7 @@ public class sudokuGrid : MonoBehaviour
 
     public void UpdateSelectedCell(int number)
     {
+       
         foreach (var square in selectedCells)
         {
             square.SetNumber(number);
