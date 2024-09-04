@@ -68,6 +68,11 @@ public class TouchToChangeScene : MonoBehaviour
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
                             sceneToLoad = "settings";
                         }
+                        else if (hit.collider.gameObject.CompareTag("podium"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            sceneToLoad = "podium";
+                        }
                         else if (hit.collider.gameObject.CompareTag("whispers"))
                         {
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);

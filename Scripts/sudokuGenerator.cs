@@ -192,7 +192,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                 if (digit == (gridRow * 9 + gridColumn)) ifAble = false;
             }
         }
-        if (SceneManager.GetActiveScene().name == "whispers") ifAble = true;
+       // if (SceneManager.GetActiveScene().name == "whispers") ifAble = true;
          if (ifAble == true || grid.isFinished == false || (ifAble==false && number==0))
         {
            
@@ -202,7 +202,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                 grid.PrintStackContents();
             }
             
-            if (ifAble == true )
+            if (ifAble == true && (number != 0 || grid.isFinished==false))
             {
                 if (number_ != number)
                 {
@@ -236,7 +236,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                 if (digit == (gridRow * 9 + gridColumn)) ifAble = false;
             }
         }
-        if (SceneManager.GetActiveScene().name == "whispers") ifAble = true;
+       // if (SceneManager.GetActiveScene().name == "whispers") ifAble = true;
         if (ifAble == true || grid.isFinished == false || (ifAble == false && number == 0))
         {
             if (grid.isFinished == true && number != 0)
@@ -280,9 +280,9 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     }
 
 
-    public void SetNumber2(int number, bool ifNote)
+    public void SetNumber2(int number, bool ifNote2)
     {
-        if (ifNote == false)
+        if (ifNote2 == false)
         {
             number_text.GetComponent<TextMeshProUGUI>().fontSize = 60;
 

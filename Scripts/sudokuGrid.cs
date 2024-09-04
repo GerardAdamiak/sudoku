@@ -92,6 +92,7 @@ public class sudokuGrid : MonoBehaviour
                 DeleteSquaresFromEachSubgrid(squaresToDelete);
                 if (currentSceneName == "whispers") ifOk = true;
             } while (ifOk == false);
+            if (currentSceneName == "whispers") GetCurrentGridState();
             UnclickableDigits();
         }
 
