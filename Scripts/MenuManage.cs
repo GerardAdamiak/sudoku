@@ -56,6 +56,11 @@ public class TouchToChangeScene : MonoBehaviour
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
                             sceneToLoad = "solve";
                         }
+                        if (hit.collider.gameObject.CompareTag("backArrowVariant"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            sceneToLoad = "variants";
+                        }
                         else if (hit.collider.gameObject.CompareTag("set"))
                         {
                             PlayerPrefs.SetString("whichSet", "set");

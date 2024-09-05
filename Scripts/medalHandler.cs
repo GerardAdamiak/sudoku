@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class medalHandler : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class medalHandler : MonoBehaviour
     // Define the colors
     public Color colorForZero = Color.red;
     public Color colorForOne = Color.green;
+ 
 
     // Start is called before the first frame update
     void Start()
@@ -39,47 +41,54 @@ public class medalHandler : MonoBehaviour
     {
         if (tmpText.CompareTag("easyBronze"))
         {
-            countEasy = countEasy % 10;
-            tmpText.text = countEasy.ToString() + "/10";
+            if (countEasy > 10)
+            {
+                countEasy = 10;
+                
+            }
+                tmpText.text = countEasy.ToString() + "/10";
+            
         }
         else if (tmpText.CompareTag("mediumBronze"))
         {
-            countMed = countMed % 10;
+            if(countMed>10)countMed = 10;
             tmpText.text = countMed.ToString() + "/10";
+           
         }
         else if (tmpText.CompareTag("hardBronze"))
         {
-            countHard = countHard % 10;
+            if(countHard>10)countHard = 10;
             tmpText.text = countHard.ToString() + "/10";
+          
         }
         else if (tmpText.CompareTag("easySilver"))
         {
-            countEasy = countEasy % 30;
+            if(countEasy>30)countEasy = 30;
             tmpText.text = countEasy.ToString() + "/30";
         }
         else if (tmpText.CompareTag("mediumSilver"))
         {
-            countMed = countMed % 30;
+            if(countMed>30)countMed = 30;
             tmpText.text = countMed.ToString() + "/30";
         }
         else if (tmpText.CompareTag("hardSilver"))
         {
-            countHard = countHard % 30;
+            if(countHard>30)countHard = 30;
             tmpText.text = countHard.ToString() + "/30";
         }
         else if (tmpText.CompareTag("easyGold"))
         {
-            countEasy = countEasy % 90;
+            if(countEasy>90)countEasy = 90;
             tmpText.text = countEasy.ToString() + "/90";
         }
         else if (tmpText.CompareTag("mediumGold"))
         {
-            countMed = countMed % 90;
+            if(countMed>90)countMed = 90;
             tmpText.text = countMed.ToString() + "/90";
         }
         else if (tmpText.CompareTag("hardGold"))
         {
-            countHard = countHard % 90;
+            if(countHard>90)countHard = 90;
             tmpText.text = countHard.ToString() + "/90";
         }
 
@@ -93,12 +102,6 @@ public class medalHandler : MonoBehaviour
             tmpText.color = colorForOne; // Set color to green if value is 1
         }
     }
-
-    // Optional: You can update the color dynamically through this method
-    public void SetValue(int newValue)
-    {
-        value = newValue;
-        UpdateTextColor();
-    }
+   
 
 }

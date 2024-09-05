@@ -44,10 +44,10 @@ public class DigitKeyboard : MonoBehaviour
                 if ((i == 0) && (j == 3)) digit = 0;
                 if ((i == 1) && (j == 3)) digit = 10;
                 
-                if (digit == 10 && whichSet == "custom")
-                {
-                    continue; // Skip creating this button
-                }
+                //if (digit == 10 && whichSet == "custom")
+                //{
+                //    continue; // Skip creating this button
+                //}
                 
                 
                 if ((i == 0) || (i == 1) || (j != 3))

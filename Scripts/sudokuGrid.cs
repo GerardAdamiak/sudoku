@@ -54,6 +54,7 @@ public class sudokuGrid : MonoBehaviour
     private string whichSet;
     public GameObject linePrefab;
     private bool done = false;
+    private string direction;
 
     void Start()
     {
@@ -123,7 +124,7 @@ public class sudokuGrid : MonoBehaviour
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
                                 var square2 = grid_squares_[(i * 9) + j + 9].GetComponent<GridSquare>();
 
-                                
+                                direction = "down";
 
                                 DrawLineBetweenSquares(square1, square2);
                             }
@@ -139,7 +140,7 @@ public class sudokuGrid : MonoBehaviour
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
                                 var square2 = grid_squares_[(i * 9) + j - 9].GetComponent<GridSquare>();
 
-                                
+                                direction = "up";
 
                                 DrawLineBetweenSquares(square1, square2);
                             }
@@ -154,6 +155,7 @@ public class sudokuGrid : MonoBehaviour
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
                                 var square2 = grid_squares_[(i * 9) + j + 1].GetComponent<GridSquare>();
 
+                                direction = "left";
 
                                 DrawLineBetweenSquares(square1, square2);
                             }
@@ -168,7 +170,7 @@ public class sudokuGrid : MonoBehaviour
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
                                 var square2 = grid_squares_[(i * 9) + j - 1].GetComponent<GridSquare>();
 
-                               
+                                direction = "right";
                                
 
                                 DrawLineBetweenSquares(square1, square2);
@@ -233,16 +235,45 @@ public class sudokuGrid : MonoBehaviour
         GameObject lineObject = Instantiate(linePrefab);
         LineRenderer lineRenderer = lineObject.GetComponent<LineRenderer>();
 
-        // Set the start and end positions of the line
-        //Color transparentColor = new Color(0f, 1f, 0f, 0.2f); // Red with 50% transparency
-        //lineRenderer.startColor = transparentColor;
-        //lineRenderer.endColor = transparentColor;
-
-        lineRenderer.SetPosition(0, square1.transform.position);
-        lineRenderer.SetPosition(1, square2.transform.position);
-
+        // Define the pixel offset (in world units)
         
+
+        // Get the start and end positions
+        Vector3 startPosition = square1.transform.position;
+        Vector3 endPosition = square2.transform.position;
+
+        float offset = 0.02f;
+
+        startPosition.x -= offset;
+        endPosition.x -= offset;
+        if (direction == "up")
+        {
+            startPosition.y -= 0.1f;
+            endPosition.y += 0.1f;
+        }
+        else if (direction == "down")
+        {
+            startPosition.y += 0.1f;
+            endPosition.y -= 0.1f;
+        }
+        else if (direction == "left")
+        {
+            startPosition.x -= 0.1f;
+            endPosition.x += 0.1f;
+        }
+        else if (direction == "right")
+        {
+            startPosition.x += 0.1f;
+            endPosition.x -= 0.1f;
+        }
+        // Move both ends of the line to the left (along the x-axis)
+
+
+        // Set the start and end positions of the line
+        lineRenderer.SetPosition(0, startPosition);
+        lineRenderer.SetPosition(1, endPosition);
     }
+
 
     public void UpdateSelectedCellNote(int number)
     {

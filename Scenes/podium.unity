@@ -413,9 +413,10 @@ GameObject:
   - component: {fileID: 185393159}
   - component: {fileID: 185393160}
   - component: {fileID: 185393161}
+  - component: {fileID: 185393162}
   m_Layer: 0
   m_Name: Projekt bez nazwy (35)
-  m_TagString: Untagged
+  m_TagString: mediumSilver
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -429,7 +430,7 @@ Transform:
   m_GameObject: {fileID: 185393158}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.5, z: 0.033728834}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0.033728834}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -494,13 +495,31 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 185393158}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cc0cebf2fcaf3e4eb0927f49ac53fd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: ae31cba069f8f6a4aab8b227be55c380, type: 3}
   sprite2: {fileID: 21300000, guid: 34a2162325fb3f94d9af4c233b4ea966, type: 3}
+--- !u!114 &185393162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 185393158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aae5ba3c6340c04f86c90e7c368413e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 0
+  doneMedalDark: {fileID: 21300000, guid: 5e660ffc55abfcf4981d7c2f277f5823, type: 3}
+  doneMedalLight: {fileID: 21300000, guid: 34b236c151f00e5448b27bac74f0d6d1, type: 3}
+  MedalDark: {fileID: 21300000, guid: 34a2162325fb3f94d9af4c233b4ea966, type: 3}
+  MedalLight: {fileID: 21300000, guid: ae31cba069f8f6a4aab8b227be55c380, type: 3}
+  medalImage: {fileID: 185393158}
 --- !u!1 &393463138
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,9 +691,10 @@ GameObject:
   - component: {fileID: 401264097}
   - component: {fileID: 401264099}
   - component: {fileID: 401264098}
+  - component: {fileID: 401264100}
   m_Layer: 0
   m_Name: Projekt bez nazwy (35)
-  m_TagString: Untagged
+  m_TagString: mediumGold
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -701,7 +721,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 401264096}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cc0cebf2fcaf3e4eb0927f49ac53fd5, type: 3}
   m_Name: 
@@ -760,6 +780,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &401264100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401264096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aae5ba3c6340c04f86c90e7c368413e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 0
+  doneMedalDark: {fileID: 21300000, guid: 92bf9fa221054444f865099876948cf5, type: 3}
+  doneMedalLight: {fileID: 21300000, guid: 87c34904f754830429aac39ac2506ec1, type: 3}
+  MedalDark: {fileID: 21300000, guid: f1178f5f8376a3347b2e3bad26664ef5, type: 3}
+  MedalLight: {fileID: 21300000, guid: 26b9d95aa6a48c74c9c0be54b43df32c, type: 3}
+  medalImage: {fileID: 401264096}
 --- !u!1 &652266120
 GameObject:
   m_ObjectHideFlags: 0
@@ -931,9 +969,10 @@ GameObject:
   - component: {fileID: 657046661}
   - component: {fileID: 657046662}
   - component: {fileID: 657046663}
+  - component: {fileID: 657046664}
   m_Layer: 0
   m_Name: Projekt bez nazwy (40)
-  m_TagString: Untagged
+  m_TagString: mediumBronze
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1012,13 +1051,31 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 657046660}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cc0cebf2fcaf3e4eb0927f49ac53fd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
   sprite2: {fileID: 21300000, guid: 424d9f92d14162c4589ab7d5d4baaef0, type: 3}
+--- !u!114 &657046664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657046660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aae5ba3c6340c04f86c90e7c368413e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 0
+  doneMedalDark: {fileID: 21300000, guid: b7fe0d75ed31d734aa68e14a55ca2360, type: 3}
+  doneMedalLight: {fileID: 21300000, guid: 5febfebcdbb26184baa245a1b93c9e09, type: 3}
+  MedalDark: {fileID: 21300000, guid: 424d9f92d14162c4589ab7d5d4baaef0, type: 3}
+  MedalLight: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
+  medalImage: {fileID: 657046660}
 --- !u!1 &979469350
 GameObject:
   m_ObjectHideFlags: 0
@@ -1064,9 +1121,10 @@ GameObject:
   - component: {fileID: 995552095}
   - component: {fileID: 995552096}
   - component: {fileID: 995552097}
+  - component: {fileID: 995552098}
   m_Layer: 0
   m_Name: Projekt bez nazwy (40)
-  m_TagString: Untagged
+  m_TagString: hardBronze
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1145,13 +1203,31 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 995552094}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cc0cebf2fcaf3e4eb0927f49ac53fd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
   sprite2: {fileID: 21300000, guid: 424d9f92d14162c4589ab7d5d4baaef0, type: 3}
+--- !u!114 &995552098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 995552094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aae5ba3c6340c04f86c90e7c368413e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 0
+  doneMedalDark: {fileID: 21300000, guid: b7fe0d75ed31d734aa68e14a55ca2360, type: 3}
+  doneMedalLight: {fileID: 21300000, guid: 5febfebcdbb26184baa245a1b93c9e09, type: 3}
+  MedalDark: {fileID: 21300000, guid: 424d9f92d14162c4589ab7d5d4baaef0, type: 3}
+  MedalLight: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
+  medalImage: {fileID: 995552094}
 --- !u!1 &1082246296
 GameObject:
   m_ObjectHideFlags: 0
@@ -1704,10 +1780,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1232733891}
   - component: {fileID: 1232733892}
+  - component: {fileID: 1232733894}
   - component: {fileID: 1232733893}
   m_Layer: 0
   m_Name: Projekt bez nazwy (40)
-  m_TagString: Untagged
+  m_TagString: easyBronze
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1786,13 +1863,31 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1232733890}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cc0cebf2fcaf3e4eb0927f49ac53fd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
   sprite2: {fileID: 21300000, guid: 424d9f92d14162c4589ab7d5d4baaef0, type: 3}
+--- !u!114 &1232733894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232733890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aae5ba3c6340c04f86c90e7c368413e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 0
+  doneMedalDark: {fileID: 21300000, guid: b7fe0d75ed31d734aa68e14a55ca2360, type: 3}
+  doneMedalLight: {fileID: 21300000, guid: 5febfebcdbb26184baa245a1b93c9e09, type: 3}
+  MedalDark: {fileID: 21300000, guid: 424d9f92d14162c4589ab7d5d4baaef0, type: 3}
+  MedalLight: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
+  medalImage: {fileID: 1232733890}
 --- !u!1 &1247309182
 GameObject:
   m_ObjectHideFlags: 0
@@ -2174,9 +2269,10 @@ GameObject:
   - component: {fileID: 1424870953}
   - component: {fileID: 1424870952}
   - component: {fileID: 1424870954}
+  - component: {fileID: 1424870955}
   m_Layer: 0
   m_Name: Projekt bez nazwy (35)
-  m_TagString: Untagged
+  m_TagString: easySilver
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2255,13 +2351,31 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1424870951}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cc0cebf2fcaf3e4eb0927f49ac53fd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: ae31cba069f8f6a4aab8b227be55c380, type: 3}
   sprite2: {fileID: 21300000, guid: 34a2162325fb3f94d9af4c233b4ea966, type: 3}
+--- !u!114 &1424870955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424870951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aae5ba3c6340c04f86c90e7c368413e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 0
+  doneMedalDark: {fileID: 21300000, guid: 5e660ffc55abfcf4981d7c2f277f5823, type: 3}
+  doneMedalLight: {fileID: 21300000, guid: 34b236c151f00e5448b27bac74f0d6d1, type: 3}
+  MedalDark: {fileID: 21300000, guid: 34a2162325fb3f94d9af4c233b4ea966, type: 3}
+  MedalLight: {fileID: 21300000, guid: ae31cba069f8f6a4aab8b227be55c380, type: 3}
+  medalImage: {fileID: 1424870951}
 --- !u!1 &1461510193
 GameObject:
   m_ObjectHideFlags: 0
@@ -2273,9 +2387,10 @@ GameObject:
   - component: {fileID: 1461510194}
   - component: {fileID: 1461510195}
   - component: {fileID: 1461510196}
+  - component: {fileID: 1461510197}
   m_Layer: 0
   m_Name: Projekt bez nazwy (35)
-  m_TagString: Untagged
+  m_TagString: hardSilver
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2354,13 +2469,31 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1461510193}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cc0cebf2fcaf3e4eb0927f49ac53fd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: ae31cba069f8f6a4aab8b227be55c380, type: 3}
   sprite2: {fileID: 21300000, guid: 34a2162325fb3f94d9af4c233b4ea966, type: 3}
+--- !u!114 &1461510197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461510193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aae5ba3c6340c04f86c90e7c368413e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 0
+  doneMedalDark: {fileID: 21300000, guid: 5e660ffc55abfcf4981d7c2f277f5823, type: 3}
+  doneMedalLight: {fileID: 21300000, guid: 34b236c151f00e5448b27bac74f0d6d1, type: 3}
+  MedalDark: {fileID: 21300000, guid: 34a2162325fb3f94d9af4c233b4ea966, type: 3}
+  MedalLight: {fileID: 21300000, guid: ae31cba069f8f6a4aab8b227be55c380, type: 3}
+  medalImage: {fileID: 1461510193}
 --- !u!1 &1508436025
 GameObject:
   m_ObjectHideFlags: 0
@@ -2692,15 +2825,15 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1827472448}
-  - {fileID: 401264097}
-  - {fileID: 1764992401}
-  - {fileID: 1424870953}
-  - {fileID: 185393159}
-  - {fileID: 1461510194}
   - {fileID: 1232733891}
   - {fileID: 657046661}
   - {fileID: 995552095}
+  - {fileID: 1424870953}
+  - {fileID: 185393159}
+  - {fileID: 1461510194}
+  - {fileID: 1827472448}
+  - {fileID: 401264097}
+  - {fileID: 1764992401}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1556085239
@@ -3277,9 +3410,10 @@ GameObject:
   - component: {fileID: 1764992401}
   - component: {fileID: 1764992403}
   - component: {fileID: 1764992402}
+  - component: {fileID: 1764992404}
   m_Layer: 0
   m_Name: Projekt bez nazwy (36)
-  m_TagString: Untagged
+  m_TagString: hardGold
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3306,7 +3440,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1764992400}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cc0cebf2fcaf3e4eb0927f49ac53fd5, type: 3}
   m_Name: 
@@ -3365,6 +3499,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1764992404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764992400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aae5ba3c6340c04f86c90e7c368413e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 0
+  doneMedalDark: {fileID: 21300000, guid: 92bf9fa221054444f865099876948cf5, type: 3}
+  doneMedalLight: {fileID: 21300000, guid: 87c34904f754830429aac39ac2506ec1, type: 3}
+  MedalDark: {fileID: 21300000, guid: f1178f5f8376a3347b2e3bad26664ef5, type: 3}
+  MedalLight: {fileID: 21300000, guid: 26b9d95aa6a48c74c9c0be54b43df32c, type: 3}
+  medalImage: {fileID: 1764992400}
 --- !u!1 &1827472447
 GameObject:
   m_ObjectHideFlags: 0
@@ -3376,9 +3528,10 @@ GameObject:
   - component: {fileID: 1827472448}
   - component: {fileID: 1827472450}
   - component: {fileID: 1827472449}
+  - component: {fileID: 1827472451}
   m_Layer: 0
   m_Name: Projekt bez nazwy (34)
-  m_TagString: Untagged
+  m_TagString: easyGold
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3405,7 +3558,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1827472447}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cc0cebf2fcaf3e4eb0927f49ac53fd5, type: 3}
   m_Name: 
@@ -3464,6 +3617,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1827472451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827472447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aae5ba3c6340c04f86c90e7c368413e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 0
+  doneMedalDark: {fileID: 21300000, guid: 92bf9fa221054444f865099876948cf5, type: 3}
+  doneMedalLight: {fileID: 21300000, guid: 87c34904f754830429aac39ac2506ec1, type: 3}
+  MedalDark: {fileID: 21300000, guid: f1178f5f8376a3347b2e3bad26664ef5, type: 3}
+  MedalLight: {fileID: 21300000, guid: 26b9d95aa6a48c74c9c0be54b43df32c, type: 3}
+  medalImage: {fileID: 1827472447}
 --- !u!1 &1978817618
 GameObject:
   m_ObjectHideFlags: 0
