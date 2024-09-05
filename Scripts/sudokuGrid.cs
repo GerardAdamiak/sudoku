@@ -53,6 +53,7 @@ public class sudokuGrid : MonoBehaviour
     public GameObject leaderboardText;
     private string whichSet;
     public GameObject linePrefab;
+    private bool done = false;
 
     void Start()
     {
@@ -473,6 +474,28 @@ public class sudokuGrid : MonoBehaviour
 
         if (endChecker)
         {
+            if (done == false)
+            {
+                int countEasy = PlayerPrefs.GetInt("medalEasy");
+                int countMed = PlayerPrefs.GetInt("medalMed");
+                int countHard = PlayerPrefs.GetInt("medalHard");
+                if (currentSceneName == "easy")
+                {
+                    countEasy++;
+                    PlayerPrefs.SetInt("medalEasy", countEasy);
+                }
+                else if (currentSceneName == "medium")
+                {
+                    countMed++;
+                    PlayerPrefs.SetInt("medalMed", countMed);
+                }
+                else if (currentSceneName == "hard")
+                {
+                    countHard++;
+                    PlayerPrefs.SetInt("medalHard", countHard);
+                }
+                done = true;
+            }
             GameObject panel = new GameObject("DimPanel");
             panel.transform.SetParent(canvas.transform);
             RectTransform panelRect = panel.AddComponent<RectTransform>();
