@@ -32,7 +32,7 @@ public class sudokuGrid : MonoBehaviour
     public float square_scale = 1.0f;
     public int squaresToDelete;
     private GridSquare selectedSquare;
-    private static List<GridSquare> selectedCells = new List<GridSquare>();
+    public List<GridSquare> selectedCells = new List<GridSquare>();
     private List<GameObject> grid_squares_ = new List<GameObject>();
     private int counter = 0;
     public Canvas canvas;
@@ -55,6 +55,9 @@ public class sudokuGrid : MonoBehaviour
     public GameObject linePrefab;
     private bool done = false;
     private string direction;
+    private DigitKeyboard keyboard;
+    public bool ifMore;
+    private int x;
 
     void Start()
     {
@@ -222,11 +225,25 @@ public class sudokuGrid : MonoBehaviour
 
     public void UpdateSelectedCell(int number)
     {
-       
-        foreach (var square in selectedCells)
+        keyboard = FindObjectOfType<DigitKeyboard>();
+        x = 0;
+        if (keyboard.selectedCount > 1 && number == 0)
         {
-            square.SetNumber(number);
+            foreach (var square in selectedCells)
+            {
+                if (x == 0) square.SetNumber(number);
+                x++;
+            }
+
         }
+        else
+        {
+            foreach (var square in selectedCells)
+            {
+                square.SetNumber(number);
+            }
+        }
+
     }
 
     private void DrawLineBetweenSquares(GridSquare square1, GridSquare square2)
@@ -277,10 +294,25 @@ public class sudokuGrid : MonoBehaviour
 
     public void UpdateSelectedCellNote(int number)
     {
-        foreach (var square in selectedCells)
+        keyboard = FindObjectOfType<DigitKeyboard>();
+        x = 0;
+        if (keyboard.selectedCount > 1 && number == 0)
         {
-            square.SetNumberNote(number);
+            foreach (var square in selectedCells)
+            {
+                if(x==0)square.SetNumberNote(number);
+                x++;
+            }
+
         }
+        else
+        {
+            foreach (var square in selectedCells)
+            {
+                square.SetNumberNote(number);
+            }
+        }
+        
     }
 
     public void DeselectAllGridSquares()
@@ -1024,8 +1056,8 @@ public class sudokuGrid : MonoBehaviour
         }
 
         // Logging the stack contents to the console
-        UnityEngine.Debug.Log(stackContents);
-        UnityEngine.Debug.Log(counter);
+        //UnityEngine.Debug.Log(stackContents);
+        //UnityEngine.Debug.Log(counter);
     }
 
 }

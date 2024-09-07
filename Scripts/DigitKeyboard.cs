@@ -16,7 +16,9 @@ public class DigitKeyboard : MonoBehaviour
     public Sprite buttonImageNote1;
     public Sprite buttonImageNote2;
     public bool ifNote = false;
-    
+    private Grid grid2;
+    public int selectedCount;
+
     private void Start()
     {
         whichSet = PlayerPrefs.GetString("whichSet", "");
@@ -24,6 +26,14 @@ public class DigitKeyboard : MonoBehaviour
         sceneName=SceneManager.GetActiveScene().name;
         CreateButtons();
         PositionKeyboard();
+    }
+
+
+    private void CountSelected()
+    {
+        grid = FindObjectOfType<sudokuGrid>();
+        selectedCount = grid.selectedCells.Count;
+        
     }
 
     private void CreateButtons()
@@ -106,7 +116,7 @@ public class DigitKeyboard : MonoBehaviour
 
     private void OnDigitButtonClick(int digit, Button button)
     {
-        
+        CountSelected();
         if (digit != 10 && ifNote == false) grid.UpdateSelectedCell(digit);
         else if (digit != 10 && ifNote == true) grid.UpdateSelectedCellNote(digit);
         else if(digit ==10 && sceneName=="Custom") {
