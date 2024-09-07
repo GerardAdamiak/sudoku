@@ -224,59 +224,63 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void SetNumberNote(int number)
     {
-        grid = FindObjectOfType<sudokuGrid>();
-        if (grid.isFinished == true)
+        if (number_text.GetComponent<TextMeshProUGUI>().fontSize != 60 || number_ == 0)
         {
-            ifAble = true;
             grid = FindObjectOfType<sudokuGrid>();
-            // Change the texture of the square when selected
-
-            foreach (int digit in grid.lockedDigits)
+            if (grid.isFinished == true)
             {
-                if (digit == (gridRow * 9 + gridColumn)) ifAble = false;
-            }
-        }
-       // if (SceneManager.GetActiveScene().name == "whispers") ifAble = true;
-        if (ifAble == true || grid.isFinished == false || (ifAble == false && number == 0))
-        {
-            if (grid.isFinished == true && number != 0)
-            {
-                grid.moveStack.Push((gridRow, gridColumn, number_, digitKeyboard.ifNote));
-                grid.PrintStackContents();
-            }
+                ifAble = true;
+                grid = FindObjectOfType<sudokuGrid>();
+                // Change the texture of the square when selected
 
-            if (ifAble == true)
-            {
-                string number_string = number_.ToString();
-                string numberStr = number.ToString();
-                char numberChar = numberStr[0];
-                bool ifContain = number_string.Contains(numberStr);
-
-                if (ifContain == false)
+                foreach (int digit in grid.lockedDigits)
                 {
-                    number_string = number_string + numberStr;
-                    number_string.OrderBy(c => c).ToArray();
-                    char[] characters = number_string.ToArray();
-                    Array.Sort(characters);
-                    number_string = new string(characters);
-                    
+                    if (digit == (gridRow * 9 + gridColumn)) ifAble = false;
                 }
-                else
-                {
-                   
-                    number_string = number_string.Replace(numberStr, "");
-                   
-                }
-                if(number_string != "")number_ = int.Parse(number_string);
-                else number_ = 0;
             }
-            if (grid.isFinished == true && number == 0 && grid.moveStack.Count > 0)
+            // if (SceneManager.GetActiveScene().name == "whispers") ifAble = true;
+            if (ifAble == true || grid.isFinished == false || (ifAble == false && number == 0))
             {
-                var lastMove = grid.moveStack.Pop();
-                grid.SetNumberAt(lastMove.row, lastMove.column, lastMove.previousNumber, lastMove.ifNote);
+                if (grid.isFinished == true && number != 0)
+                {
+                    grid.moveStack.Push((gridRow, gridColumn, number_, digitKeyboard.ifNote));
+                    grid.PrintStackContents();
+                }
+
+                if (ifAble == true)
+                {
+                    string number_string = number_.ToString();
+                    string numberStr = number.ToString();
+                    char numberChar = numberStr[0];
+                    bool ifContain = number_string.Contains(numberStr);
+
+                    if (ifContain == false)
+                    {
+                        number_string = number_string + numberStr;
+                        number_string.OrderBy(c => c).ToArray();
+                        char[] characters = number_string.ToArray();
+                        Array.Sort(characters);
+                        number_string = new string(characters);
+
+                    }
+                    else
+                    {
+
+                        number_string = number_string.Replace(numberStr, "");
+
+                    }
+                    if (number_string != "") number_ = int.Parse(number_string);
+                    else number_ = 0;
+                }
+                if (grid.isFinished == true && number == 0 && grid.moveStack.Count > 0)
+                {
+                    var lastMove = grid.moveStack.Pop();
+                    grid.SetNumberAt(lastMove.row, lastMove.column, lastMove.previousNumber, lastMove.ifNote);
+                }
             }
+            DisplayText();
         }
-        DisplayText();
+        
     }
 
 
@@ -307,8 +311,8 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         }
         
         else number_text.GetComponent<TextMeshProUGUI>().text = number_.ToString();
+
         
-       
     }
 
     public void SetGrid(int row, int column)
