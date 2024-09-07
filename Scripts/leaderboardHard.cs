@@ -8,10 +8,10 @@ using UnityEngine.SceneManagement;
 public class LeaderboardHard : MonoBehaviour
 {
     public TMP_Text leaderboardText;
-    public List<float> bestTimesHard = new List<float>();
+    public List<float> bestTimesHard = new();
     private int SavedListCountHard;
     private const int maxEntries = 10;
-    private Timer timer;
+
     public static bool ifAddedHard = false;
     private string previousScene;
     private float mostRecentTime; // Store the most recent time
@@ -58,7 +58,7 @@ public class LeaderboardHard : MonoBehaviour
     private void Update()
     {
 
-        if (sudokuGrid.endChecker == true && ifAddedHard == false && sudokuGrid.currentSceneName == "hard")
+        if (SudokuGrid.endChecker == true && ifAddedHard == false && SudokuGrid.currentSceneName == "hard")
         {
             LoadData();
             AddTime(Timer.finalTime - 2);
@@ -128,8 +128,5 @@ public class LeaderboardHard : MonoBehaviour
         return string.Format("{0:00}:{1:00}", timeSpan.Minutes, timeSpan.Seconds);
     }
 
-    private void OnDestroy()//git
-    {
-        //  SaveLeaderboard();
-    }
+   
 }

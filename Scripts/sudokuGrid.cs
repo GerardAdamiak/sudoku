@@ -10,14 +10,11 @@ using Random = System.Random;
 using System.Diagnostics;
 
 
-public class sudokuGrid : MonoBehaviour
+public class SudokuGrid : MonoBehaviour
 {
     //dodac:
-    //-ilosc rozwiazanych dla kazdego trybu (?)
-    //-najlepszy wynik z kazdej trudnosci w menu
     //-warianty trzeba bedzie zaczac, mozliwe ze zaczne od killera, ale bedzie duzo z tym roboty XD
-    //-wiadomo jakies ogolne poprawki zeby wszystko smigalo, przede wszystkim to ze animacja sie laduje dlugo przy pierwszym wlaczeniu
-    //-a no i ogarniecie zeby na pewno dzialalo na wszystkich urzadzeniach, bo igor mial jakies problemy :cc
+    //-naprawa tego bledu, ze pierwsze klikniecie po rozpoczeciu nowej gry nie dziala i z wielkoscia notatek przy cofaniu
 
 
     private int[,] grid = new int[9, 9];
@@ -28,13 +25,11 @@ public class sudokuGrid : MonoBehaviour
     public int rows = 9;
     public float every_square_offset = 0.0f;
     public GameObject grid_square;
-    public Vector2 start_position = new Vector2(0.0f, 0.0f);
+    public Vector2 start_position = new(0.0f, 0.0f);
     public float square_scale = 1.0f;
     public int squaresToDelete;
-    private GridSquare selectedSquare;
-    public List<GridSquare> selectedCells = new List<GridSquare>();
-    private List<GameObject> grid_squares_ = new List<GameObject>();
-    private int counter = 0;
+    public List<GridSquare> selectedCells = new();
+    private List<GameObject> grid_squares_ = new();
     public Canvas canvas;
     public GameObject previous;
     public GameObject diff;
@@ -47,9 +42,9 @@ public class sudokuGrid : MonoBehaviour
     private Color redHexColor = new Color32(180, 44, 15, 255);
     private int customNumber;
     private string sudokuLog;
-    public HashSet<int> lockedDigits = new HashSet<int>();
+    public HashSet<int> lockedDigits = new();
     public bool isFinished;
-    public Stack<(int row, int column, int previousNumber, bool ifNote)> moveStack = new Stack<(int, int, int, bool)>();
+    public Stack<(int row, int column, int previousNumber, bool ifNote)> moveStack = new();
     public GameObject leaderboardText;
     private string whichSet;
     public GameObject linePrefab;
@@ -83,7 +78,7 @@ public class sudokuGrid : MonoBehaviour
                 sudokuLog = PlayerPrefs.GetString("Sudoku5");
                 break;
         }
-        resolveLog();
+        ResolveLog();
         currentSceneName = SceneManager.GetActiveScene().name;
         if (grid_square.GetComponent<GridSquare>() == null)
             UnityEngine.Debug.LogError("grid_square object needs to have GridSquare script attached");
@@ -194,12 +189,12 @@ public class sudokuGrid : MonoBehaviour
 
     void Update()
     {
-        counter++;
+        
         GetCurrentGridState();
 
-        fixZPosition();
+        FixZPosition();
 
-        ChangeColor(currentGridInt);
+        ChangeColor();
 
         //PrintGrid2(currentGridInt);
         if (Input.GetMouseButtonDown(0))
@@ -212,8 +207,7 @@ public class sudokuGrid : MonoBehaviour
                 );
                 if (hit.collider != null && hit.collider.CompareTag("GridSquare"))
                 {
-                    GridSquare gridSquare = hit.collider.GetComponent<GridSquare>();
-                    if (gridSquare != null)
+                    if (hit.collider.TryGetComponent<GridSquare>(out var gridSquare))
                     {
                         SelectGridSquare(gridSquare);
                     }
@@ -329,7 +323,7 @@ public class sudokuGrid : MonoBehaviour
         return selectedCells;
     }
 
-    public void resolveLog()
+    public void ResolveLog()
     {
         for (int i = 0; i < 9; i++)
         {
@@ -341,7 +335,7 @@ public class sudokuGrid : MonoBehaviour
     }
 
 
-    public void fixZPosition()
+    public void FixZPosition()
     {
         for (int i = 0; i < 9; i++)
         {
@@ -387,8 +381,8 @@ public class sudokuGrid : MonoBehaviour
             for (int column = 0; column < columns; column++)
             {
                 grid_squares_.Add(Instantiate(grid_square) as GameObject);
-                grid_squares_[grid_squares_.Count - 1].transform.SetParent(this.transform);
-                grid_squares_[grid_squares_.Count - 1].transform.localScale = new Vector3(
+                grid_squares_[^1].transform.SetParent(this.transform);
+                grid_squares_[^1].transform.localScale = new Vector3(
                     square_scale,
                     square_scale,
                     square_scale
@@ -401,9 +395,11 @@ public class sudokuGrid : MonoBehaviour
     private void SetSquaresPosition()
     {
         var square_rect = grid_squares_[0].GetComponent<RectTransform>();
-        Vector2 offset = new Vector2();
-        offset.x = square_rect.rect.width * square_rect.transform.localScale.x + every_square_offset;
-        offset.y = square_rect.rect.height * square_rect.transform.localScale.y + every_square_offset;
+        Vector2 offset = new()
+        {
+            x = square_rect.rect.width * square_rect.transform.localScale.x + every_square_offset,
+            y = square_rect.rect.height * square_rect.transform.localScale.y + every_square_offset
+        };
 
         int column_number = 0;
         int row_number = 0;
@@ -481,7 +477,7 @@ public class sudokuGrid : MonoBehaviour
             order[i] = i + 1;
         }
 
-        System.Random rnd = new System.Random();
+        System.Random rnd = new();
         for (int i = 0; i < 9; i++)
         {
             int temp = order[i];
@@ -559,7 +555,7 @@ public class sudokuGrid : MonoBehaviour
                 }
                 done = true;
             }
-            GameObject panel = new GameObject("DimPanel");
+            GameObject panel = new("DimPanel");
             panel.transform.SetParent(canvas.transform);
             RectTransform panelRect = panel.AddComponent<RectTransform>();
             panelRect.anchorMin = Vector2.zero;
@@ -624,19 +620,7 @@ public class sudokuGrid : MonoBehaviour
         }
     }
 
-    private void SetGridNumbers2()
-    {
-        for (int row = 0; row < 9; row++)
-        {
-            for (int col = 0; col < 9; col++)
-            {
-                grid_squares_[(row * 9) + col].GetComponent<GridSquare>().SetNumber(grid[row, col]);
-
-
-            }
-        }
-    }
-
+   
     private void DeleteSquaresFromEachSubgrid(int totalSquaresToDelete)
     {
         if (totalSquaresToDelete <= 0)
@@ -649,13 +633,13 @@ public class sudokuGrid : MonoBehaviour
 
         for (int i = 0; i < 9; i++)
         {
-            HashSet<int> generatedNumbers = new HashSet<int>();
+            HashSet<int> generatedNumbers = new();
 
             for (int b = 0; b < squaresPerSubgrid; b++)
             {
                 do
                 {
-                    Random rnd = new Random();
+                    Random rnd = new();
                     int c = rnd.Next(0, 3);
                     int d = rnd.Next(0, 3);
                     switch (i)
@@ -734,7 +718,7 @@ public class sudokuGrid : MonoBehaviour
         return true;
     }
 
-    private void ChangeColor(char[,] grid)
+    private void ChangeColor()
     {
         for (int i = 0; i < 9; i++)
         {
@@ -891,13 +875,7 @@ public class sudokuGrid : MonoBehaviour
         }
     }
 
-    public static void solveSudoku(char[,] board)
-    {
-        if (board == null || board.Length == 0)
-            return;
-        solve(board);
-    }
-    private static bool solve(char[,] board)
+    private static bool Solve(char[,] board)
     {
         for (int i = 0; i < 9; i++)
         {
@@ -907,11 +885,11 @@ public class sudokuGrid : MonoBehaviour
                 {
                     for (char c = '1'; c <= '9'; c++)
                     {
-                        if (isValid(board, i, j, c))
+                        if (IsValid(board, i, j, c))
                         {
                             board[i, j] = c;
 
-                            if (solve(board))
+                            if (Solve(board))
                                 return true;
                             else
                                 board[i, j] = '0';
@@ -923,7 +901,7 @@ public class sudokuGrid : MonoBehaviour
         }
         return true;
     }
-    private static bool isValid(char[,] board, int row, int col, char c)
+    private static bool IsValid(char[,] board, int row, int col, char c)
     {
         for (int i = 0; i < 9; i++)
         {
@@ -993,7 +971,7 @@ public class sudokuGrid : MonoBehaviour
         // Try each number from 1 to 9
         for (char k = '1'; k <= '9'; k++)
         {
-            if (isValid(currentGridInt, row, col, k))
+            if (IsValid(currentGridInt, row, col, k))
             {
                 currentGridInt[row, col] = k;
 
@@ -1010,21 +988,7 @@ public class sudokuGrid : MonoBehaviour
     }
 
 
-    private void RestoreDigits()
-    {
-        for (int row = 0; row < 9; row++)
-        {
-            for (int col = 0; col < 9; col++)
-            {
-                int index = row * 9 + col;
-                var square = grid_squares_[index];
-                var gridSquare = square.GetComponent<GridSquare>();
-                gridSquare.SetNumber(grid[row, col]);
-
-
-            }
-        }
-    }
+   
     private void UnclickableDigits()
 
     {

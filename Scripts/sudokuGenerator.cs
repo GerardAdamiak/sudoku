@@ -13,9 +13,8 @@ using UnityEngine.Windows;
 public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     public GameObject number_text;
-    private bool ifUsed = false;
     private int number_ = 0;
-    private sudokuGrid grid;
+    private SudokuGrid grid;
     public RawImage squareRawImage; // Reference to the RawImage component
     public TextMeshProUGUI textMeshProComponent;
     // Define variables to hold the textures
@@ -26,7 +25,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     public int gridRow;
     public int gridColumn;
     private bool ifAble=true;
-    public static List<GridSquare> selectedCells = new List<GridSquare>(); // List to hold selected cells
+    public static List<GridSquare> selectedCells = new(); // List to hold selected cells
    // private bool isSelecting = false;
     private DigitKeyboard digitKeyboard;
 
@@ -35,7 +34,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     void Start()
     {
         digitKeyboard = FindObjectOfType<DigitKeyboard>();
-        grid = FindObjectOfType<sudokuGrid>();
+        grid = FindObjectOfType<SudokuGrid>();
         squareRawImage = GetComponentInChildren<RawImage>(); // Get the RawImage component from children
 
         // Store the original texture
@@ -45,10 +44,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     
 
 
-    void Update()
-    {
-
-    }
+   
     public void ChangeTextColor(UnityEngine.Color color)
     {
 
@@ -159,7 +155,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     public void Check()
     {
         ifAble = true;
-        grid = FindObjectOfType<sudokuGrid>();
+        grid = FindObjectOfType<SudokuGrid>();
         // Change the texture of the square when selected
 
         foreach (int digit in grid.lockedDigits)
@@ -178,12 +174,12 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     public void SetNumber(int number)
     {
         
-        grid = FindObjectOfType<sudokuGrid>();
+        grid = FindObjectOfType<SudokuGrid>();
         if (grid.isFinished == true)
         {
             
             ifAble = true;
-            grid = FindObjectOfType<sudokuGrid>();
+            grid = FindObjectOfType<SudokuGrid>();
             // Change the texture of the square when selected
 
             foreach (int digit in grid.lockedDigits)
@@ -215,8 +211,8 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             }
             if (grid.isFinished == true && number == 0 && grid.moveStack.Count > 0)
             {
-                var lastMove = grid.moveStack.Pop();
-                grid.SetNumberAt(lastMove.row, lastMove.column, lastMove.previousNumber, lastMove.ifNote);
+                var (row, column, previousNumber, ifNote) = grid.moveStack.Pop();
+                grid.SetNumberAt(row, column, previousNumber, ifNote);
             }
         }
         DisplayText();
@@ -226,11 +222,11 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     {
         if (number_text.GetComponent<TextMeshProUGUI>().fontSize != 60 || number_ == 0)
         {
-            grid = FindObjectOfType<sudokuGrid>();
+            grid = FindObjectOfType<SudokuGrid>();
             if (grid.isFinished == true)
             {
                 ifAble = true;
-                grid = FindObjectOfType<sudokuGrid>();
+                grid = FindObjectOfType<SudokuGrid>();
                 // Change the texture of the square when selected
 
                 foreach (int digit in grid.lockedDigits)
@@ -256,7 +252,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
                     if (ifContain == false)
                     {
-                        number_string = number_string + numberStr;
+                        number_string += numberStr;
                         number_string.OrderBy(c => c).ToArray();
                         char[] characters = number_string.ToArray();
                         Array.Sort(characters);
@@ -274,8 +270,8 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                 }
                 if (grid.isFinished == true && number == 0 && grid.moveStack.Count > 0)
                 {
-                    var lastMove = grid.moveStack.Pop();
-                    grid.SetNumberAt(lastMove.row, lastMove.column, lastMove.previousNumber, lastMove.ifNote);
+                    var (row, column, previousNumber, ifNote) = grid.moveStack.Pop();
+                    grid.SetNumberAt(row, column, previousNumber, ifNote);
                 }
             }
             DisplayText();
@@ -336,12 +332,5 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         return index;
     }
 
-    private void PrintSelectedCells()
-    {
-        Debug.Log("Selected Cells:");
-        foreach (var cell in selectedCells)
-        {
-            Debug.Log($"Row: {cell.gridRow}, Column: {cell.gridColumn}, Number: {cell.number_}");
-        }
-    }
+    
 }

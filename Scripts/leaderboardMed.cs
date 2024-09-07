@@ -9,10 +9,9 @@ using UnityEngine.Experimental.GlobalIllumination;
 public class LeaderboardMed : MonoBehaviour
 {
     public TMP_Text leaderboardText;
-    public List<float> bestTimesMed = new List<float>();
+    public List<float> bestTimesMed = new();
     private int SavedListCountMed;
     private const int maxEntries = 10;
-    private Timer timer;
     public static bool ifAddedMed = false;
     private string currentSceneName;
     private float mostRecentTime; // Store the most recent time
@@ -59,7 +58,7 @@ public class LeaderboardMed : MonoBehaviour
     private void Update()
     {
 
-        if (sudokuGrid.endChecker == true && ifAddedMed == false && sudokuGrid.currentSceneName == "medium")
+        if (SudokuGrid.endChecker == true && ifAddedMed == false && SudokuGrid.currentSceneName == "medium")
             {
                 LoadData();
                 AddTime(Timer.finalTime - 2);
@@ -129,8 +128,5 @@ public class LeaderboardMed : MonoBehaviour
         return string.Format("{0:00}:{1:00}", timeSpan.Minutes, timeSpan.Seconds);
     }
 
-    private void OnDestroy()//git
-    {
-        //  SaveLeaderboard();
-    }
+    
 }

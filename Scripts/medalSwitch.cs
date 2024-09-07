@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.UI;
 
-public class medalSwitch : MonoBehaviour
+public class MedalSwitch : MonoBehaviour
 {
 
     public int value; // The int value to check (0 or 1)
@@ -33,10 +33,7 @@ public class medalSwitch : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 
 
 

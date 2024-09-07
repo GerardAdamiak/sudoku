@@ -7,7 +7,7 @@ public class DigitKeyboard : MonoBehaviour
 {
     public GameObject buttonPrefab;
     public Transform buttonsParent;
-    private sudokuGrid grid;
+    private SudokuGrid grid;
     private string sudokuLog="";
     private string whichSet;
     private int number;
@@ -16,13 +16,12 @@ public class DigitKeyboard : MonoBehaviour
     public Sprite buttonImageNote1;
     public Sprite buttonImageNote2;
     public bool ifNote = false;
-    private Grid grid2;
     public int selectedCount;
 
     private void Start()
     {
         whichSet = PlayerPrefs.GetString("whichSet", "");
-        grid = FindObjectOfType<sudokuGrid>();
+        grid = FindObjectOfType<SudokuGrid>();
         sceneName=SceneManager.GetActiveScene().name;
         CreateButtons();
         PositionKeyboard();
@@ -31,7 +30,7 @@ public class DigitKeyboard : MonoBehaviour
 
     private void CountSelected()
     {
-        grid = FindObjectOfType<sudokuGrid>();
+        grid = FindObjectOfType<SudokuGrid>();
         selectedCount = grid.selectedCells.Count;
         
     }
@@ -50,7 +49,7 @@ public class DigitKeyboard : MonoBehaviour
             for (int j = 0; j < columns; j++)
             {
                 int digit = i * columns + j + 1;
-                digit = digit - i;
+                digit -= i;
                 if ((i == 0) && (j == 3)) digit = 0;
                 if ((i == 1) && (j == 3)) digit = 10;
                 
@@ -126,7 +125,7 @@ public class DigitKeyboard : MonoBehaviour
             for (int a=0; a < 9; a++)
             {
                 for(int b=0; b < 9; b++) {
-                    sudokuLog = sudokuLog + grid.currentGridInt[a, b];
+                    sudokuLog += grid.currentGridInt[a, b];
                 
                 }
             }

@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class medalHandler : MonoBehaviour
+public class MedalHandler : MonoBehaviour
 {
 
     public TextMeshProUGUI tmpText; // Reference to the TextMeshPro component (for UI)
@@ -29,10 +29,7 @@ public class medalHandler : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 
     
     

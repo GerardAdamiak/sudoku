@@ -4,9 +4,7 @@ using UnityEngine.SceneManagement;
 public class SceneTransition : MonoBehaviour
 {
     public string sceneName; // Name of the scene to transition to
-    private Leaderboard leaderboard;
-    private LeaderboardMed leaderboardMed;
-    private LeaderboardHard leaderboardHard;
+   
 
     public void LoadSceneMenu()
     {
@@ -15,9 +13,9 @@ public class SceneTransition : MonoBehaviour
     }
     public void LoadSceneBack()
     {
-        if(sudokuGrid.currentSceneName=="easy")SceneManager.LoadScene("easy");
-        else if (sudokuGrid.currentSceneName == "medium") SceneManager.LoadScene("medium");
-        else if (sudokuGrid.currentSceneName == "hard") SceneManager.LoadScene("hard");
+        if(SudokuGrid.currentSceneName=="easy")SceneManager.LoadScene("easy");
+        else if (SudokuGrid.currentSceneName == "medium") SceneManager.LoadScene("medium");
+        else if (SudokuGrid.currentSceneName == "hard") SceneManager.LoadScene("hard");
         
     }
     

@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class SolutionsButton : MonoBehaviour
 {
-    public sudokuGrid grid;
+    public SudokuGrid grid;
     public Sprite uniqueSolutionSprite;
     public Sprite notUniqueSolutionSprite;
     public Sprite noSolutionSprite;
@@ -34,7 +34,7 @@ public class SolutionsButton : MonoBehaviour
 
         if (grid == null)
         {
-            grid = FindObjectOfType<sudokuGrid>();
+            grid = FindObjectOfType<SudokuGrid>();
             if (grid == null)
             {
                 Debug.LogError("sudokuGrid instance not found!");
@@ -45,8 +45,7 @@ public class SolutionsButton : MonoBehaviour
         GameObject solutionCheckObject = GameObject.FindGameObjectWithTag("solutionCheck");
         if (solutionCheckObject != null)
         {
-            solutionCheckSpriteRenderer = solutionCheckObject.GetComponent<SpriteRenderer>();
-            if (solutionCheckSpriteRenderer == null)
+            if (!solutionCheckObject.TryGetComponent<SpriteRenderer>(out solutionCheckSpriteRenderer))
             {
                 Debug.LogError("No SpriteRenderer component found on the GameObject with tag 'solutionCheck'!");
                 return;
@@ -57,20 +56,17 @@ public class SolutionsButton : MonoBehaviour
 
             originalSprite = solutionCheckSpriteRenderer.sprite; // Store the original sprite
 
-            BoxCollider2D collider = solutionCheckObject.GetComponent<BoxCollider2D>();
-            if (collider == null)
-            {
-                collider = solutionCheckObject.AddComponent<BoxCollider2D>();
-            }
-
-            EventTrigger trigger = solutionCheckObject.GetComponent<EventTrigger>();
-            if (trigger == null)
+            BoxCollider2D collider = solutionCheckObject.GetComponent<BoxCollider2D>()
+                                     ?? solutionCheckObject.AddComponent<BoxCollider2D>();
+            if (!solutionCheckObject.TryGetComponent<EventTrigger>(out var trigger))
             {
                 trigger = solutionCheckObject.AddComponent<EventTrigger>();
             }
 
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.PointerClick;
+            EventTrigger.Entry entry = new()
+            {
+                eventID = EventTriggerType.PointerClick
+            };
             entry.callback.AddListener((eventData) => { OnMouseDown(); });
             trigger.triggers.Add(entry);
         }

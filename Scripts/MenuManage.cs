@@ -7,8 +7,8 @@ public class TouchToChangeScene : MonoBehaviour
     public AudioSource audioSource; // Reference to the AudioSource component
     public AudioClip clickSound; // Reference to the click sound clip
 
-    private string saver;
-    private string lastScene;
+   
+
     private string whichSet;
     private string sudoku1;
     private string sudoku2;
@@ -18,8 +18,8 @@ public class TouchToChangeScene : MonoBehaviour
 
     void Start()
     {
-        saver = PlayerPrefs.GetString("Sudoku");
-        lastScene = PlayerPrefs.GetString("PreviousScene");
+       
+       
         whichSet = PlayerPrefs.GetString("whichSet");
         sudoku1 = PlayerPrefs.GetString("Sudoku1");
         sudoku2 = PlayerPrefs.GetString("Sudoku2");
@@ -43,7 +43,7 @@ public class TouchToChangeScene : MonoBehaviour
                 if (Input.GetTouch(i).phase == TouchPhase.Ended)
                 {
                     Vector3 touchPosWorld = Camera.main.ScreenToWorldPoint(Input.GetTouch(i).position);
-                    Vector2 touchPosWorld2D = new Vector2(touchPosWorld.x, touchPosWorld.y);
+                    Vector2 touchPosWorld2D = (Vector2)touchPosWorld;
 
                     RaycastHit2D hit = Physics2D.Raycast(touchPosWorld2D, Camera.main.transform.forward);
 
@@ -124,7 +124,7 @@ public class TouchToChangeScene : MonoBehaviour
                                     sceneToLoad = "mainMenu";
                                 }
                             }
-                            if (sceneToLoad == null) sceneToLoad = "solve";
+                            sceneToLoad ??= "solve";
                         }
 
                         else if (hit.collider.gameObject.CompareTag("sudoku1"))
@@ -175,8 +175,15 @@ public class TouchToChangeScene : MonoBehaviour
 
     private IEnumerator PlaySoundAndChangeScene(string sceneName)
     {
-        audioSource.PlayOneShot(clickSound);
-        yield return new WaitForSeconds(clickSound.length);
-        SceneManager.LoadScene(sceneName);
+        if (clickSound != null)
+        {
+            // Play the sound or do whatever is needed with it
+            audioSource.PlayOneShot(clickSound);
+            yield return new WaitForSeconds(clickSound.length);
+            SceneManager.LoadScene(sceneName);
+        }
+        
+    
+    
     }
 }

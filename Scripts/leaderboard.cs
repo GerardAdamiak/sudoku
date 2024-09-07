@@ -8,10 +8,9 @@ using UnityEngine.SceneManagement;
 public class Leaderboard : MonoBehaviour
 {
     public TMP_Text leaderboardText;
-    public List<float> bestTimes = new List<float>();
+    public List<float> bestTimes = new();
     private int SavedListCount;
     private const int maxEntries = 10;
-    private Timer timer;
     public static bool ifAdded = false;
     private string currentSceneName;
     private float mostRecentTime; // Store the most recent time
@@ -50,7 +49,7 @@ public class Leaderboard : MonoBehaviour
 
     private void Update()
     {
-        if (sudokuGrid.endChecker == true && ifAdded == false && sudokuGrid.currentSceneName == "easy")
+        if (SudokuGrid.endChecker == true && ifAdded == false && SudokuGrid.currentSceneName == "easy")
         {
             LoadData();
             AddTime(Timer.finalTime - 2);

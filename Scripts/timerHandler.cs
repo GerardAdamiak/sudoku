@@ -6,9 +6,7 @@ using UnityEngine.SceneManagement;
 public class Timer : MonoBehaviour
 {
     public TMP_Text timerText;
-    private Leaderboard leaderboard;
     public float startTime = 0f; // Start time in seconds
-    private sudokuGrid sudokuGrid;
     private float currentTime;
     public static float finalTime;
     private string currentSceneName;
@@ -21,7 +19,7 @@ public class Timer : MonoBehaviour
 
     private void Update()
     {
-        if (sudokuGrid.endChecker == true) finalTime=currentTime;
+        if (SudokuGrid.endChecker == true) finalTime=currentTime;
         currentTime += Time.deltaTime;
         UpdateTimerText();
 
