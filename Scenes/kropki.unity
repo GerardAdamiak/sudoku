@@ -897,7 +897,7 @@ MonoBehaviour:
   grid_square: {fileID: 441655348958707135, guid: 94037ad8b668e4642a43907c9621fdca, type: 3}
   start_position: {x: -410, y: 600}
   square_scale: 1
-  squaresToDelete: 45
+  squaresToDelete: 9
   selectedCells: []
   canvas: {fileID: 2060321196}
   previous: {fileID: 602327056}
@@ -905,7 +905,8 @@ MonoBehaviour:
   g: 0
   isFinished: 0
   leaderboardText: {fileID: 0}
-  linePrefab: {fileID: 0}
+  linePrefab: {fileID: 991664453493340794, guid: 85dff94f6904d4b44bbd27b312d9d4e0, type: 3}
+  dotPrefab: {fileID: 991664453493340794, guid: 88166efa460dbd74993a13762b2041d5, type: 3}
   ifMore: 0
 --- !u!114 &2060321194
 MonoBehaviour:
@@ -1114,8 +1115,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 056117aae18838c4db2cedce3ee536d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite1: {fileID: 21300000, guid: 9b5d0238a1f7185478f96cd025a8a7aa, type: 3}
-  sprite2: {fileID: 21300000, guid: 278eccb4924a888499bc6c04da6fd3f3, type: 3}
+  sprite1: {fileID: 21300000, guid: 8fa609967c04bf84387823511b9c819a, type: 3}
+  sprite2: {fileID: 21300000, guid: 1535b7eab1a94b84abebeec293d935e6, type: 3}
   color1: {r: 0.9372549, g: 0.9372549, b: 0.8156863, a: 0}
   color2: {r: 0.18039216, g: 0.19215687, b: 0.21960784, a: 0}
 --- !u!1660057539 &9223372036854775807

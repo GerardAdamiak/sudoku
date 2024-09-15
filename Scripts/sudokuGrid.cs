@@ -48,11 +48,13 @@ public class SudokuGrid : MonoBehaviour
     public GameObject leaderboardText;
     private string whichSet;
     public GameObject linePrefab;
+    public GameObject dotPrefab;
     private bool done = false;
     private string direction;
     private DigitKeyboard keyboard;
     public bool ifMore;
     private int x;
+    private bool ifDot;
 
     void Start()
     {
@@ -90,9 +92,9 @@ public class SudokuGrid : MonoBehaviour
                 GenerateSudoku();
                 SetGridNumbers();
                 DeleteSquaresFromEachSubgrid(squaresToDelete);
-                if (currentSceneName == "whispers") ifOk = true;
+                if (currentSceneName == "whispers" || currentSceneName == "kropki") ifOk = true;
             } while (ifOk == false);
-            if (currentSceneName == "whispers") GetCurrentGridState();
+            if (currentSceneName == "whispers" || currentSceneName =="kropki") GetCurrentGridState();
             UnclickableDigits();
         }
 
@@ -172,6 +174,117 @@ public class SudokuGrid : MonoBehaviour
                                
 
                                 DrawLineBetweenSquares(square1, square2);
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        }
+        else if (currentSceneName == "kropki")
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+
+                    if (i != 8)
+                    {
+                        if (grid[i, j] != 0 && grid[i + 1, j] != 0)
+                        {
+                            if (((grid[i, j] - grid[i + 1, j]) == grid[i + 1, j]))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j + 9].GetComponent<GridSquare>();
+
+                                direction = "down";
+                                ifDot = false;
+                                DrawBlackDotBetweenSquares(square1, square2);
+                            }
+                            else if (((grid[i, j] - grid[i + 1, j]) == 1))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j + 9].GetComponent<GridSquare>();
+
+                                direction = "down";
+                                ifDot = true;
+                                DrawBlackDotBetweenSquares(square1, square2);
+                            }
+
+                        }
+                    }
+                    if (i != 0)
+                    {
+                        if (grid[i, j] != 0 && grid[i - 1, j] != 0)
+                        {
+                            if (((grid[i, j] - grid[i - 1, j]) == grid[i - 1, j]))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j - 9].GetComponent<GridSquare>();
+                                ifDot = false;
+                                direction = "up";
+
+                                DrawBlackDotBetweenSquares(square1, square2);
+                            }
+                            else if (((grid[i, j] - grid[i - 1, j]) == 1))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j - 9].GetComponent<GridSquare>();
+                                ifDot = true;
+                                direction = "up";
+
+                                DrawBlackDotBetweenSquares(square1, square2);
+                            }
+                        }
+                    }
+                    if (j != 8)
+                    {
+                        if (grid[i, j] != 0 && grid[i, j + 1] != 0)
+                        {
+                            if (((grid[i, j] - grid[i, j + 1]) == grid[i, j + 1]))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j + 1].GetComponent<GridSquare>();
+                                ifDot = false;
+                                direction = "left";
+
+                                DrawBlackDotBetweenSquares(square1, square2);
+                            }
+                            else if (((grid[i, j] - grid[i, j + 1]) == 1))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j + 1].GetComponent<GridSquare>();
+                                ifDot = true;
+                                direction = "left";
+
+                                DrawBlackDotBetweenSquares(square1, square2);
+                            }
+                        }
+                    }
+                    if (j != 0)
+                    {
+                        if (grid[i, j] != 0 && grid[i, j - 1] != 0)
+                        {
+                            if (((grid[i, j] - grid[i, j - 1]) == grid[i, j - 1]))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j - 1].GetComponent<GridSquare>();
+                                ifDot = false;
+                                direction = "right";
+
+
+                                DrawBlackDotBetweenSquares(square1, square2);
+                            }
+                            else if (((grid[i, j] - grid[i, j - 1]) == 1))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j - 1].GetComponent<GridSquare>();
+                                ifDot = true;
+                                direction = "right";
+
+
+                                DrawBlackDotBetweenSquares(square1, square2);
                             }
                         }
                     }
@@ -283,6 +396,62 @@ public class SudokuGrid : MonoBehaviour
         // Set the start and end positions of the line
         lineRenderer.SetPosition(0, startPosition);
         lineRenderer.SetPosition(1, endPosition);
+    }
+
+    private void DrawBlackDotBetweenSquares(GridSquare square1, GridSquare square2)
+    {
+        // Instantiate a new line
+        GameObject lineObject = Instantiate(linePrefab);
+        GameObject dotObject = Instantiate(dotPrefab);
+        LineRenderer lineRendererDot = dotObject.GetComponent<LineRenderer>();
+        LineRenderer lineRenderer = lineObject.GetComponent<LineRenderer>();
+
+        // Define the pixel offset (in world units)
+
+
+        // Get the start and end positions
+        Vector3 startPosition = square1.transform.position;
+        Vector3 endPosition = square2.transform.position;
+
+        float offset = 0.03f;
+
+        startPosition.x -= offset;
+        endPosition.x -= offset;
+        if (direction == "up")
+        {
+            startPosition.y += 0.2f;
+            endPosition.y -= 0.12f;
+        }
+        else if (direction == "down")
+        {
+            startPosition.y -= 0.12f;
+            endPosition.y += 0.2f;
+        }
+        else if (direction == "left")
+        {
+            startPosition.x += 0.16f;
+            endPosition.x -= 0.16f;
+        }
+        else if (direction == "right")
+        {
+            startPosition.x -= 0.16f;
+            endPosition.x += 0.16f;
+        }
+        // Move both ends of the line to the left (along the x-axis)
+
+
+        // Set the start and end positions of the line
+        if (ifDot == false)
+        {
+            lineRenderer.SetPosition(0, startPosition);
+            lineRenderer.SetPosition(1, endPosition);
+        }
+        else
+        {
+            lineRendererDot.SetPosition(0, startPosition);
+            lineRendererDot.SetPosition(1, endPosition);
+        }
+        
     }
 
 

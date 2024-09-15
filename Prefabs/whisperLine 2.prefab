@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7938796541389307308}
   - component: {fileID: 364196631792391850}
   m_Layer: 0
-  m_Name: whisperLine
+  m_Name: whisperLine 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53,7 +53,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b9212bff4b4cbc74c8c8e79e565e12e4, type: 2}
+  - {fileID: 2100000, guid: 2f22dd24627860344b5fd646dc27f629, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,8 +97,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.054901965, g: 0.74509805, b: 0.10196079, a: 1}
-      key1: {r: 0.054901965, g: 0.74509805, b: 0.10196079, a: 1}
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -126,10 +126,10 @@ LineRenderer:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
-    numCapVertices: 90
+    numCapVertices: 0
     alignment: 0
     textureMode: 0
-    textureScale: {x: 1, y: 0.5}
+    textureScale: {x: 1, y: 1}
     shadowBias: 0
     generateLightingData: 0
   m_MaskInteraction: 0

@@ -88,6 +88,26 @@ public class TouchToChangeScene : MonoBehaviour
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
                             sceneToLoad = "mainMenu";
                         }
+                        else if (hit.collider.gameObject.CompareTag("thermo"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            sceneToLoad = "thermo";
+                        }
+                        else if (hit.collider.gameObject.CompareTag("kropki"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            sceneToLoad = "kropki";
+                        }
+                        else if (hit.collider.gameObject.CompareTag("renban"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            sceneToLoad = "renban";
+                        }
+                        else if (hit.collider.gameObject.CompareTag("killer"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            sceneToLoad = "killer";
+                        }
                         else if (hit.collider.gameObject.CompareTag("easy"))
                         {
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);

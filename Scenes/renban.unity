@@ -1114,8 +1114,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 056117aae18838c4db2cedce3ee536d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite1: {fileID: 21300000, guid: 9b5d0238a1f7185478f96cd025a8a7aa, type: 3}
-  sprite2: {fileID: 21300000, guid: 278eccb4924a888499bc6c04da6fd3f3, type: 3}
+  sprite1: {fileID: 21300000, guid: 449afa6571acb1f4889aba8a7ac68782, type: 3}
+  sprite2: {fileID: 21300000, guid: 872b4a5eebfe08b4a8e04cfdb42d4018, type: 3}
   color1: {r: 0.9372549, g: 0.9372549, b: 0.8156863, a: 0}
   color2: {r: 0.18039216, g: 0.19215687, b: 0.21960784, a: 0}
 --- !u!1660057539 &9223372036854775807
