@@ -92,9 +92,9 @@ public class SudokuGrid : MonoBehaviour
                 GenerateSudoku();
                 SetGridNumbers();
                 DeleteSquaresFromEachSubgrid(squaresToDelete);
-                if (currentSceneName == "whispers" || currentSceneName == "kropki") ifOk = true;
+                if (currentSceneName == "whispers" || currentSceneName == "kropki" || currentSceneName == "renban") ifOk = true;
             } while (ifOk == false);
-            if (currentSceneName == "whispers" || currentSceneName =="kropki") GetCurrentGridState();
+            if (currentSceneName == "whispers" || currentSceneName =="kropki" || currentSceneName == "renban") GetCurrentGridState();
             UnclickableDigits();
         }
 
@@ -172,6 +172,80 @@ public class SudokuGrid : MonoBehaviour
 
                                 direction = "right";
                                
+
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        }
+        else if (currentSceneName == "renban")
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+
+                    if (i != 8)
+                    {
+                        if (grid[i, j] != 0 && grid[i + 1, j] != 0)
+                        {
+                            if (((grid[i, j] - grid[i + 1, j]) >= 5))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j + 9].GetComponent<GridSquare>();
+
+                                direction = "down";
+
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+
+                        }
+                    }
+                    if (i != 0)
+                    {
+                        if (grid[i, j] != 0 && grid[i - 1, j] != 0)
+                        {
+                            if (((grid[i, j] - grid[i - 1, j]) >= 5))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j - 9].GetComponent<GridSquare>();
+
+                                direction = "up";
+
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+                        }
+                    }
+                    if (j != 8)
+                    {
+                        if (grid[i, j] != 0 && grid[i, j + 1] != 0)
+                        {
+                            if (((grid[i, j] - grid[i, j + 1]) >= 5))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j + 1].GetComponent<GridSquare>();
+
+                                direction = "left";
+
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+                        }
+                    }
+                    if (j != 0)
+                    {
+                        if (grid[i, j] != 0 && grid[i, j - 1] != 0)
+                        {
+                            if (((grid[i, j] - grid[i, j - 1]) >= 5))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j - 1].GetComponent<GridSquare>();
+
+                                direction = "right";
+
 
                                 DrawLineBetweenSquares(square1, square2);
                             }
@@ -441,17 +515,21 @@ public class SudokuGrid : MonoBehaviour
 
 
         // Set the start and end positions of the line
-        if (ifDot == false)
+        Random random = new Random();
+        double randomNumber = random.NextDouble();
+        if (randomNumber > 0.3)
         {
-            lineRenderer.SetPosition(0, startPosition);
-            lineRenderer.SetPosition(1, endPosition);
+            if (ifDot == false)
+            {
+                lineRenderer.SetPosition(0, startPosition);
+                lineRenderer.SetPosition(1, endPosition);
+            }
+            else
+            {
+                lineRendererDot.SetPosition(0, startPosition);
+                lineRendererDot.SetPosition(1, endPosition);
+            }
         }
-        else
-        {
-            lineRendererDot.SetPosition(0, startPosition);
-            lineRendererDot.SetPosition(1, endPosition);
-        }
-        
     }
 
 

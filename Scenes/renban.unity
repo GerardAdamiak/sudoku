@@ -905,7 +905,8 @@ MonoBehaviour:
   g: 0
   isFinished: 0
   leaderboardText: {fileID: 0}
-  linePrefab: {fileID: 0}
+  linePrefab: {fileID: 991664453493340794, guid: d2d02969c3057a04794cceda39b7d698, type: 3}
+  dotPrefab: {fileID: 0}
   ifMore: 0
 --- !u!114 &2060321194
 MonoBehaviour:
