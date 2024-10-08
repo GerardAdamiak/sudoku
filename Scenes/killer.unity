@@ -897,7 +897,7 @@ MonoBehaviour:
   grid_square: {fileID: 441655348958707135, guid: 94037ad8b668e4642a43907c9621fdca, type: 3}
   start_position: {x: -410, y: 600}
   square_scale: 1
-  squaresToDelete: 45
+  squaresToDelete: 63
   selectedCells: []
   canvas: {fileID: 2060321196}
   previous: {fileID: 602327056}
@@ -906,6 +906,7 @@ MonoBehaviour:
   isFinished: 0
   leaderboardText: {fileID: 0}
   linePrefab: {fileID: 0}
+  dotPrefab: {fileID: 0}
   ifMore: 0
 --- !u!114 &2060321194
 MonoBehaviour:

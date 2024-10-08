@@ -21,6 +21,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     public Texture selectedTexture;
     public Texture originalTexture;
     public Texture secondTexture;
+    public Texture cageTexture;
     private int index;
     public int gridRow;
     public int gridColumn;
@@ -28,6 +29,8 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     public static List<GridSquare> selectedCells = new(); // List to hold selected cells
    // private bool isSelecting = false;
     private DigitKeyboard digitKeyboard;
+    public bool ifCage = false;
+
 
 
         
@@ -150,7 +153,15 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             squareRawImage.texture = selectedTexture;
        
     }
-   
+
+    public void SelectCage()
+    {
+        squareRawImage = GetComponentInChildren<RawImage>();
+
+        squareRawImage.texture = cageTexture;
+
+    }
+
 
     public void Check()
     {

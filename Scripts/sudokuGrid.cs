@@ -55,7 +55,7 @@ public class SudokuGrid : MonoBehaviour
     public bool ifMore;
     private int x;
     private bool ifDot;
-
+    private int newCell;
     void Start()
     {
         customNumber = PlayerPrefs.GetInt("number");
@@ -92,9 +92,9 @@ public class SudokuGrid : MonoBehaviour
                 GenerateSudoku();
                 SetGridNumbers();
                 DeleteSquaresFromEachSubgrid(squaresToDelete);
-                if (currentSceneName == "whispers" || currentSceneName == "kropki" || currentSceneName == "renban") ifOk = true;
+                if (currentSceneName == "whispers" || currentSceneName == "kropki" || currentSceneName == "renban" || currentSceneName == "killer") ifOk = true;
             } while (ifOk == false);
-            if (currentSceneName == "whispers" || currentSceneName =="kropki" || currentSceneName == "renban") GetCurrentGridState();
+            if (currentSceneName == "whispers" || currentSceneName =="kropki" || currentSceneName == "renban" || currentSceneName == "killer") GetCurrentGridState();
             UnclickableDigits();
         }
 
@@ -367,6 +367,98 @@ public class SudokuGrid : MonoBehaviour
                 }
             }
         }
+        else if (currentSceneName == "killer")
+        {
+            // Number of killer cages to generate
+            int numberOfCages = 5;
+            int cageSum = 0;
+            // Random object to generate numbers
+            System.Random rand = new System.Random();
+
+            // Define a 9x9 grid as a 1D array (tracking visited cells for all cages)
+            bool[] visited = new bool[81];
+
+            // Possible directions: [left, right, up, down] in 1D grid terms
+            int[] directions = { -1, 1, -9, 9 };  // left (-1), right (+1), up (-9), down (+9)
+
+            // Function to check if a move is valid (inside grid boundaries)
+            bool IsValidMove(int index, int direction)
+            {
+                // Ensure index stays in the grid
+                if (index + direction < 0 || index + direction >= 81)
+                    return false;
+
+                // Ensure left-right wrapping isn't violated
+                if (direction == -1 && index % 9 == 0) // Going left from the leftmost column
+                    return false;
+                if (direction == 1 && (index + 1) % 9 == 0) // Going right from the rightmost column
+                    return false;
+
+                return true;
+            }
+
+            // Generate multiple killer cages
+            for (int cageCount = 0; cageCount < numberOfCages; cageCount++)
+            {
+                // Retry generating a cage if there is an overlap
+                bool cageGenerated = false;
+                while (!cageGenerated)
+                {
+                    // Generate random root cell index (0 to 80 for 9x9 grid)
+                    int rootCell = rand.Next(0, 81);
+
+                    // If the root cell is already visited, retry
+                    if (visited[rootCell])
+                        continue;
+
+                    // Generate random size for killer cage (2 to 7 cells)
+                    int cageSize = rand.Next(2, 8);
+
+                    // Start building the cage from the root cell
+                    List<int> cageCells = new List<int> { rootCell };
+                    visited[rootCell] = true;
+
+                    // Grow the cage starting from the rootCell
+                    while (cageCells.Count < cageSize)
+                    {
+                        // Get a random direction and the last cell in the cage
+                        int currentCell = cageCells[rand.Next(cageCells.Count)];
+                        cageSum = cageSum + grid[currentCell / 9,currentCell % 9];
+                        var square1 = grid_squares_[currentCell].GetComponent<GridSquare>();
+                        square1.SelectCage();
+                        int direction = directions[rand.Next(4)];
+
+                        // Check if moving in this direction is valid
+                        if (IsValidMove(currentCell, direction))
+                        {
+                            newCell = currentCell + direction;
+
+                            // If the new cell is unvisited, add it to the cage
+                            if (!visited[newCell])
+                            {
+                                cageCells.Add(newCell);
+                                
+                                visited[newCell] = true;
+                            }
+                        }
+                        if(cageCells.Count == cageSize)
+                        {
+                            var square2 = grid_squares_[newCell].GetComponent<GridSquare>();
+                            square2.SelectCage();
+                            cageSum = cageSum + grid[newCell / 9, newCell % 9];
+                        }
+                    }
+
+                    // Cage successfully generated, print the cells
+                    UnityEngine.Debug.Log("Cage " + (cageCount + 1) + ": " + string.Join(", ", cageCells));
+                    UnityEngine.Debug.Log(cageSum);
+                    cageSum = 0;
+                    cageGenerated = true;
+                }
+            }
+        }
+
+
         isFinished = true;
 
 
