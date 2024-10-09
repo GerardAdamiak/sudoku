@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using Random = System.Random;
 using System.Diagnostics;
 using System.Linq;
+using Unity.VisualScripting;
 
 
 public class SudokuGrid : MonoBehaviour
@@ -409,31 +410,28 @@ public class SudokuGrid : MonoBehaviour
                 {
                     // Generate random root cell index (0 to 80 for 9x9 grid)
                     int rootCell = rand.Next(0, 81);
-                    var square2 = grid_squares_[rootCell].GetComponent<GridSquare>();
-                    square2.SelectCage();
-                    cageSum = cageSum + grid[rootCell / 9, rootCell % 9];
+                    
+
                     // If the root cell is already visited, retry
                     if (visited[rootCell])
-                    {
-                        cageSum = 0;
                         continue;
-                    }
-                       
 
-                    // Generate random size for killer cage (2 to 7 cells)
-                    int cageSize = rand.Next(2, 5);
-
-                    // Start building the cage from the root cell
+                    // Mark root cell as visited and add to the cage
+                    cageSum += grid[rootCell / 9, rootCell % 9];
                     List<int> cageCells = new List<int> { rootCell };
                     visited[rootCell] = true;
+                    int cageSize = rand.Next(2, 5); // Random cage size between 2 and 5 cells
 
-                    // Grow the cage starting from the rootCell
+                    // Create a HashSet to track visited cells in the current cage
+                    HashSet<int> visitedThisCage = new HashSet<int>(cageCells);
+
+                    // Populate the cage
+                    loopCounter = 0;
                     while (cageCells.Count < cageSize)
                     {
-                        // Get a random direction and the last cell in the cage
-                        int currentCell = cageCells[rand.Next(cageCells.Count)];
-                       
                         
+                        int currentCell = cageCells[rand.Next(cageCells.Count)];
+                        int newCell = -1;
                         int direction = directions[rand.Next(4)];
 
                         // Check if moving in this direction is valid
@@ -441,39 +439,92 @@ public class SudokuGrid : MonoBehaviour
                         {
                             newCell = currentCell + direction;
 
-                            
                             // If the new cell is unvisited, add it to the cage
                             if (!visited[newCell])
                             {
-                                var square = grid_squares_[newCell].GetComponent<GridSquare>();
-                                square.SelectCage();
-                                cageSum = cageSum + grid[newCell / 9, newCell % 9];
+                               
+                                cageSum += grid[newCell / 9, newCell % 9];
                                 cageCells.Add(newCell);
-                                
                                 visited[newCell] = true;
+                                visitedThisCage.Add(newCell); // Add to visited this cage
                             }
                         }
                         loopCounter++;
-                        if(loopCounter>8)cageSize--;
+                        if (loopCounter > 10)
+                        {
+                            UnityEngine.Debug.Log("cage changed from" + cageSize + "to" + (cageSize - 1));
+                            cageSize--;
+                            loopCounter = 0;
+                        }
                     }
 
                     // Cage successfully generated, print the cells
                     UnityEngine.Debug.Log("Cage " + (cageCount + 1) + ": " + string.Join(", ", cageCells));
                     UnityEngine.Debug.Log(cageSum);
                     var killerSquare = grid_squares_[cageCells.Min()].GetComponent<GridSquare>();
-                    TextMeshProUGUI[] textComponents = killerSquare.GetComponentsInChildren<TextMeshProUGUI>();
+
+                    // Determine the correct texture based on neighbors within this cage only
+                    foreach (int cell in visitedThisCage) // Check only cells in this cage
+                    {
+                        bool hasUp = IsValidMove(cell, -9) && visitedThisCage.Contains(cell - 9);
+                        bool hasDown = IsValidMove(cell, 9) && visitedThisCage.Contains(cell + 9);
+                        bool hasLeft = IsValidMove(cell, -1) && visitedThisCage.Contains(cell - 1);
+                        bool hasRight = IsValidMove(cell, 1) && visitedThisCage.Contains(cell + 1);
+
+                        // Assign texture based on neighbor configuration
+                        int textureID = 0;
+
+                        if (hasUp && hasRight && !hasDown && !hasLeft)
+                            textureID = 1;
+                        else if (hasUp && hasLeft && !hasDown && !hasRight)
+                            textureID = 2;
+                        else if (hasDown && hasLeft && !hasUp && !hasRight)
+                            textureID = 3;
+                        else if (hasDown && hasRight && !hasUp && !hasLeft)
+                            textureID = 4;
+                        else if (hasDown && hasLeft && hasRight && !hasUp)
+                            textureID = 5;
+                        else if (hasUp && hasLeft && hasRight && !hasDown)
+                            textureID = 6;
+                        else if (hasLeft && hasUp && hasDown && !hasRight)
+                            textureID = 7;
+                        else if (hasRight && hasUp && hasDown && !hasLeft)
+                            textureID = 8;
+                        else if (hasLeft && !hasRight && !hasUp && !hasDown)
+                            textureID = 9;
+                        else if (hasUp && !hasDown && !hasLeft && !hasRight)
+                            textureID = 10;
+                        else if (hasRight && !hasLeft && !hasUp && !hasDown)
+                            textureID = 11;
+                        else if (hasDown && !hasUp && !hasLeft && !hasRight)
+                            textureID = 12;
+                        else if (hasUp && hasDown && !hasLeft && !hasRight)
+                            textureID = 13;
+                        else if (hasLeft && hasRight && !hasUp && !hasDown)
+                            textureID = 14;
+                        else if (!hasLeft && !hasRight && !hasUp && !hasDown)
+                            textureID = 15;
+
+                        // Set texture on this cell based on textureID
+                        var square = grid_squares_[cell].GetComponent<GridSquare>();
+                        square.SetTexture(textureID);
+                    }
+
+                    var textComponents = killerSquare.GetComponentsInChildren<TextMeshProUGUI>();
 
                     // Find the specific TextMeshPro component with the GameObject name "killerSum"
                     TextMeshProUGUI killerText = textComponents
                         .FirstOrDefault(tmp => tmp.gameObject.name == "killerSum");
                     string killerSum = cageSum.ToString();
                     killerText.text = killerSum;
+                    
                     cageSum = 0;
-                    loopCounter = 0;
                     cageGenerated = true;
                 }
             }
         }
+
+
 
 
         isFinished = true;

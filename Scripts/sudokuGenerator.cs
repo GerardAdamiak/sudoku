@@ -30,16 +30,20 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
    // private bool isSelecting = false;
     private DigitKeyboard digitKeyboard;
     public bool ifCage = false;
+    public Texture2D[] cageTextures; // Assign the 14 different textures in the Unity Editor
+
+    // Renderer or material to apply the texture to (depends on your grid implementation)
+    private Renderer squareRenderer;
 
 
 
-        
+
     void Start()
     {
         digitKeyboard = FindObjectOfType<DigitKeyboard>();
         grid = FindObjectOfType<SudokuGrid>();
         squareRawImage = GetComponentInChildren<RawImage>(); // Get the RawImage component from children
-
+        squareRenderer = GetComponent<Renderer>();
         // Store the original texture
         originalTexture = squareRawImage.texture;
 
@@ -160,6 +164,20 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
         squareRawImage.texture = cageTexture;
 
+    }
+
+    public void SetTexture(int textureID)
+    {
+        squareRawImage = GetComponentInChildren<RawImage>();
+        if (textureID > 0 && textureID <= cageTextures.Length)
+        {
+            // Assign the texture from the array based on the textureID
+            squareRawImage.texture = cageTextures[textureID - 1]; // textureID is 1-based, arrays are 0-based
+        }
+        else
+        {
+            Debug.LogWarning("Invalid textureID: " + textureID);
+        }
     }
 
 
