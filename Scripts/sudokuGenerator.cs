@@ -231,7 +231,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void SetNumberNote(int number)
     {
-        if (number_text.GetComponent<TextMeshProUGUI>().fontSize != 60 || number_ == 0)
+        if (number_text.GetComponent<TextMeshProUGUI>().fontSize != 60 || number_ == 0 || number == 0)
         {
             grid = FindObjectOfType<SudokuGrid>();
             if (grid.isFinished == true)

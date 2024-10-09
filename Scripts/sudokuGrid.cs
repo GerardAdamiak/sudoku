@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
 using System.Diagnostics;
+using System.Linq;
 
 
 public class SudokuGrid : MonoBehaviour
@@ -56,6 +57,7 @@ public class SudokuGrid : MonoBehaviour
     private int x;
     private bool ifDot;
     private int newCell;
+    private int loopCounter = 0;
     void Start()
     {
         customNumber = PlayerPrefs.GetInt("number");
@@ -370,7 +372,7 @@ public class SudokuGrid : MonoBehaviour
         else if (currentSceneName == "killer")
         {
             // Number of killer cages to generate
-            int numberOfCages = 5;
+            int numberOfCages = 18;
             int cageSum = 0;
             // Random object to generate numbers
             System.Random rand = new System.Random();
@@ -400,19 +402,26 @@ public class SudokuGrid : MonoBehaviour
             // Generate multiple killer cages
             for (int cageCount = 0; cageCount < numberOfCages; cageCount++)
             {
+                cageSum = 0;
                 // Retry generating a cage if there is an overlap
                 bool cageGenerated = false;
                 while (!cageGenerated)
                 {
                     // Generate random root cell index (0 to 80 for 9x9 grid)
                     int rootCell = rand.Next(0, 81);
-
+                    var square2 = grid_squares_[rootCell].GetComponent<GridSquare>();
+                    square2.SelectCage();
+                    cageSum = cageSum + grid[rootCell / 9, rootCell % 9];
                     // If the root cell is already visited, retry
                     if (visited[rootCell])
+                    {
+                        cageSum = 0;
                         continue;
+                    }
+                       
 
                     // Generate random size for killer cage (2 to 7 cells)
-                    int cageSize = rand.Next(2, 8);
+                    int cageSize = rand.Next(2, 5);
 
                     // Start building the cage from the root cell
                     List<int> cageCells = new List<int> { rootCell };
@@ -423,9 +432,8 @@ public class SudokuGrid : MonoBehaviour
                     {
                         // Get a random direction and the last cell in the cage
                         int currentCell = cageCells[rand.Next(cageCells.Count)];
-                        cageSum = cageSum + grid[currentCell / 9,currentCell % 9];
-                        var square1 = grid_squares_[currentCell].GetComponent<GridSquare>();
-                        square1.SelectCage();
+                       
+                        
                         int direction = directions[rand.Next(4)];
 
                         // Check if moving in this direction is valid
@@ -433,26 +441,35 @@ public class SudokuGrid : MonoBehaviour
                         {
                             newCell = currentCell + direction;
 
+                            
                             // If the new cell is unvisited, add it to the cage
                             if (!visited[newCell])
                             {
+                                var square = grid_squares_[newCell].GetComponent<GridSquare>();
+                                square.SelectCage();
+                                cageSum = cageSum + grid[newCell / 9, newCell % 9];
                                 cageCells.Add(newCell);
                                 
                                 visited[newCell] = true;
                             }
                         }
-                        if(cageCells.Count == cageSize)
-                        {
-                            var square2 = grid_squares_[newCell].GetComponent<GridSquare>();
-                            square2.SelectCage();
-                            cageSum = cageSum + grid[newCell / 9, newCell % 9];
-                        }
+                        loopCounter++;
+                        if(loopCounter>8)cageSize--;
                     }
 
                     // Cage successfully generated, print the cells
                     UnityEngine.Debug.Log("Cage " + (cageCount + 1) + ": " + string.Join(", ", cageCells));
                     UnityEngine.Debug.Log(cageSum);
+                    var killerSquare = grid_squares_[cageCells.Min()].GetComponent<GridSquare>();
+                    TextMeshProUGUI[] textComponents = killerSquare.GetComponentsInChildren<TextMeshProUGUI>();
+
+                    // Find the specific TextMeshPro component with the GameObject name "killerSum"
+                    TextMeshProUGUI killerText = textComponents
+                        .FirstOrDefault(tmp => tmp.gameObject.name == "killerSum");
+                    string killerSum = cageSum.ToString();
+                    killerText.text = killerSum;
                     cageSum = 0;
+                    loopCounter = 0;
                     cageGenerated = true;
                 }
             }
@@ -474,7 +491,7 @@ public class SudokuGrid : MonoBehaviour
         FixZPosition();
 
         ChangeColor();
-
+        ChangeKillerColor();
         //PrintGrid2(currentGridInt);
         if (Input.GetMouseButtonDown(0))
         {
@@ -1067,13 +1084,21 @@ public class SudokuGrid : MonoBehaviour
                 if (IsValidPlacement2(i, j))
                 {
                     GameObject square = grid_squares_[i * 9 + j];
-                    TextMeshProUGUI textMeshPro = square.GetComponentInChildren<TextMeshProUGUI>();
+                    TextMeshProUGUI[] textComponents = square.GetComponentsInChildren<TextMeshProUGUI>();
+
+                    // Find the specific TextMeshPro component with the GameObject name "killerSum"
+                    TextMeshProUGUI textMeshPro = textComponents
+                        .FirstOrDefault(tmp => tmp.gameObject.name != "killerSum");
                     textMeshPro.color = Color.black;
                 }
                 else
                 {
                     GameObject square = grid_squares_[i * 9 + j];
-                    TextMeshProUGUI textMeshPro = square.GetComponentInChildren<TextMeshProUGUI>();
+                    TextMeshProUGUI[] textComponents = square.GetComponentsInChildren<TextMeshProUGUI>();
+
+                    // Find the specific TextMeshPro component with the GameObject name "killerSum"
+                    TextMeshProUGUI textMeshPro = textComponents
+                        .FirstOrDefault(tmp => tmp.gameObject.name != "killerSum");
                     Color redHexColor = new Color32(180, 44, 15, 255);
                     textMeshPro.color = redHexColor;
                 }
@@ -1081,8 +1106,24 @@ public class SudokuGrid : MonoBehaviour
         }
     }
 
-   
 
+    private void ChangeKillerColor()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                var killerSquare = grid_squares_[i * 9 + j].GetComponent<GridSquare>();
+                TextMeshProUGUI[] textComponents = killerSquare.GetComponentsInChildren<TextMeshProUGUI>();
+
+                // Find the specific TextMeshPro component with the GameObject name "killerSum"
+                TextMeshProUGUI killerText = textComponents
+                    .FirstOrDefault(tmp => tmp.gameObject.name == "killerSum");
+                
+                killerText.color = Color.black;
+            }
+        }
+    }
 
     private void ArrayCopy()
     {
