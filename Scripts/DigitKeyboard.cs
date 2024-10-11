@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 //using UnityEngine.UIElements;
 public class DigitKeyboard : MonoBehaviour
 {
@@ -17,7 +18,9 @@ public class DigitKeyboard : MonoBehaviour
     public Sprite buttonImageNote2;
     public bool ifNote = false;
     public int selectedCount;
+  
 
+   
     private void Start()
     {
         whichSet = PlayerPrefs.GetString("whichSet", "");
@@ -34,6 +37,8 @@ public class DigitKeyboard : MonoBehaviour
         selectedCount = grid.selectedCells.Count;
         
     }
+
+    
 
     private void CreateButtons()
     {

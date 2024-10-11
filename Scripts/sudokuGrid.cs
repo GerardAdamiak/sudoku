@@ -59,6 +59,7 @@ public class SudokuGrid : MonoBehaviour
     private bool ifDot;
     private int newCell;
     private int loopCounter = 0;
+    public Image blackSquare;
     void Start()
     {
         customNumber = PlayerPrefs.GetInt("number");
@@ -373,7 +374,7 @@ public class SudokuGrid : MonoBehaviour
         else if (currentSceneName == "killer")
         {
             // Number of killer cages to generate
-            int numberOfCages = 18;
+            int numberOfCages = 25;
             int cageSum = 0;
             // Random object to generate numbers
             System.Random rand = new System.Random();
@@ -452,15 +453,14 @@ public class SudokuGrid : MonoBehaviour
                         loopCounter++;
                         if (loopCounter > 10)
                         {
-                            UnityEngine.Debug.Log("cage changed from" + cageSize + "to" + (cageSize - 1));
+                           
                             cageSize--;
                             loopCounter = 0;
                         }
                     }
 
                     // Cage successfully generated, print the cells
-                    UnityEngine.Debug.Log("Cage " + (cageCount + 1) + ": " + string.Join(", ", cageCells));
-                    UnityEngine.Debug.Log(cageSum);
+                  
                     var killerSquare = grid_squares_[cageCells.Min()].GetComponent<GridSquare>();
 
                     // Determine the correct texture based on neighbors within this cage only
@@ -799,8 +799,15 @@ public class SudokuGrid : MonoBehaviour
         }
     }
 
+    // Reference to the black panel
+    
+
     private void SetSquaresPosition()
     {
+        // Set up the black panel size and position
+       // RectTransform panelRect = blackPanel.GetComponent<RectTransform>();
+
+        // Calculate the diagonal size to ensure it covers from top-left to bottom-right
         var square_rect = grid_squares_[0].GetComponent<RectTransform>();
         Vector2 offset = new()
         {
@@ -808,10 +815,11 @@ public class SudokuGrid : MonoBehaviour
             y = square_rect.rect.height * square_rect.transform.localScale.y + every_square_offset
         };
 
+        StretchImageOnCanvas(blackSquare);
         int column_number = 0;
         int row_number = 0;
-        int column_offset = 20;
-        int row_offset = 20;
+        int column_offset = 5;
+        int row_offset = 5;
         int counterX = 0;
         int counterY = 0;
         foreach (GameObject square in grid_squares_)
@@ -827,14 +835,36 @@ public class SudokuGrid : MonoBehaviour
             var pos_x_offset = offset.x * column_number + row_offset * counterX;
             var pos_y_offset = offset.y * row_number + column_offset * counterY;
             square.GetComponent<RectTransform>().anchoredPosition = new Vector3(
-                start_position.x + pos_x_offset,
+                start_position.x + pos_x_offset + 10,
                 start_position.y - pos_y_offset
             );
+            
             column_number++;
             if (column_number % 3 == 0)
                 counterX++;
+            
         }
+       
     }
+
+    private void StretchImageOnCanvas(Image image)
+    {
+        // Get the RectTransform component of the image
+        RectTransform rectTransform = image.GetComponent<RectTransform>();
+
+        // Set the image's position by defining offsets for the corners
+        rectTransform.offsetMin = new Vector2(-400, -310); // Bottom-left corner
+        rectTransform.offsetMax = new Vector2(510, 600);   // Top-right corner
+        image.transform.position = new Vector3(0, 1, 0);
+        // Ensure the image stretches fully
+        //rectTransform.anchorMin = new Vector2(0, 0);
+        //rectTransform.anchorMax = new Vector2(1, 1);
+
+        //// Optional: Zero out the pivot and position to make it easier to stretch
+        //rectTransform.pivot = new Vector2(0, 0);
+        //rectTransform.anchoredPosition = Vector2.zero;
+    }
+
 
     private void GenerateSudoku()
     {
@@ -1451,8 +1481,8 @@ public class SudokuGrid : MonoBehaviour
         }
 
         // Logging the stack contents to the console
-        //UnityEngine.Debug.Log(stackContents);
-        //UnityEngine.Debug.Log(counter);
+        UnityEngine.Debug.Log(stackContents);
+        UnityEngine.Debug.Log(counter);
     }
 
 }
