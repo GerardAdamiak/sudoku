@@ -972,11 +972,7 @@ MonoBehaviour:
   grid_square: {fileID: 441655348958707135, guid: 94037ad8b668e4642a43907c9621fdca, type: 3}
   start_position: {x: -410, y: 600}
   square_scale: 1
-<<<<<<< HEAD
   squaresToDelete: 63
-=======
-  squaresToDelete: 45
->>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
   selectedCells: []
   canvas: {fileID: 2060321196}
   previous: {fileID: 602327056}
@@ -984,11 +980,7 @@ MonoBehaviour:
   g: 0
   isFinished: 0
   leaderboardText: {fileID: 0}
-<<<<<<< HEAD
   linePrefab: {fileID: 991664453493340794, guid: 28f450e3925a8d04aa3e6bbe1e5c0343, type: 3}
-=======
-  linePrefab: {fileID: 991664453493340794, guid: d2d02969c3057a04794cceda39b7d698, type: 3}
->>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
   dotPrefab: {fileID: 0}
   ifMore: 0
   blackSquare: {fileID: 1285733089}
