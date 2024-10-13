@@ -11,6 +11,10 @@ using System.Diagnostics;
 using System.Linq;
 using Unity.VisualScripting;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
 public class SudokuGrid : MonoBehaviour
 {
     //dodac:
@@ -68,6 +72,10 @@ public class SudokuGrid : MonoBehaviour
         {
             case 1:
                 sudokuLog = PlayerPrefs.GetString("Sudoku1");
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                 break;
             case 2:
                 sudokuLog = PlayerPrefs.GetString("Sudoku2");
@@ -85,9 +93,13 @@ public class SudokuGrid : MonoBehaviour
         ResolveLog();
         currentSceneName = SceneManager.GetActiveScene().name;
         if (grid_square.GetComponent<GridSquare>() == null)
+<<<<<<< HEAD
             UnityEngine.Debug.LogError(
                 "grid_square object needs to have GridSquare script attached"
             );
+=======
+            UnityEngine.Debug.LogError("grid_square object needs to have GridSquare script attached");
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
         CreateGrid();
         if (currentSceneName != "set" && currentSceneName != "Custom")
         {
@@ -96,6 +108,7 @@ public class SudokuGrid : MonoBehaviour
                 GenerateSudoku();
                 SetGridNumbers();
                 DeleteSquaresFromEachSubgrid(squaresToDelete);
+<<<<<<< HEAD
                 if (
                     currentSceneName == "whispers"
                     || currentSceneName == "kropki"
@@ -111,6 +124,11 @@ public class SudokuGrid : MonoBehaviour
                 || currentSceneName == "killer"
             )
                 GetCurrentGridState();
+=======
+                if (currentSceneName == "whispers" || currentSceneName == "kropki" || currentSceneName == "renban" || currentSceneName == "killer") ifOk = true;
+            } while (ifOk == false);
+            if (currentSceneName == "whispers" || currentSceneName =="kropki" || currentSceneName == "renban" || currentSceneName == "killer") GetCurrentGridState();
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
             UnclickableDigits();
         }
 
@@ -130,6 +148,10 @@ public class SudokuGrid : MonoBehaviour
             {
                 for (int j = 0; j < 9; j++)
                 {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                     if (i != 8)
                     {
                         if (grid[i, j] != 0 && grid[i + 1, j] != 0)
@@ -137,14 +159,22 @@ public class SudokuGrid : MonoBehaviour
                             if (((grid[i, j] - grid[i + 1, j]) >= 5))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+<<<<<<< HEAD
                                 var square2 = grid_squares_[
                                     (i * 9) + j + 9
                                 ].GetComponent<GridSquare>();
+=======
+                                var square2 = grid_squares_[(i * 9) + j + 9].GetComponent<GridSquare>();
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
 
                                 direction = "down";
 
                                 DrawLineBetweenSquares(square1, square2);
                             }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                         }
                     }
                     if (i != 0)
@@ -154,9 +184,13 @@ public class SudokuGrid : MonoBehaviour
                             if (((grid[i, j] - grid[i - 1, j]) >= 5))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+<<<<<<< HEAD
                                 var square2 = grid_squares_[
                                     (i * 9) + j - 9
                                 ].GetComponent<GridSquare>();
+=======
+                                var square2 = grid_squares_[(i * 9) + j - 9].GetComponent<GridSquare>();
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
 
                                 direction = "up";
 
@@ -171,9 +205,13 @@ public class SudokuGrid : MonoBehaviour
                             if (((grid[i, j] - grid[i, j + 1]) >= 5))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+<<<<<<< HEAD
                                 var square2 = grid_squares_[
                                     (i * 9) + j + 1
                                 ].GetComponent<GridSquare>();
+=======
+                                var square2 = grid_squares_[(i * 9) + j + 1].GetComponent<GridSquare>();
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
 
                                 direction = "left";
 
@@ -188,21 +226,34 @@ public class SudokuGrid : MonoBehaviour
                             if (((grid[i, j] - grid[i, j - 1]) >= 5))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+<<<<<<< HEAD
                                 var square2 = grid_squares_[
                                     (i * 9) + j - 1
                                 ].GetComponent<GridSquare>();
 
                                 direction = "right";
+=======
+                                var square2 = grid_squares_[(i * 9) + j - 1].GetComponent<GridSquare>();
+
+                                direction = "right";
+                               
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
 
                                 DrawLineBetweenSquares(square1, square2);
                             }
                         }
                     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                 }
             }
         }
         else if (currentSceneName == "renban")
         {
+<<<<<<< HEAD
             // Random generator for renban line creation
             System.Random rand = new System.Random();
 
@@ -322,6 +373,77 @@ public class SudokuGrid : MonoBehaviour
                     
 
                     lineGenerated = true;
+=======
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+
+                    if (i != 8)
+                    {
+                        if (grid[i, j] != 0 && grid[i + 1, j] != 0)
+                        {
+                            if (((grid[i, j] - grid[i + 1, j]) >= 5))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j + 9].GetComponent<GridSquare>();
+
+                                direction = "down";
+
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+
+                        }
+                    }
+                    if (i != 0)
+                    {
+                        if (grid[i, j] != 0 && grid[i - 1, j] != 0)
+                        {
+                            if (((grid[i, j] - grid[i - 1, j]) >= 5))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j - 9].GetComponent<GridSquare>();
+
+                                direction = "up";
+
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+                        }
+                    }
+                    if (j != 8)
+                    {
+                        if (grid[i, j] != 0 && grid[i, j + 1] != 0)
+                        {
+                            if (((grid[i, j] - grid[i, j + 1]) >= 5))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j + 1].GetComponent<GridSquare>();
+
+                                direction = "left";
+
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+                        }
+                    }
+                    if (j != 0)
+                    {
+                        if (grid[i, j] != 0 && grid[i, j - 1] != 0)
+                        {
+                            if (((grid[i, j] - grid[i, j - 1]) >= 5))
+                            {
+                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j - 1].GetComponent<GridSquare>();
+
+                                direction = "right";
+
+
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+                        }
+                    }
+
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                 }
             }
         }
@@ -331,6 +453,10 @@ public class SudokuGrid : MonoBehaviour
             {
                 for (int j = 0; j < 9; j++)
                 {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                     if (i != 8)
                     {
                         if (grid[i, j] != 0 && grid[i + 1, j] != 0)
@@ -338,9 +464,13 @@ public class SudokuGrid : MonoBehaviour
                             if (((grid[i, j] - grid[i + 1, j]) == grid[i + 1, j]))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+<<<<<<< HEAD
                                 var square2 = grid_squares_[
                                     (i * 9) + j + 9
                                 ].GetComponent<GridSquare>();
+=======
+                                var square2 = grid_squares_[(i * 9) + j + 9].GetComponent<GridSquare>();
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
 
                                 direction = "down";
                                 ifDot = false;
@@ -349,14 +479,22 @@ public class SudokuGrid : MonoBehaviour
                             else if (((grid[i, j] - grid[i + 1, j]) == 1))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+<<<<<<< HEAD
                                 var square2 = grid_squares_[
                                     (i * 9) + j + 9
                                 ].GetComponent<GridSquare>();
+=======
+                                var square2 = grid_squares_[(i * 9) + j + 9].GetComponent<GridSquare>();
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
 
                                 direction = "down";
                                 ifDot = true;
                                 DrawBlackDotBetweenSquares(square1, square2);
                             }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                         }
                     }
                     if (i != 0)
@@ -366,9 +504,13 @@ public class SudokuGrid : MonoBehaviour
                             if (((grid[i, j] - grid[i - 1, j]) == grid[i - 1, j]))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+<<<<<<< HEAD
                                 var square2 = grid_squares_[
                                     (i * 9) + j - 9
                                 ].GetComponent<GridSquare>();
+=======
+                                var square2 = grid_squares_[(i * 9) + j - 9].GetComponent<GridSquare>();
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                                 ifDot = false;
                                 direction = "up";
 
@@ -377,9 +519,13 @@ public class SudokuGrid : MonoBehaviour
                             else if (((grid[i, j] - grid[i - 1, j]) == 1))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+<<<<<<< HEAD
                                 var square2 = grid_squares_[
                                     (i * 9) + j - 9
                                 ].GetComponent<GridSquare>();
+=======
+                                var square2 = grid_squares_[(i * 9) + j - 9].GetComponent<GridSquare>();
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                                 ifDot = true;
                                 direction = "up";
 
@@ -394,9 +540,13 @@ public class SudokuGrid : MonoBehaviour
                             if (((grid[i, j] - grid[i, j + 1]) == grid[i, j + 1]))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+<<<<<<< HEAD
                                 var square2 = grid_squares_[
                                     (i * 9) + j + 1
                                 ].GetComponent<GridSquare>();
+=======
+                                var square2 = grid_squares_[(i * 9) + j + 1].GetComponent<GridSquare>();
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                                 ifDot = false;
                                 direction = "left";
 
@@ -405,9 +555,13 @@ public class SudokuGrid : MonoBehaviour
                             else if (((grid[i, j] - grid[i, j + 1]) == 1))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+<<<<<<< HEAD
                                 var square2 = grid_squares_[
                                     (i * 9) + j + 1
                                 ].GetComponent<GridSquare>();
+=======
+                                var square2 = grid_squares_[(i * 9) + j + 1].GetComponent<GridSquare>();
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                                 ifDot = true;
                                 direction = "left";
 
@@ -422,27 +576,48 @@ public class SudokuGrid : MonoBehaviour
                             if (((grid[i, j] - grid[i, j - 1]) == grid[i, j - 1]))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+<<<<<<< HEAD
                                 var square2 = grid_squares_[
                                     (i * 9) + j - 1
                                 ].GetComponent<GridSquare>();
                                 ifDot = false;
                                 direction = "right";
 
+=======
+                                var square2 = grid_squares_[(i * 9) + j - 1].GetComponent<GridSquare>();
+                                ifDot = false;
+                                direction = "right";
+
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                                 DrawBlackDotBetweenSquares(square1, square2);
                             }
                             else if (((grid[i, j] - grid[i, j - 1]) == 1))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+<<<<<<< HEAD
                                 var square2 = grid_squares_[
                                     (i * 9) + j - 1
                                 ].GetComponent<GridSquare>();
                                 ifDot = true;
                                 direction = "right";
 
+=======
+                                var square2 = grid_squares_[(i * 9) + j - 1].GetComponent<GridSquare>();
+                                ifDot = true;
+                                direction = "right";
+
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                                 DrawBlackDotBetweenSquares(square1, square2);
                             }
                         }
                     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                 }
             }
         }
@@ -458,7 +633,11 @@ public class SudokuGrid : MonoBehaviour
             bool[] visited = new bool[81];
 
             // Possible directions: [left, right, up, down] in 1D grid terms
+<<<<<<< HEAD
             int[] directions = { -1, 1, -9, 9 }; // left (-1), right (+1), up (-9), down (+9)
+=======
+            int[] directions = { -1, 1, -9, 9 };  // left (-1), right (+1), up (-9), down (+9)
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
 
             // Function to check if a move is valid (inside grid boundaries)
             bool IsValidMove(int index, int direction)
@@ -486,6 +665,10 @@ public class SudokuGrid : MonoBehaviour
                 {
                     // Generate random root cell index (0 to 80 for 9x9 grid)
                     int rootCell = rand.Next(0, 81);
+<<<<<<< HEAD
+=======
+                    
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
 
                     // If the root cell is already visited, retry
                     if (visited[rootCell])
@@ -504,6 +687,10 @@ public class SudokuGrid : MonoBehaviour
                     loopCounter = 0;
                     while (cageCells.Count < cageSize)
                     {
+<<<<<<< HEAD
+=======
+                        
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                         int currentCell = cageCells[rand.Next(cageCells.Count)];
                         int newCell = -1;
                         int direction = directions[rand.Next(4)];
@@ -516,6 +703,10 @@ public class SudokuGrid : MonoBehaviour
                             // If the new cell is unvisited, add it to the cage
                             if (!visited[newCell])
                             {
+<<<<<<< HEAD
+=======
+                               
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                                 cageSum += grid[newCell / 9, newCell % 9];
                                 cageCells.Add(newCell);
                                 visited[newCell] = true;
@@ -525,13 +716,21 @@ public class SudokuGrid : MonoBehaviour
                         loopCounter++;
                         if (loopCounter > 10)
                         {
+<<<<<<< HEAD
+=======
+                           
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                             cageSize--;
                             loopCounter = 0;
                         }
                     }
 
                     // Cage successfully generated, print the cells
+<<<<<<< HEAD
 
+=======
+                  
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                     var killerSquare = grid_squares_[cageCells.Min()].GetComponent<GridSquare>();
 
                     // Determine the correct texture based on neighbors within this cage only
@@ -584,23 +783,46 @@ public class SudokuGrid : MonoBehaviour
                     var textComponents = killerSquare.GetComponentsInChildren<TextMeshProUGUI>();
 
                     // Find the specific TextMeshPro component with the GameObject name "killerSum"
+<<<<<<< HEAD
                     TextMeshProUGUI killerText = textComponents.FirstOrDefault(
                         tmp => tmp.gameObject.name == "killerSum"
                     );
                     string killerSum = cageSum.ToString();
                     killerText.text = killerSum;
 
+=======
+                    TextMeshProUGUI killerText = textComponents
+                        .FirstOrDefault(tmp => tmp.gameObject.name == "killerSum");
+                    string killerSum = cageSum.ToString();
+                    killerText.text = killerSum;
+                    
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                     cageSum = 0;
                     cageGenerated = true;
                 }
             }
         }
 
+<<<<<<< HEAD
         isFinished = true;
+=======
+
+
+
+        isFinished = true;
+
+
+
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     }
 
     void Update()
     {
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
         GetCurrentGridState();
 
         FixZPosition();
@@ -625,8 +847,12 @@ public class SudokuGrid : MonoBehaviour
                 }
             }
         }
+<<<<<<< HEAD
         if (currentSceneName != "Custom" || whichSet != "set")
             EndCheck();
+=======
+        if (currentSceneName != "Custom" || whichSet != "set") EndCheck();
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     }
 
     public void UpdateSelectedCell(int number)
@@ -637,10 +863,17 @@ public class SudokuGrid : MonoBehaviour
         {
             foreach (var square in selectedCells)
             {
+<<<<<<< HEAD
                 if (x == 0)
                     square.SetNumber(number);
                 x++;
             }
+=======
+                if (x == 0) square.SetNumber(number);
+                x++;
+            }
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
         }
         else
         {
@@ -649,6 +882,10 @@ public class SudokuGrid : MonoBehaviour
                 square.SetNumber(number);
             }
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     }
 
     private void DrawLineBetweenSquares(GridSquare square1, GridSquare square2)
@@ -658,7 +895,11 @@ public class SudokuGrid : MonoBehaviour
         LineRenderer lineRenderer = lineObject.GetComponent<LineRenderer>();
 
         // Define the pixel offset (in world units)
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
 
         // Get the start and end positions
         Vector3 startPosition = square1.transform.position;
@@ -756,6 +997,10 @@ public class SudokuGrid : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     public void UpdateSelectedCellNote(int number)
     {
         keyboard = FindObjectOfType<DigitKeyboard>();
@@ -764,10 +1009,17 @@ public class SudokuGrid : MonoBehaviour
         {
             foreach (var square in selectedCells)
             {
+<<<<<<< HEAD
                 if (x == 0)
                     square.SetNumberNote(number);
                 x++;
             }
+=======
+                if(x==0)square.SetNumberNote(number);
+                x++;
+            }
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
         }
         else
         {
@@ -776,6 +1028,10 @@ public class SudokuGrid : MonoBehaviour
                 square.SetNumberNote(number);
             }
         }
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     }
 
     public void DeselectAllGridSquares()
@@ -803,6 +1059,10 @@ public class SudokuGrid : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     public void FixZPosition()
     {
         for (int i = 0; i < 9; i++)
@@ -816,6 +1076,12 @@ public class SudokuGrid : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
+=======
+
+    
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     public void SelectGridSquare(GridSquare gridSquare)
     {
         if (!selectedCells.Contains(gridSquare))
@@ -825,10 +1091,18 @@ public class SudokuGrid : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     public void SetNumberAt(int row, int column, int number, bool ifNote)
     {
         grid[row, column] = number;
         grid_squares_[(row * 9) + column].GetComponent<GridSquare>().SetNumber2(number, ifNote);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     }
 
     private void CreateGrid()
@@ -850,16 +1124,25 @@ public class SudokuGrid : MonoBehaviour
                     square_scale,
                     square_scale
                 );
+<<<<<<< HEAD
+=======
+                
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
             }
         }
     }
 
     // Reference to the black panel
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
 
     private void SetSquaresPosition()
     {
         // Set up the black panel size and position
+<<<<<<< HEAD
         // RectTransform panelRect = blackPanel.GetComponent<RectTransform>();
 
         // Calculate the diagonal size to ensure it covers from top-left to bottom-right
@@ -874,6 +1157,17 @@ public class SudokuGrid : MonoBehaviour
                     square_rect.rect.height * square_rect.transform.localScale.y
                     + every_square_offset
             };
+=======
+       // RectTransform panelRect = blackPanel.GetComponent<RectTransform>();
+
+        // Calculate the diagonal size to ensure it covers from top-left to bottom-right
+        var square_rect = grid_squares_[0].GetComponent<RectTransform>();
+        Vector2 offset = new()
+        {
+            x = square_rect.rect.width * square_rect.transform.localScale.x + every_square_offset,
+            y = square_rect.rect.height * square_rect.transform.localScale.y + every_square_offset
+        };
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
 
         StretchImageOnCanvas(blackSquare);
         int column_number = 0;
@@ -898,11 +1192,21 @@ public class SudokuGrid : MonoBehaviour
                 start_position.x + pos_x_offset + 10,
                 start_position.y - pos_y_offset
             );
+<<<<<<< HEAD
 
             column_number++;
             if (column_number % 3 == 0)
                 counterX++;
         }
+=======
+            
+            column_number++;
+            if (column_number % 3 == 0)
+                counterX++;
+            
+        }
+       
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     }
 
     private void StretchImageOnCanvas(Image image)
@@ -912,7 +1216,11 @@ public class SudokuGrid : MonoBehaviour
 
         // Set the image's position by defining offsets for the corners
         rectTransform.offsetMin = new Vector2(-400, -310); // Bottom-left corner
+<<<<<<< HEAD
         rectTransform.offsetMax = new Vector2(510, 600); // Top-right corner
+=======
+        rectTransform.offsetMax = new Vector2(510, 600);   // Top-right corner
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
         image.transform.position = new Vector3(0, 1, 0);
         // Ensure the image stretches fully
         //rectTransform.anchorMin = new Vector2(0, 0);
@@ -923,6 +1231,10 @@ public class SudokuGrid : MonoBehaviour
         //rectTransform.anchoredPosition = Vector2.zero;
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     private void GenerateSudoku()
     {
         ClearGrid();
@@ -1005,8 +1317,16 @@ public class SudokuGrid : MonoBehaviour
         return true;
     }
 
+<<<<<<< HEAD
     private void EndCheck()
     {
+=======
+
+
+    private void EndCheck()
+    {
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
         endChecker = true;
         for (int i = 0; i < 9; i++)
         {
@@ -1089,6 +1409,10 @@ public class SudokuGrid : MonoBehaviour
         SceneManager.LoadScene("end");
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     private void SetGridNumbers()
     {
         for (int row = 0; row < 9; row++)
@@ -1110,6 +1434,10 @@ public class SudokuGrid : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
+=======
+   
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     private void DeleteSquaresFromEachSubgrid(int totalSquaresToDelete)
     {
         if (totalSquaresToDelete <= 0)
@@ -1170,18 +1498,33 @@ public class SudokuGrid : MonoBehaviour
             }
         }
         RunSolver();
+<<<<<<< HEAD
         if (g == 1)
             ifOk = true;
     }
 
+=======
+        if (g == 1) ifOk = true;
+
+        
+
+    }
+
+
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     private bool IsValidPlacement2(int row, int col)
     {
         int index = row * 9 + col;
         var square = grid_squares_[index];
         var gridSquare = square.GetComponent<GridSquare>();
         char num = currentGridInt[row, col];
+<<<<<<< HEAD
         if (gridSquare.number_text.GetComponent<TextMeshProUGUI>().fontSize == 35)
             return true;
+=======
+        if (gridSquare.number_text.GetComponent<TextMeshProUGUI>().fontSize == 35) return true;
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
         for (int i = 0; i < 9; i++)
         {
             if (i != col && currentGridInt[row, i] == num)
@@ -1214,6 +1557,7 @@ public class SudokuGrid : MonoBehaviour
                 if (IsValidPlacement2(i, j))
                 {
                     GameObject square = grid_squares_[i * 9 + j];
+<<<<<<< HEAD
                     TextMeshProUGUI[] textComponents =
                         square.GetComponentsInChildren<TextMeshProUGUI>();
 
@@ -1221,11 +1565,19 @@ public class SudokuGrid : MonoBehaviour
                     TextMeshProUGUI textMeshPro = textComponents.FirstOrDefault(
                         tmp => tmp.gameObject.name != "killerSum"
                     );
+=======
+                    TextMeshProUGUI[] textComponents = square.GetComponentsInChildren<TextMeshProUGUI>();
+
+                    // Find the specific TextMeshPro component with the GameObject name "killerSum"
+                    TextMeshProUGUI textMeshPro = textComponents
+                        .FirstOrDefault(tmp => tmp.gameObject.name != "killerSum");
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                     textMeshPro.color = Color.black;
                 }
                 else
                 {
                     GameObject square = grid_squares_[i * 9 + j];
+<<<<<<< HEAD
                     TextMeshProUGUI[] textComponents =
                         square.GetComponentsInChildren<TextMeshProUGUI>();
 
@@ -1233,6 +1585,13 @@ public class SudokuGrid : MonoBehaviour
                     TextMeshProUGUI textMeshPro = textComponents.FirstOrDefault(
                         tmp => tmp.gameObject.name != "killerSum"
                     );
+=======
+                    TextMeshProUGUI[] textComponents = square.GetComponentsInChildren<TextMeshProUGUI>();
+
+                    // Find the specific TextMeshPro component with the GameObject name "killerSum"
+                    TextMeshProUGUI textMeshPro = textComponents
+                        .FirstOrDefault(tmp => tmp.gameObject.name != "killerSum");
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                     Color redHexColor = new Color32(180, 44, 15, 255);
                     textMeshPro.color = redHexColor;
                 }
@@ -1240,6 +1599,10 @@ public class SudokuGrid : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     private void ChangeKillerColor()
     {
         for (int i = 0; i < 9; i++)
@@ -1247,6 +1610,7 @@ public class SudokuGrid : MonoBehaviour
             for (int j = 0; j < 9; j++)
             {
                 var killerSquare = grid_squares_[i * 9 + j].GetComponent<GridSquare>();
+<<<<<<< HEAD
                 TextMeshProUGUI[] textComponents =
                     killerSquare.GetComponentsInChildren<TextMeshProUGUI>();
 
@@ -1255,6 +1619,14 @@ public class SudokuGrid : MonoBehaviour
                     tmp => tmp.gameObject.name == "killerSum"
                 );
 
+=======
+                TextMeshProUGUI[] textComponents = killerSquare.GetComponentsInChildren<TextMeshProUGUI>();
+
+                // Find the specific TextMeshPro component with the GameObject name "killerSum"
+                TextMeshProUGUI killerText = textComponents
+                    .FirstOrDefault(tmp => tmp.gameObject.name == "killerSum");
+                
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                 killerText.color = Color.black;
             }
         }
@@ -1294,9 +1666,17 @@ public class SudokuGrid : MonoBehaviour
                 {
                     default:
                         currentGridInt[row, col] = '0';
+<<<<<<< HEAD
                         break;
                     case "1":
                         currentGridInt[row, col] = '1';
+=======
+
+                        break;
+                    case "1":
+                        currentGridInt[row, col] = '1';
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                         break;
                     case "2":
                         currentGridInt[row, col] = '2';
@@ -1335,10 +1715,18 @@ public class SudokuGrid : MonoBehaviour
         {
             for (int col = 0; col < 9; col++)
             {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                 switch (currentGridInt[row, col])
                 {
                     default:
                         grid[row, col] = 0;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
                         break;
                     case '1':
                         grid[row, col] = 1;
@@ -1374,6 +1762,10 @@ public class SudokuGrid : MonoBehaviour
         return grid;
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     private void ClearGrid()
     {
         for (int i = 0; i < 9; i++)
@@ -1487,8 +1879,12 @@ public class SudokuGrid : MonoBehaviour
 
                 // Recursive call
                 int result = SolveAndCount(uniqueGrids, row, col, stopwatch);
+<<<<<<< HEAD
                 if (result > 1)
                     return result; // Early exit if more than one solution is found
+=======
+                if (result > 1) return result; // Early exit if more than one solution is found
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
 
                 // Backtrack
                 currentGridInt[row, col] = '0';
@@ -1498,7 +1894,14 @@ public class SudokuGrid : MonoBehaviour
         return uniqueGrids.Count;
     }
 
+<<<<<<< HEAD
     private void UnclickableDigits()
+=======
+
+   
+    private void UnclickableDigits()
+
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     {
         for (int row = 0; row < 9; row++)
         {
@@ -1510,6 +1913,12 @@ public class SudokuGrid : MonoBehaviour
                 }
             }
         }
+<<<<<<< HEAD
+=======
+        
+
+        
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
     }
 
     public void PrintStackContents()
@@ -1521,12 +1930,21 @@ public class SudokuGrid : MonoBehaviour
         foreach (var move in moveStack)
         {
             counter++;
+<<<<<<< HEAD
             stackContents +=
                 $"(Row: {move.row}, Column: {move.column}, Previous Number: {move.previousNumber}, If Note: {move.ifNote})\n";
+=======
+            stackContents += $"(Row: {move.row}, Column: {move.column}, Previous Number: {move.previousNumber}, If Note: {move.ifNote})\n";
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
         }
 
         // Logging the stack contents to the console
         UnityEngine.Debug.Log(stackContents);
         UnityEngine.Debug.Log(counter);
     }
+<<<<<<< HEAD
 }
+=======
+
+}
+>>>>>>> 161a051c59a7363ce394485e90f99f9f8cd277a6
