@@ -14,8 +14,8 @@ using Unity.VisualScripting;
 public class SudokuGrid : MonoBehaviour
 {
     //dodac:
-    //-warianty trzeba bedzie zaczac, mozliwe ze zaczne od killera, ale bedzie duzo z tym roboty XD
-    //-naprawa tego bledu, ze pierwsze klikniecie po rozpoczeciu nowej gry nie dziala i z wielkoscia notatek przy cofaniu
+    //-warianty trzeba bedzie dopracowac balans dobry
+    //-naprawa tego bledu z wielkoscia notatek przy cofaniu
 
 
     private int[,] grid = new int[9, 9];
@@ -61,8 +61,11 @@ public class SudokuGrid : MonoBehaviour
     public Image blackSquare;
     void Start()
     {
+        
+        PlayerPrefs.SetInt("number", 1);
         customNumber = PlayerPrefs.GetInt("number");
         whichSet = PlayerPrefs.GetString("whichSet");
+
         isFinished = false;
         switch (customNumber)
         {
@@ -101,6 +104,7 @@ public class SudokuGrid : MonoBehaviour
                     || currentSceneName == "kropki"
                     || currentSceneName == "renban"
                     || currentSceneName == "killer"
+                    || currentSceneName == "thermo"
                 )
                     ifOk = true;
             } while (ifOk == false);
@@ -109,11 +113,21 @@ public class SudokuGrid : MonoBehaviour
                 || currentSceneName == "kropki"
                 || currentSceneName == "renban"
                 || currentSceneName == "killer"
+                || currentSceneName == "thermo"
             )
                 GetCurrentGridState();
             UnclickableDigits();
         }
+        foreach(var square in grid_squares_)
+        {
+            SpriteRenderer spriteRenderer = square.GetComponentInChildren<SpriteRenderer>();
 
+            // Deactivate the SpriteRenderer
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.enabled = false;
+            }
+        }
         if (currentSceneName == "Custom")
         {
             ConvertTables();
@@ -596,6 +610,170 @@ public class SudokuGrid : MonoBehaviour
             }
         }
 
+        else if (currentSceneName == "thermo")
+        {
+            // Number of killer cages to generate
+            int numberOfCages = 15;
+      
+            // Random object to generate numbers
+            System.Random rand = new System.Random();
+
+            // Define a 9x9 grid as a 1D array (tracking visited cells for all cages)
+            bool[] visited = new bool[81];
+
+            // Possible directions: [left, right, up, down] in 1D grid terms
+            int[] directions = { -1, 1, -9, 9 }; // left (-1), right (+1), up (-9), down (+9)
+
+            // Function to check if a move is valid (inside grid boundaries)
+            bool IsValidMove(int index, int direction)
+            {
+                // Ensure index stays in the grid
+                if (index + direction < 0 || index + direction >= 81)
+                    return false;
+
+                // Ensure left-right wrapping isn't violated
+                if (direction == -1 && index % 9 == 0) // Going left from the leftmost column
+                    return false;
+                if (direction == 1 && (index + 1) % 9 == 0) // Going right from the rightmost column
+                    return false;
+
+                return true;
+            }
+
+            // Generate multiple killer cages
+            for (int cageCount = 0; cageCount < numberOfCages; cageCount++)
+            {
+             
+                // Retry generating a cage if there is an overlap
+                bool cageGenerated = false;
+                while (!cageGenerated)
+                {
+                    // Generate random root cell index (0 to 80 for 9x9 grid)
+                    int rootCell = rand.Next(0, 81);
+
+                    // If the root cell is already visited, retry
+                    if (visited[rootCell] || grid[rootCell / 9, rootCell % 9] >= 7)
+                        continue;
+
+                    // Mark root cell as visited and add to the cage
+                    
+                    List<int> cageCells = new List<int> { rootCell };
+                    visited[rootCell] = true;
+                    int cageSize = 6; // Random cage size between 2 and 5 cells
+
+                    // Create a HashSet to track visited cells in the current cage
+                    HashSet<int> visitedThisCage = new HashSet<int>(cageCells);
+
+                    // Populate the cage
+                    loopCounter = 0;
+                    while (cageCells.Count < cageSize)
+                    {
+                        cageCells = cageCells.OrderBy(cell =>
+                        {
+                            // Convert the 1D index to 2D coordinates (x, y)
+                            int x = cell / 9; // Row index
+                            int y = cell % 9; // Column index
+
+                            // Return the value at grid[x, y] to sort by
+                            return grid[x, y];
+                        }).ToList();
+                        int currentCell = cageCells[cageCells.Count-1];
+                        
+                        int newCell = -1;
+                        int newFirstCell = -1;
+                        int direction = directions[rand.Next(4)];
+                        int firstDirection = directions[rand.Next(4)];
+
+                        // Check if moving in this direction is valid
+                        if (IsValidMove(currentCell, direction))
+                        {
+                            newCell = currentCell + direction;
+                           
+
+                            // If the new cell is unvisited, add it to the cage
+                            if (!visited[newCell] && (grid[newCell / 9, newCell % 9] > grid[currentCell / 9, currentCell % 9]))
+                            {
+                          
+                                cageCells.Add(newCell);
+                                var square = grid_squares_[newCell].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[currentCell].GetComponent<GridSquare>();
+
+
+                                DrawLineBetweenSquares(square, square2);
+                                visited[newCell] = true;
+                                visitedThisCage.Add(newCell); // Add to visited this cage
+                            }
+                            
+                        }
+                       
+                        int firstCell = cageCells[0];
+                        if (IsValidMove(firstCell, firstDirection))
+                        {
+                            
+                            newFirstCell = firstCell + firstDirection;
+
+                          // If the new cell is unvisited, add it to the cage
+                            if (!visited[newFirstCell] && (grid[newFirstCell / 9, newFirstCell % 9] < grid[firstCell / 9, firstCell % 9]))
+                            {
+
+                                cageCells.Add(newFirstCell);
+                               var square = grid_squares_[newFirstCell].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[firstCell].GetComponent<GridSquare>();
+
+
+                                DrawLineBetweenSquares(square, square2);
+                                visited[newFirstCell] = true;
+                               visitedThisCage.Add(newFirstCell); // Add to visited this cage
+                           }
+
+                        }
+                        UnityEngine.Debug.Log("thermo Cells: ");
+                        foreach (var cell in cageCells)
+                        {
+                            int x = cell / 9;
+                            int y = cell % 9;
+                            UnityEngine.Debug.Log($"Cell {cell} -> Grid[{x}, {y}] = {grid[x, y]}");
+                        }
+
+                        loopCounter++;
+                        if (loopCounter > 10)
+                        {
+                            cageSize--;
+                            loopCounter = 0;
+                        }
+                    }
+
+                    // Cage successfully generated, print the cells
+
+
+                    cageGenerated = true;
+
+                    cageCells = cageCells.OrderBy(cell =>
+                    {
+                        // Convert the 1D index to 2D coordinates (x, y)
+                        int x = cell / 9; // Row index
+                        int y = cell % 9; // Column index
+
+                        // Return the value at grid[x, y] to sort by
+                        return grid[x, y];
+                    }).ToList();
+
+                    int firstCellIndex = cageCells[0];
+                        var firstSquare = grid_squares_[firstCellIndex].GetComponent<GridSquare>();
+                    SpriteRenderer spriteRenderer = firstSquare.GetComponentInChildren<SpriteRenderer>();
+
+                    // Deactivate the SpriteRenderer
+                    if (spriteRenderer != null)
+                    {
+                        spriteRenderer.enabled = true;
+                    }
+
+
+                }
+                
+            }
+        }
+
         isFinished = true;
     }
 
@@ -864,6 +1042,7 @@ public class SudokuGrid : MonoBehaviour
 
         // Calculate the diagonal size to ensure it covers from top-left to bottom-right
         var square_rect = grid_squares_[0].GetComponent<RectTransform>();
+        
         Vector2 offset =
             new()
             {

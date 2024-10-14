@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7938796541389307308}
   - component: {fileID: 364196631792391850}
   m_Layer: 0
-  m_Name: whisperLine 1
+  m_Name: whisperLine 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53,7 +53,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 274fee13dbfbd114c8fd7576a7cf83a0, type: 2}
+  - {fileID: 2100000, guid: 0b2e399c2e93cae418784d2b46792099, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -126,10 +126,10 @@ LineRenderer:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
-    numCapVertices: 0
+    numCapVertices: 90
     alignment: 0
     textureMode: 0
-    textureScale: {x: 1, y: 1}
+    textureScale: {x: 1, y: 0.5}
     shadowBias: 0
     generateLightingData: 0
   m_MaskInteraction: 0

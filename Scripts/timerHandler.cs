@@ -26,7 +26,7 @@ public class Timer : MonoBehaviour
 
         string whichSet = PlayerPrefs.GetString("whichSet", "");
 
-        if ((whichSet != "custom") && (currentSceneName!="easy") && (currentSceneName != "medium") && (currentSceneName != "hard"))
+        if ((whichSet != "custom") && (currentSceneName!="easy") && (currentSceneName != "medium") && (currentSceneName != "hard") && (currentSceneName != "killer") && (currentSceneName != "thermo") && (currentSceneName != "kropki") && (currentSceneName != "renban") && (currentSceneName != "whispers"))
         {
             // If whichSet is "custom", hide the sprite and make it unclickable
             gameObject.SetActive(false); // Hide the GameObject
