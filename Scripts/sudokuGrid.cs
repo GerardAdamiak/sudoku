@@ -21,7 +21,7 @@ public class SudokuGrid : MonoBehaviour
     private int[,] grid = new int[9, 9];
     private string[,] currentGrid = new string[9, 9];
     public char[,] currentGridInt = new char[9, 9];
-    private char[,] temp = new char[9, 9];
+    private int[,] temp = new int[9, 9];
     public int columns = 9;
     public int rows = 9;
     public float every_square_offset = 0.0f;
@@ -58,11 +58,13 @@ public class SudokuGrid : MonoBehaviour
     private bool ifDot;
     private int newCell;
     private int loopCounter = 0;
+    private bool ifSingleCage = false;
     public Image blackSquare;
+    private int randomDigit;
     void Start()
     {
         
-        PlayerPrefs.SetInt("number", 1);
+        
         customNumber = PlayerPrefs.GetInt("number");
         whichSet = PlayerPrefs.GetString("whichSet");
 
@@ -94,6 +96,9 @@ public class SudokuGrid : MonoBehaviour
         CreateGrid();
         if (currentSceneName != "set" && currentSceneName != "Custom")
         {
+            
+            
+            
             do
             {
                 GenerateSudoku();
@@ -107,6 +112,7 @@ public class SudokuGrid : MonoBehaviour
                     || currentSceneName == "thermo"
                 )
                     ifOk = true;
+                
             } while (ifOk == false);
             if (
                 currentSceneName == "whispers"
@@ -542,6 +548,7 @@ public class SudokuGrid : MonoBehaviour
                             cageSize--;
                             loopCounter = 0;
                         }
+                        if (cageSize == 0) break;
                     }
 
                     // Cage successfully generated, print the cells
@@ -588,24 +595,30 @@ public class SudokuGrid : MonoBehaviour
                         else if (hasLeft && hasRight && !hasUp && !hasDown)
                             textureID = 14;
                         else if (!hasLeft && !hasRight && !hasUp && !hasDown)
-                            textureID = 15;
+                            ifSingleCage = true;
 
                         // Set texture on this cell based on textureID
                         var square = grid_squares_[cell].GetComponent<GridSquare>();
                         square.SetTexture(textureID);
                     }
 
-                    var textComponents = killerSquare.GetComponentsInChildren<TextMeshProUGUI>();
+                    if (ifSingleCage == false)
+                    {
+                        var textComponents = killerSquare.GetComponentsInChildren<TextMeshProUGUI>();
 
-                    // Find the specific TextMeshPro component with the GameObject name "killerSum"
-                    TextMeshProUGUI killerText = textComponents.FirstOrDefault(
-                        tmp => tmp.gameObject.name == "killerSum"
-                    );
-                    string killerSum = cageSum.ToString();
-                    killerText.text = killerSum;
+                        // Find the specific TextMeshPro component with the GameObject name "killerSum"
+                        TextMeshProUGUI killerText = textComponents.FirstOrDefault(
+                            tmp => tmp.gameObject.name == "killerSum"
+                        );
+                        string killerSum = cageSum.ToString();
+                        killerText.text = killerSum;
+                    }
+
+                        
 
                     cageSum = 0;
                     cageGenerated = true;
+                    ifSingleCage = false;
                 }
             }
         }
@@ -613,7 +626,7 @@ public class SudokuGrid : MonoBehaviour
         else if (currentSceneName == "thermo")
         {
             // Number of killer cages to generate
-            int numberOfCages = 15;
+            int numberOfCages = 25;
       
             // Random object to generate numbers
             System.Random rand = new System.Random();
@@ -652,7 +665,7 @@ public class SudokuGrid : MonoBehaviour
                     int rootCell = rand.Next(0, 81);
 
                     // If the root cell is already visited, retry
-                    if (visited[rootCell] || grid[rootCell / 9, rootCell % 9] >= 7)
+                    if (visited[rootCell])
                         continue;
 
                     // Mark root cell as visited and add to the cage
@@ -681,7 +694,12 @@ public class SudokuGrid : MonoBehaviour
                         
                         int newCell = -1;
                         int newFirstCell = -1;
-                        int direction = directions[rand.Next(4)];
+                        if (loopCounter == 0)
+                        {
+                            randomDigit = rand.Next(4);
+                        }
+                        
+                        int direction = directions[(randomDigit + loopCounter) % 4];
                         int firstDirection = directions[rand.Next(4)];
 
                         // Check if moving in this direction is valid
@@ -736,7 +754,7 @@ public class SudokuGrid : MonoBehaviour
                         }
 
                         loopCounter++;
-                        if (loopCounter > 10)
+                        if (loopCounter >= 4)
                         {
                             cageSize--;
                             loopCounter = 0;
@@ -757,24 +775,33 @@ public class SudokuGrid : MonoBehaviour
                         // Return the value at grid[x, y] to sort by
                         return grid[x, y];
                     }).ToList();
-
-                    int firstCellIndex = cageCells[0];
-                        var firstSquare = grid_squares_[firstCellIndex].GetComponent<GridSquare>();
-                    SpriteRenderer spriteRenderer = firstSquare.GetComponentInChildren<SpriteRenderer>();
-
-                    // Deactivate the SpriteRenderer
-                    if (spriteRenderer != null)
+                    if (cageCells.Count != 1)
                     {
-                        spriteRenderer.enabled = true;
+                        int firstCellIndex = cageCells[0];
+                        var firstSquare = grid_squares_[firstCellIndex].GetComponent<GridSquare>();
+
+                        SpriteRenderer spriteRenderer = firstSquare.GetComponentInChildren<SpriteRenderer>();
+
+
+                        // Deactivate the SpriteRenderer
+                        if (spriteRenderer != null)
+                        {
+                            spriteRenderer.enabled = true;
+                        }
+
                     }
-
-
+                    else
+                    {
+                        visited[cageCells[0]] = false;
+                    }
                 }
                 
             }
         }
 
         isFinished = true;
+        PlayerPrefs.SetInt("GameReady", 1);
+        PlayerPrefs.Save();
     }
 
     void Update()
@@ -1007,6 +1034,7 @@ public class SudokuGrid : MonoBehaviour
     {
         grid[row, column] = number;
         grid_squares_[(row * 9) + column].GetComponent<GridSquare>().SetNumber2(number, ifNote);
+        
     }
 
     private void CreateGrid()
@@ -1289,6 +1317,9 @@ public class SudokuGrid : MonoBehaviour
         }
     }
 
+    
+
+
     private void DeleteSquaresFromEachSubgrid(int totalSquaresToDelete)
     {
         if (totalSquaresToDelete <= 0)
@@ -1299,18 +1330,17 @@ public class SudokuGrid : MonoBehaviour
 
         int squaresPerSubgrid = totalSquaresToDelete / 9;
 
-        for (int i = 0; i < 9; i++)
-        {
+        
             HashSet<int> generatedNumbers = new();
-
-            for (int b = 0; b < squaresPerSubgrid; b++)
+        int z = totalSquaresToDelete;
+            for (int b = 0; b < totalSquaresToDelete; b++)
             {
                 do
                 {
                     Random rnd = new();
                     int c = rnd.Next(0, 3);
                     int d = rnd.Next(0, 3);
-                    switch (i)
+                    switch (z % 9)
                     {
                         case 0:
                             e = c * 9 + d;
@@ -1346,12 +1376,16 @@ public class SudokuGrid : MonoBehaviour
                 } while (!generatedNumbers.Add(e));
                 grid_squares_[e].GetComponent<GridSquare>().SetNumber(0);
                 GetCurrentGridState();
+            z--;
             }
-        }
+        
         RunSolver();
         if (g == 1)
             ifOk = true;
     }
+
+
+
 
     private bool IsValidPlacement2(int row, int col)
     {
@@ -1445,7 +1479,7 @@ public class SudokuGrid : MonoBehaviour
         {
             for (int col = 0; col < 9; col++)
             {
-                temp[row, col] = currentGridInt[row, col];
+                temp[row, col] = grid[row, col];
             }
         }
     }
@@ -1455,7 +1489,7 @@ public class SudokuGrid : MonoBehaviour
         {
             for (int col = 0; col < 9; col++)
             {
-                currentGridInt[row, col] = temp[row, col];
+                grid[row, col] = temp[row, col];
             }
         }
     }

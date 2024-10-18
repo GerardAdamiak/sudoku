@@ -15,6 +15,7 @@ public class TouchToChangeScene : MonoBehaviour
     private string sudoku3;
     private string sudoku4;
     private string sudoku5;
+    private SwipeDiff swipeDiff;
 
     void Start()
     {
@@ -111,28 +112,102 @@ public class TouchToChangeScene : MonoBehaviour
                         else if (hit.collider.gameObject.CompareTag("easy"))
                         {
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
-                            sceneToLoad = "LoadEasy";
+                            swipeDiff=FindObjectOfType<SwipeDiff>();
+                            if (swipeDiff == null)
+                            {
+                                // Code to execute if swipeDiff is not found (null)
+                                sceneToLoad = "LoadEasy";
+                            }
+                            else if (swipeDiff.canClickDiff == true)
+                            {
+
+                                sceneToLoad = "LoadEasy";
+                            }
                         }
                         else if (hit.collider.gameObject.CompareTag("medium"))
                         {
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
-                            sceneToLoad = "LoadMed";
+                            swipeDiff = FindObjectOfType<SwipeDiff>();
+                            if (swipeDiff == null)
+                            {
+                                // Code to execute if swipeDiff is not found (null)
+                                sceneToLoad = "LoadMed";
+                            }
+                            else if (swipeDiff.canClickDiff == true)
+                            {
+
+                                sceneToLoad = "LoadMed";
+                            }
+                            
                         }
                         else if (hit.collider.gameObject.CompareTag("hard"))
                         {
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
-                            sceneToLoad = "LoadingScene";
+                            swipeDiff = FindObjectOfType<SwipeDiff>();
+                            if (swipeDiff == null)
+                            {
+                                // Code to execute if swipeDiff is not found (null)
+                                sceneToLoad = "LoadingScene";
+                            }
+                            else if (swipeDiff.canClickDiff == true)
+                            {
+
+                                sceneToLoad = "LoadingScene";
+                            }
+                            
                         }
                         else if (hit.collider.gameObject.CompareTag("variants"))
                         {
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
-                            sceneToLoad = "variants";
+                            swipeDiff = FindObjectOfType<SwipeDiff>();
+                            if (swipeDiff == null)
+                            {
+                                // Code to execute if swipeDiff is not found (null)
+                                sceneToLoad = "variants";
+                            }
+                            else if (swipeDiff.canClickDiff == true)
+                            {
+
+                                sceneToLoad = "variants";
+                            }
+                            
                         }
                         else if (hit.collider.gameObject.CompareTag("custom"))
                         {
-                            PlayerPrefs.SetString("whichSet", "custom");
+                            string a = PlayerPrefs.GetString("whichSet");
+                            if(a != "set") PlayerPrefs.SetString("whichSet", "custom");
+
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
-                            sceneToLoad = "savedList";
+                            swipeDiff = FindObjectOfType<SwipeDiff>();
+                            if (swipeDiff == null)
+                            {
+                                // Code to execute if swipeDiff is not found (null)
+                                sceneToLoad = "savedList";
+                            }
+                            else if (swipeDiff.canClickDiff == true)
+                            {
+
+                                sceneToLoad = "savedList";
+                            }
+                           
+                        }
+                        else if (hit.collider.gameObject.CompareTag("customSolve"))
+                        {
+                           PlayerPrefs.SetString("whichSet", "custom");
+
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            swipeDiff = FindObjectOfType<SwipeDiff>();
+                            if (swipeDiff == null)
+                            {
+                                // Code to execute if swipeDiff is not found (null)
+                                sceneToLoad = "savedList";
+                            }
+                            else if (swipeDiff.canClickDiff == true)
+                            {
+
+                                sceneToLoad = "savedList";
+                            }
+
                         }
                         else if (hit.collider.gameObject.CompareTag("backArrowSolve"))
                         {

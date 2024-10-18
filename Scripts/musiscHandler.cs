@@ -22,6 +22,7 @@ public class MusicPlayer : MonoBehaviour
 
     void Start()
     {
+        PlayerPrefs.SetInt("number", 1);
         // Check if the AudioSource is assigned
         if (musicSource != null)
         {

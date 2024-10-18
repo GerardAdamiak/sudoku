@@ -244,7 +244,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                 grid.SetNumberAt(row, column, previousNumber, ifNote);
             }
         }
-        DisplayText();
+        if(number!=0 || grid.isFinished==false)DisplayText();
     }
 
     public void SetNumberNote(int number)
@@ -303,7 +303,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                     grid.SetNumberAt(row, column, previousNumber, ifNote);
                 }
             }
-            DisplayText();
+            if(number!=0 || grid.isFinished==false)DisplayText();
         }
         
     }

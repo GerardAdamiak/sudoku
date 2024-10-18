@@ -917,7 +917,7 @@ MonoBehaviour:
   grid_square: {fileID: 441655348958707135, guid: 94037ad8b668e4642a43907c9621fdca, type: 3}
   start_position: {x: -410, y: 600}
   square_scale: 1
-  squaresToDelete: 27
+  squaresToDelete: 36
   selectedCells: []
   canvas: {fileID: 953300707}
   previous: {fileID: 759757492}
