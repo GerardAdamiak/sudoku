@@ -223,8 +223,11 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
            
             if (grid.isFinished == true && number != 0)
             {
-                grid.moveStack.Push((gridRow, gridColumn, number_, digitKeyboard.ifNote));
-                grid.PrintStackContents();
+                bool ifNoteClick;
+                if (number_text.GetComponent<TextMeshProUGUI>().fontSize == 60) ifNoteClick = false;
+                else ifNoteClick = true;
+                grid.moveStack.Push((gridRow, gridColumn, number_, ifNoteClick));
+             
             }
             
             if (ifAble == true && (number != 0 || grid.isFinished==false))
@@ -268,8 +271,11 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             {
                 if (grid.isFinished == true && number != 0)
                 {
-                    grid.moveStack.Push((gridRow, gridColumn, number_, digitKeyboard.ifNote));
-                    grid.PrintStackContents();
+                    bool ifNoteClick;
+                    if (number_text.GetComponent<TextMeshProUGUI>().fontSize == 60) ifNoteClick = false;
+                    else ifNoteClick = true;
+                    grid.moveStack.Push((gridRow, gridColumn, number_, ifNoteClick));
+                    
                 }
 
                 if (ifAble == true)
