@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -34,7 +35,11 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     // Renderer or material to apply the texture to (depends on your grid implementation)
     private Renderer squareRenderer;
-
+    public bool ifDigitFill = false;
+    private string number_string;
+    private string numberStr;
+    private char numberChar;
+    private bool ifContain;
 
 
 
@@ -236,6 +241,12 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                 {
                     number_ = number;
                 }
+                else if ((number_ == number) && number_text.GetComponent<TextMeshProUGUI>().fontSize == 35)
+                {
+
+                    number_ = number;
+
+                }
                 else
                 {
                     number_ = 0;
@@ -280,11 +291,11 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
                 if (ifAble == true)
                 {
-                    string number_string = number_.ToString();
-                    string numberStr = number.ToString();
-                    char numberChar = numberStr[0];
-                    bool ifContain = number_string.Contains(numberStr);
-
+                   number_string = number_.ToString();
+                    numberStr = number.ToString();
+                    numberChar = numberStr[0];
+                    ifContain = number_string.Contains(numberStr);
+                    
                     if (ifContain == false)
                     {
                         number_string += numberStr;

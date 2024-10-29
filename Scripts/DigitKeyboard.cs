@@ -122,16 +122,23 @@ public class DigitKeyboard : MonoBehaviour
     {
         CountSelected();
         if (digit != 10 && ifNote == false) grid.UpdateSelectedCell(digit);
-        else if (digit != 10 && ifNote == true) grid.UpdateSelectedCellNote(digit);
-        else if(digit ==10 && sceneName=="Custom") {
+        else if (digit != 10 && ifNote == true)
+        {
+            GridSquare gridsquare = FindObjectOfType<GridSquare>();
+            gridsquare.ifDigitFill = false;
+            grid.UpdateSelectedCellNote(digit);
+        }
+        else if (digit == 10 && sceneName == "Custom")
+        {
             whichSet = PlayerPrefs.GetString("whichSet");
             number = PlayerPrefs.GetInt("number");
 
-            for (int a=0; a < 9; a++)
+            for (int a = 0; a < 9; a++)
             {
-                for(int b=0; b < 9; b++) {
+                for (int b = 0; b < 9; b++)
+                {
                     sudokuLog += grid.currentGridInt[a, b];
-                
+
                 }
             }
             PlayerPrefs.SetString("Sudoku", sudokuLog);
@@ -164,7 +171,7 @@ public class DigitKeyboard : MonoBehaviour
         else if (digit == 10 && sceneName != "Custom")
         {
 
-            
+
             if (ifNote == false)
             {
                 ifNote = true;
@@ -175,7 +182,7 @@ public class DigitKeyboard : MonoBehaviour
                 ifNote = false;
                 button.image.sprite = buttonImageNote1;
             }
-            
+
         }
         // Handle the digit click event here, you can use it to input the digit into your application
     }
