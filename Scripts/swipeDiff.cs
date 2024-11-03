@@ -46,11 +46,10 @@ public class SwipeDiff : MonoBehaviour
                 case TouchPhase.Moved:
                     if (isDragging)
                     {
-                        
                         currentTouchPosition = touch.position;
                         float deltaX = currentTouchPosition.x - startTouchPosition.x;
-                        Debug.Log(deltaX);
-                        if((deltaX>10) || (deltaX < (-10)))canClickDiff = false;
+                        
+                        if(Mathf.Abs(deltaX) > swipeThreshold) canClickDiff = false;
                         DragElements(deltaX);
                     }
                     break;

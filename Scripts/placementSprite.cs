@@ -31,11 +31,12 @@ public class SpriteUpperCorner : MonoBehaviour
         switch (corner)
         {
             case Corner.UpperLeft:
-                screenCorner = mainCamera.ScreenToWorldPoint(new Vector3(0, Screen.height, 1));
+                screenCorner = mainCamera.ScreenToWorldPoint(new Vector3(20f, (Screen.height * 0.9f), 1));
                 break;
             case Corner.UpperRight:
-                screenCorner = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 1));
+                screenCorner = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, (Screen.height * 0.9f), 1));
                 break;
+           
         }
 
         // Adjust the position based on the sprite's size and camera's orthographic size
