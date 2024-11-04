@@ -4,24 +4,25 @@ using TMPro;
 using System;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using UnityEngine.Experimental.GlobalIllumination;
 
-public class LeaderboardKropki : MonoBehaviour
+public class LeaderboardHard : MonoBehaviour
 {
     public TMP_Text leaderboardText;
-    public List<float> bestTimesKropki = new();
-    private int SavedListCountKropki;
+    public List<float> bestTimesHard = new();
+    private int SavedListCountHard;
     private const int maxEntries = 10;
-    public static bool ifAddedKropki = false;
-    private string currentSceneName;
+
+    public static bool ifAddedHard = false;
+    private string previousScene;
     private float mostRecentTime; // Store the most recent time
     private int isLight;
 
     private void Start()
     {
+        ifAddedHard = false;
         isLight = PlayerPrefs.GetInt("IsLight");
-        currentSceneName = SceneManager.GetActiveScene().name;
-        if ((currentSceneName == "Custom"))
+        previousScene = PlayerPrefs.GetString("PreviousScene");
+        if ((previousScene == "Custom"))
         {
             // If whichSet is "custom", hide the sprite and make it unclickable
             gameObject.SetActive(false); // Hide the GameObject
@@ -33,11 +34,11 @@ public class LeaderboardKropki : MonoBehaviour
     {
 
 
-        SavedListCountKropki = PlayerPrefs.GetInt("CountKropki");
-        for (int i = 0; i < SavedListCountKropki; i++)
+        SavedListCountHard = PlayerPrefs.GetInt("CountHard");
+        for (int i = 0; i < SavedListCountHard; i++)
         {
-            float time = PlayerPrefs.GetFloat("PlayersKropki" + i);
-            bestTimesKropki.Add(time);
+            float time = PlayerPrefs.GetFloat("PlayersHard" + i);
+            bestTimesHard.Add(time);
         }
 
 
@@ -46,26 +47,26 @@ public class LeaderboardKropki : MonoBehaviour
 
     public void SaveLeaderboard()
     {
-        for (int i = 0; i < bestTimesKropki.Count; i++)
+        for (int i = 0; i < bestTimesHard.Count; i++)
         {
-            PlayerPrefs.SetFloat("PlayersKropki" + i, bestTimesKropki[i]);
+            PlayerPrefs.SetFloat("PlayersHard" + i, bestTimesHard[i]);
 
         }
 
-        PlayerPrefs.SetInt("CountKropki", bestTimesKropki.Count);
+        PlayerPrefs.SetInt("CountHard", bestTimesHard.Count);
     }
 
     private void Update()
     {
 
-        if (SudokuGrid.endChecker == true && ifAddedKropki == false && SudokuGrid.currentSceneName == "kropki")
+        if (SudokuGrid.endChecker == true && ifAddedHard == false && SudokuGrid.currentSceneName == "hard")
         {
             LoadData();
             AddTime(Timer.finalTime - 2);
             SaveLeaderboard();
             UpdateLeaderboard();
 
-            ifAddedKropki = true;
+            ifAddedHard = true;
         }
 
 
@@ -73,13 +74,13 @@ public class LeaderboardKropki : MonoBehaviour
 
     public void AddTime(float time)
     {
-        bestTimesKropki.Add(time);
-        bestTimesKropki.Sort();
+        bestTimesHard.Add(time);
+        bestTimesHard.Sort();
 
         // Ensure the list does not exceed the maximum number of entries
-        if (bestTimesKropki.Count > maxEntries)
+        if (bestTimesHard.Count > maxEntries)
         {
-            bestTimesKropki.RemoveAt(bestTimesKropki.Count - 1);
+            bestTimesHard.RemoveAt(bestTimesHard.Count - 1);
         }
 
         mostRecentTime = time;
@@ -88,34 +89,34 @@ public class LeaderboardKropki : MonoBehaviour
     private void UpdateLeaderboard()
     {
         string headerColor = isLight == 0 ? "#EFEFD0" : "#2E3138";
-        leaderboardText.text = $"<color={headerColor}><size=120>Best Times Kropki:</size></color>\n\n";
-        for (int i = 0; i < bestTimesKropki.Count; i++)
+        leaderboardText.text = $"<color={headerColor}><size=120>Best Times Hard:</size></color>\n\n";
+        for (int i = 0; i < bestTimesHard.Count; i++)
         {
             if (isLight == 0)
             {
-                if (bestTimesKropki[i] == mostRecentTime)
+                if (bestTimesHard[i] == mostRecentTime)
                 {
                     // Use rich text to color the most recent time differently
 
-                    leaderboardText.text += $"<color=#EFEFD0>{i + 1}. {FormatTime(bestTimesKropki[i])}</color>\n";
+                    leaderboardText.text += $"<color=#EFEFD0>{i + 1}. {FormatTime(bestTimesHard[i])}</color>\n";
                 }
                 else
                 {
-                    leaderboardText.text += $"{i + 1}. {FormatTime(bestTimesKropki[i])}\n";
+                    leaderboardText.text += $"{i + 1}. {FormatTime(bestTimesHard[i])}\n";
 
                 }
             }
             else
             {
-                if (bestTimesKropki[i] == mostRecentTime)
+                if (bestTimesHard[i] == mostRecentTime)
                 {
                     // Use rich text to color the most recent time differently
-                    leaderboardText.text += $"<color=#2E3138>{i + 1}. {FormatTime(bestTimesKropki[i])}</color>\n";
+                    leaderboardText.text += $"<color=#2E3138>{i + 1}. {FormatTime(bestTimesHard[i])}</color>\n";
 
                 }
                 else
                 {
-                    leaderboardText.text += $"{i + 1}. {FormatTime(bestTimesKropki[i])}\n";
+                    leaderboardText.text += $"{i + 1}. {FormatTime(bestTimesHard[i])}\n";
 
                 }
             }
@@ -128,5 +129,5 @@ public class LeaderboardKropki : MonoBehaviour
         return string.Format("{0:00}:{1:00}", timeSpan.Minutes, timeSpan.Seconds);
     }
 
-
+   
 }

@@ -19,6 +19,7 @@ public class LeaderboardRenban : MonoBehaviour
 
     private void Start()
     {
+        ifAddedRenban = false;
         isLight = PlayerPrefs.GetInt("IsLight");
         currentSceneName = SceneManager.GetActiveScene().name;
         if ((currentSceneName == "Custom"))

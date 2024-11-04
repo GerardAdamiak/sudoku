@@ -6,19 +6,20 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.Experimental.GlobalIllumination;
 
-public class LeaderboardThermo : MonoBehaviour
+public class LeaderboardKiller : MonoBehaviour
 {
     public TMP_Text leaderboardText;
-    public List<float> bestTimesThermo = new();
-    private int SavedListCountThermo;
+    public List<float> bestTimesKiller = new();
+    private int SavedListCountKiller;
     private const int maxEntries = 10;
-    public static bool ifAddedThermo = false;
+    public static bool ifAddedKiller = false;
     private string currentSceneName;
     private float mostRecentTime; // Store the most recent time
     private int isLight;
 
     private void Start()
     {
+        ifAddedKiller = false;
         isLight = PlayerPrefs.GetInt("IsLight");
         currentSceneName = SceneManager.GetActiveScene().name;
         if ((currentSceneName == "Custom"))
@@ -33,11 +34,11 @@ public class LeaderboardThermo : MonoBehaviour
     {
 
 
-        SavedListCountThermo = PlayerPrefs.GetInt("CountThermo");
-        for (int i = 0; i < SavedListCountThermo; i++)
+        SavedListCountKiller = PlayerPrefs.GetInt("CountKiller");
+        for (int i = 0; i < SavedListCountKiller; i++)
         {
-            float time = PlayerPrefs.GetFloat("PlayersThermo" + i);
-            bestTimesThermo.Add(time);
+            float time = PlayerPrefs.GetFloat("PlayersKiller" + i);
+            bestTimesKiller.Add(time);
         }
 
 
@@ -46,26 +47,26 @@ public class LeaderboardThermo : MonoBehaviour
 
     public void SaveLeaderboard()
     {
-        for (int i = 0; i < bestTimesThermo.Count; i++)
+        for (int i = 0; i < bestTimesKiller.Count; i++)
         {
-            PlayerPrefs.SetFloat("PlayersThermo" + i, bestTimesThermo[i]);
+            PlayerPrefs.SetFloat("PlayersKiller" + i, bestTimesKiller[i]);
 
         }
 
-        PlayerPrefs.SetInt("CountThermo", bestTimesThermo.Count);
+        PlayerPrefs.SetInt("CountKiller", bestTimesKiller.Count);
     }
 
     private void Update()
     {
 
-        if (SudokuGrid.endChecker == true && ifAddedThermo == false && SudokuGrid.currentSceneName == "thermo")
+        if (SudokuGrid.endChecker == true && ifAddedKiller == false && SudokuGrid.currentSceneName == "killer")
         {
             LoadData();
             AddTime(Timer.finalTime - 2);
             SaveLeaderboard();
             UpdateLeaderboard();
 
-            ifAddedThermo = true;
+            ifAddedKiller = true;
         }
 
 
@@ -73,13 +74,13 @@ public class LeaderboardThermo : MonoBehaviour
 
     public void AddTime(float time)
     {
-        bestTimesThermo.Add(time);
-        bestTimesThermo.Sort();
+        bestTimesKiller.Add(time);
+        bestTimesKiller.Sort();
 
         // Ensure the list does not exceed the maximum number of entries
-        if (bestTimesThermo.Count > maxEntries)
+        if (bestTimesKiller.Count > maxEntries)
         {
-            bestTimesThermo.RemoveAt(bestTimesThermo.Count - 1);
+            bestTimesKiller.RemoveAt(bestTimesKiller.Count - 1);
         }
 
         mostRecentTime = time;
@@ -88,34 +89,34 @@ public class LeaderboardThermo : MonoBehaviour
     private void UpdateLeaderboard()
     {
         string headerColor = isLight == 0 ? "#EFEFD0" : "#2E3138";
-        leaderboardText.text = $"<color={headerColor}><size=120>Best Times Thermo:</size></color>\n\n";
-        for (int i = 0; i < bestTimesThermo.Count; i++)
+        leaderboardText.text = $"<color={headerColor}><size=120>Best Times Killer:</size></color>\n\n";
+        for (int i = 0; i < bestTimesKiller.Count; i++)
         {
             if (isLight == 0)
             {
-                if (bestTimesThermo[i] == mostRecentTime)
+                if (bestTimesKiller[i] == mostRecentTime)
                 {
                     // Use rich text to color the most recent time differently
 
-                    leaderboardText.text += $"<color=#EFEFD0>{i + 1}. {FormatTime(bestTimesThermo[i])}</color>\n";
+                    leaderboardText.text += $"<color=#EFEFD0>{i + 1}. {FormatTime(bestTimesKiller[i])}</color>\n";
                 }
                 else
                 {
-                    leaderboardText.text += $"{i + 1}. {FormatTime(bestTimesThermo[i])}\n";
+                    leaderboardText.text += $"{i + 1}. {FormatTime(bestTimesKiller[i])}\n";
 
                 }
             }
             else
             {
-                if (bestTimesThermo[i] == mostRecentTime)
+                if (bestTimesKiller[i] == mostRecentTime)
                 {
                     // Use rich text to color the most recent time differently
-                    leaderboardText.text += $"<color=#2E3138>{i + 1}. {FormatTime(bestTimesThermo[i])}</color>\n";
+                    leaderboardText.text += $"<color=#2E3138>{i + 1}. {FormatTime(bestTimesKiller[i])}</color>\n";
 
                 }
                 else
                 {
-                    leaderboardText.text += $"{i + 1}. {FormatTime(bestTimesThermo[i])}\n";
+                    leaderboardText.text += $"{i + 1}. {FormatTime(bestTimesKiller[i])}\n";
 
                 }
             }

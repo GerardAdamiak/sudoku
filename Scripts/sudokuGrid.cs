@@ -469,7 +469,7 @@ public class SudokuGrid : MonoBehaviour
         else if (currentSceneName == "killer")
         {
             // Number of killer cages to generate
-            int numberOfCages = 25;
+            int numberOfCages = 35;
             int cageSum = 0;
             // Random object to generate numbers
             System.Random rand = new System.Random();
@@ -496,6 +496,8 @@ public class SudokuGrid : MonoBehaviour
                 return true;
             }
 
+            int cageGeneratedCounter = 0;
+           
             // Generate multiple killer cages
             for (int cageCount = 0; cageCount < numberOfCages; cageCount++)
             {
@@ -504,13 +506,20 @@ public class SudokuGrid : MonoBehaviour
                 bool cageGenerated = false;
                 while (!cageGenerated)
                 {
+                    cageGeneratedCounter++;
+                    if (cageGeneratedCounter > 81)
+                    {
+                        cageGeneratedCounter = 0;
+                        cageCount++;
+                        break;
+                    }
                     // Generate random root cell index (0 to 80 for 9x9 grid)
                     int rootCell = rand.Next(0, 81);
 
                     // If the root cell is already visited, retry
                     if (visited[rootCell])
                         continue;
-
+                    
                     // Mark root cell as visited and add to the cage
                     cageSum += grid[rootCell / 9, rootCell % 9];
                     List<int> cageCells = new List<int> { rootCell };
@@ -1259,6 +1268,12 @@ public class SudokuGrid : MonoBehaviour
             panelRect.anchorMin = Vector2.zero;
             panelRect.anchorMax = Vector2.one;
             panelRect.sizeDelta = Vector2.zero;
+
+            LineRenderer[] allLines = FindObjectsOfType<LineRenderer>();
+            foreach (LineRenderer line in allLines)
+            {
+                line.enabled = false;  // Disable the line rendering
+            }
 
             Image image = panel.AddComponent<Image>();
             image.color = new Color(0, 0, 0, 0.1f);

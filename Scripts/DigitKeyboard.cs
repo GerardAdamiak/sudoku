@@ -79,13 +79,16 @@ public class DigitKeyboard : MonoBehaviour
                     if (digit == 10)
                     {
                         
-                        if (sceneName == "Custom")
-                            {
+                        if (sceneName == "Custom" && whichSet == "set")
+                        {
+                            
                                 button.GetComponentInChildren<TextMeshProUGUI>().text = "save";
                                 buttonHeight = 310f;
-                            }
-                            else
-                            {
+                           
+                                
+                         }
+                         else
+                        {
                                 button.GetComponentInChildren<TextMeshProUGUI>().text = "";
                             button.image.sprite = buttonImageNote1;
                         }
@@ -95,7 +98,7 @@ public class DigitKeyboard : MonoBehaviour
                         RectTransform rectTransform = button.GetComponent<RectTransform>();
                     rectTransform.sizeDelta = new Vector2(buttonWidth, buttonHeight);
 
-                    if (digit == 10 && sceneName == "Custom")
+                    if (digit == 10 && sceneName == "Custom" && whichSet == "set")
                     {
                         rectTransform.anchoredPosition = new Vector2((buttonWidth + padding) * j, -((buttonHeight + padding) * i - 80f));
                     }
@@ -128,7 +131,7 @@ public class DigitKeyboard : MonoBehaviour
             gridsquare.ifDigitFill = false;
             grid.UpdateSelectedCellNote(digit);
         }
-        else if (digit == 10 && sceneName == "Custom")
+        else if (digit == 10 && sceneName == "Custom" && whichSet == "set")
         {
             whichSet = PlayerPrefs.GetString("whichSet");
             number = PlayerPrefs.GetInt("number");
@@ -168,7 +171,7 @@ public class DigitKeyboard : MonoBehaviour
             }
         }
 
-        else if (digit == 10 && sceneName != "Custom")
+        if (digit == 10 && (sceneName != "Custom" || whichSet != "set"))
         {
 
 

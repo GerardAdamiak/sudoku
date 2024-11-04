@@ -18,6 +18,7 @@ public class Leaderboard : MonoBehaviour
 
     private void Start()
     {
+        ifAdded = false;
         isLight = PlayerPrefs.GetInt("IsLight");
         currentSceneName = SceneManager.GetActiveScene().name;
         if (currentSceneName == "Custom")

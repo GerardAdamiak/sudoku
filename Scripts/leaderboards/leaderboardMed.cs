@@ -6,19 +6,20 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.Experimental.GlobalIllumination;
 
-public class LeaderboardWhispers : MonoBehaviour
+public class LeaderboardMed : MonoBehaviour
 {
     public TMP_Text leaderboardText;
-    public List<float> bestTimesWhisper = new();
-    private int SavedListCountWhisper;
+    public List<float> bestTimesMed = new();
+    private int SavedListCountMed;
     private const int maxEntries = 10;
-    public static bool ifAddedWhisper = false;
+    public static bool ifAddedMed = false;
     private string currentSceneName;
     private float mostRecentTime; // Store the most recent time
     private int isLight;
 
     private void Start()
     {
+        ifAddedMed = false;
         isLight = PlayerPrefs.GetInt("IsLight");
         currentSceneName = SceneManager.GetActiveScene().name;
         if ((currentSceneName == "Custom"))
@@ -33,11 +34,11 @@ public class LeaderboardWhispers : MonoBehaviour
     {
 
 
-        SavedListCountWhisper = PlayerPrefs.GetInt("CountWhisper");
-        for (int i = 0; i < SavedListCountWhisper; i++)
+        SavedListCountMed = PlayerPrefs.GetInt("CountMed");
+        for (int i = 0; i < SavedListCountMed; i++)
         {
-            float time = PlayerPrefs.GetFloat("PlayersWhisper" + i);
-            bestTimesWhisper.Add(time);
+            float time = PlayerPrefs.GetFloat("PlayersMed" + i);
+            bestTimesMed.Add(time);
         }
 
 
@@ -46,40 +47,40 @@ public class LeaderboardWhispers : MonoBehaviour
 
     public void SaveLeaderboard()
     {
-        for (int i = 0; i < bestTimesWhisper.Count; i++)
+        for (int i = 0; i < bestTimesMed.Count; i++)
         {
-            PlayerPrefs.SetFloat("PlayersWhisper" + i, bestTimesWhisper[i]);
+            PlayerPrefs.SetFloat("PlayersMed" + i, bestTimesMed[i]);
 
         }
 
-        PlayerPrefs.SetInt("CountWhisper", bestTimesWhisper.Count);
+        PlayerPrefs.SetInt("CountMed", bestTimesMed.Count);
     }
 
     private void Update()
     {
 
-        if (SudokuGrid.endChecker == true && ifAddedWhisper == false && SudokuGrid.currentSceneName == "whispers")
-        {
-            LoadData();
-            AddTime(Timer.finalTime - 2);
-            SaveLeaderboard();
-            UpdateLeaderboard();
+        if (SudokuGrid.endChecker == true && ifAddedMed == false && SudokuGrid.currentSceneName == "medium")
+            {
+                LoadData();
+                AddTime(Timer.finalTime - 2);
+                SaveLeaderboard();
+                UpdateLeaderboard();
 
-            ifAddedWhisper = true;
-        }
+                ifAddedMed = true;
+            }
 
-
+        
     }
 
     public void AddTime(float time)
     {
-        bestTimesWhisper.Add(time);
-        bestTimesWhisper.Sort();
+        bestTimesMed.Add(time);
+        bestTimesMed.Sort();
 
         // Ensure the list does not exceed the maximum number of entries
-        if (bestTimesWhisper.Count > maxEntries)
+        if (bestTimesMed.Count > maxEntries)
         {
-            bestTimesWhisper.RemoveAt(bestTimesWhisper.Count - 1);
+            bestTimesMed.RemoveAt(bestTimesMed.Count - 1);
         }
 
         mostRecentTime = time;
@@ -88,34 +89,34 @@ public class LeaderboardWhispers : MonoBehaviour
     private void UpdateLeaderboard()
     {
         string headerColor = isLight == 0 ? "#EFEFD0" : "#2E3138";
-        leaderboardText.text = $"<color={headerColor}><size=120>Best Times German Whispers:</size></color>\n\n";
-        for (int i = 0; i < bestTimesWhisper.Count; i++)
+        leaderboardText.text = $"<color={headerColor}><size=120>Best Times Medium:</size></color>\n\n";
+        for (int i = 0; i < bestTimesMed.Count; i++)
         {
             if (isLight == 0)
             {
-                if (bestTimesWhisper[i] == mostRecentTime)
+                if (bestTimesMed[i] == mostRecentTime)
                 {
                     // Use rich text to color the most recent time differently
 
-                    leaderboardText.text += $"<color=#EFEFD0>{i + 1}. {FormatTime(bestTimesWhisper[i])}</color>\n";
+                    leaderboardText.text += $"<color=#EFEFD0>{i + 1}. {FormatTime(bestTimesMed[i])}</color>\n";
                 }
                 else
                 {
-                    leaderboardText.text += $"{i + 1}. {FormatTime(bestTimesWhisper[i])}\n";
+                    leaderboardText.text += $"{i + 1}. {FormatTime(bestTimesMed[i])}\n";
 
                 }
             }
             else
             {
-                if (bestTimesWhisper[i] == mostRecentTime)
+                if (bestTimesMed[i] == mostRecentTime)
                 {
                     // Use rich text to color the most recent time differently
-                    leaderboardText.text += $"<color=#2E3138>{i + 1}. {FormatTime(bestTimesWhisper[i])}</color>\n";
+                    leaderboardText.text += $"<color=#2E3138>{i + 1}. {FormatTime(bestTimesMed[i])}</color>\n";
 
                 }
                 else
                 {
-                    leaderboardText.text += $"{i + 1}. {FormatTime(bestTimesWhisper[i])}\n";
+                    leaderboardText.text += $"{i + 1}. {FormatTime(bestTimesMed[i])}\n";
 
                 }
             }
@@ -128,5 +129,5 @@ public class LeaderboardWhispers : MonoBehaviour
         return string.Format("{0:00}:{1:00}", timeSpan.Minutes, timeSpan.Seconds);
     }
 
-
+    
 }
