@@ -15,7 +15,6 @@ public class SudokuGrid : MonoBehaviour
 {
     //dodac:
     //-warianty trzeba bedzie dopracowac balans dobry
-    //-naprawa tego bledu z wielkoscia notatek przy cofaniu
 
 
     private int[,] grid = new int[9, 9];
@@ -67,6 +66,8 @@ public class SudokuGrid : MonoBehaviour
         
         customNumber = PlayerPrefs.GetInt("number");
         whichSet = PlayerPrefs.GetString("whichSet");
+        PlayerPrefs.SetInt("GameReady", 0);
+        PlayerPrefs.Save();
 
         isFinished = false;
         switch (customNumber)

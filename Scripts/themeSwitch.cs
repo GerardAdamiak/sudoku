@@ -1,14 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+
+
 public class ThemeSwitch : MonoBehaviour
 {
     public Sprite sprite1; // Original sprite
     public Sprite sprite2; // Sprite to change to
-
+    public Image panel; // Reference to the panel Image component
+    public Color lightColor; // Background color for light theme
+    public Color darkColor;
 
     private SpriteRenderer spriteRenderer;
     private Image image;
+   
+    
     private bool isLight = true; // Flag to track which sprite is currently active
 
     void Update()
@@ -24,6 +30,7 @@ public class ThemeSwitch : MonoBehaviour
             if (isLight)
             {
                 spriteRenderer.sprite = sprite1;
+               
                 
             }
             else
@@ -45,11 +52,15 @@ public class ThemeSwitch : MonoBehaviour
                 image.sprite = sprite2;
             }
         }
+        if (panel != null)
+        {
+            panel.color = isLight ? lightColor : darkColor;
+        }
 
         // Get the main camera
 
         // Set the initial background color based on the sprite
-        
+
     }
 
     void OnMouseDown()

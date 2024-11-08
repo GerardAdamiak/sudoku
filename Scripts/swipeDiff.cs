@@ -69,7 +69,7 @@ public class SwipeDiff : MonoBehaviour
         // Move each element horizontally along with the swipe
         
             elements[currentIndex].transform.localPosition = initialPositions[currentIndex] + new Vector3((deltaX / 150), 0, 0);
-        elements[currentIndex + 5].transform.localPosition = initialPositions[currentIndex + 5] + new Vector3((deltaX / 200), 0, 0);
+        elements[currentIndex + 5].transform.localPosition = initialPositions[currentIndex + 5] + new Vector3((deltaX / 250), 0, 0);
 
     }
 
