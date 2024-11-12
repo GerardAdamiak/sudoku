@@ -50,7 +50,8 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         squareRawImage = GetComponentInChildren<RawImage>(); // Get the RawImage component from children
         squareRenderer = GetComponent<Renderer>();
         // Store the original texture
-        if(squareRawImage != null)originalTexture = squareRawImage.texture;
+        if (squareRawImage != null) originalTexture = squareRawImage.texture;
+        
 
     }
     
@@ -157,19 +158,16 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void Select()
     {
+
         squareRawImage = GetComponentInChildren<RawImage>();
-        
+     
             squareRawImage.texture = selectedTexture;
-       
+        
+        
     }
 
-    public void SelectCage()
-    {
-        squareRawImage = GetComponentInChildren<RawImage>();
 
-        squareRawImage.texture = cageTexture;
-
-    }
+  
 
     public void SetTexture(int textureID)
     {
@@ -201,7 +199,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void Deselect()
     {
-        // Restore the original texture when deselected
+       
         squareRawImage.texture = originalTexture;
     }
 

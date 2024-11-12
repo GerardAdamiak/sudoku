@@ -290,6 +290,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: ed183f39f0765d4418fd3fb103c6ede1, type: 3}
   sprite2: {fileID: 21300000, guid: af30246a77d8b0f4e8524590a77901d3, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &449349839
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,8 +372,8 @@ Transform:
   m_GameObject: {fileID: 449349839}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.11, y: 3.36, z: 0}
-  m_LocalScale: {x: 0.716, y: 0.716, z: 0.716}
+  m_LocalPosition: {x: 1.08, y: 3.39, z: 0}
+  m_LocalScale: {x: 0.542728, y: 0.542728, z: 0.542728}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -389,6 +392,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: 61b041329a464e84293041970dac74db, type: 3}
   sprite2: {fileID: 21300000, guid: 0930e7961c419614cb2269ea520184b3, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,6 +601,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: 0e005f85dd0cf9641bf95b1ea690d75e, type: 3}
   sprite2: {fileID: 21300000, guid: 4d1661a71f7c02a48ace9dfccbd3780e, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1284558159
 GameObject:
   m_ObjectHideFlags: 0
@@ -951,8 +960,8 @@ Transform:
   m_GameObject: {fileID: 1608921207}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.7, z: 0}
-  m_LocalScale: {x: 1.3651878, y: 1.3651878, z: 1.3651878}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1030,6 +1039,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: c5fb07ec145777a47875728eba1f61e2, type: 3}
   sprite2: {fileID: 21300000, guid: e0c3de429f40a1a42a1f05ca43caaeda, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1695025908
 GameObject:
   m_ObjectHideFlags: 0
@@ -1443,8 +1455,8 @@ Transform:
   m_GameObject: {fileID: 1984343259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.59, z: 0}
-  m_LocalScale: {x: 1.3680657, y: 1.3680657, z: 1.3680657}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1522,6 +1534,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: 67823cfa9eee1014aa7c234008e75af4, type: 3}
   sprite2: {fileID: 21300000, guid: 6084b47072aac2542ac4d1c9873407d9, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &2063185066
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,8 @@ public class SudokuGrid : MonoBehaviour
 {
     //dodac:
     //-warianty trzeba bedzie dopracowac balans dobry
+    // optymalizacja, bo zaczyna troche zacinac
+    // jakis problem z lewym gornym kwadracikiem w whispers
 
 
     private int[,] grid = new int[9, 9];
@@ -51,7 +53,7 @@ public class SudokuGrid : MonoBehaviour
     public GameObject linePrefab;
     public GameObject dotPrefab;
     private bool done = false;
-    private string direction;
+    private string directionLine;
     private DigitKeyboard keyboard;
     public bool ifMore;
     private int x;
@@ -126,16 +128,7 @@ public class SudokuGrid : MonoBehaviour
                 GetCurrentGridState();
             UnclickableDigits();
         }
-        foreach(var square in grid_squares_)
-        {
-            SpriteRenderer spriteRenderer = square.GetComponentInChildren<SpriteRenderer>();
-
-            // Deactivate the SpriteRenderer
-            if (spriteRenderer != null)
-            {
-                spriteRenderer.enabled = false;
-            }
-        }
+        
         if (currentSceneName == "Custom")
         {
             ConvertTables();
@@ -146,6 +139,20 @@ public class SudokuGrid : MonoBehaviour
 
         GetCurrentGridState();
         //ConvertTables();
+
+        int counter = 0;
+
+        while (counter < 81)
+        {
+
+            var firstSquare = grid_squares_[counter].GetComponent<GridSquare>();
+
+            Image spriteRenderer = firstSquare.GetComponentInChildren<Image>();
+
+
+            spriteRenderer.enabled = false;
+            counter++;
+        }
         if (currentSceneName == "whispers")
         {
             for (int i = 0; i < 9; i++)
@@ -163,7 +170,7 @@ public class SudokuGrid : MonoBehaviour
                                     (i * 9) + j + 9
                                 ].GetComponent<GridSquare>();
 
-                                direction = "down";
+                                directionLine = "down";
 
                                 DrawLineBetweenSquares(square1, square2);
                             }
@@ -180,7 +187,7 @@ public class SudokuGrid : MonoBehaviour
                                     (i * 9) + j - 9
                                 ].GetComponent<GridSquare>();
 
-                                direction = "up";
+                                directionLine = "up";
 
                                 DrawLineBetweenSquares(square1, square2);
                             }
@@ -197,7 +204,7 @@ public class SudokuGrid : MonoBehaviour
                                     (i * 9) + j + 1
                                 ].GetComponent<GridSquare>();
 
-                                direction = "left";
+                                directionLine = "left";
 
                                 DrawLineBetweenSquares(square1, square2);
                             }
@@ -214,7 +221,7 @@ public class SudokuGrid : MonoBehaviour
                                     (i * 9) + j - 1
                                 ].GetComponent<GridSquare>();
 
-                                direction = "right";
+                                directionLine = "right";
 
                                 DrawLineBetweenSquares(square1, square2);
                             }
@@ -364,7 +371,7 @@ public class SudokuGrid : MonoBehaviour
                                     (i * 9) + j + 9
                                 ].GetComponent<GridSquare>();
 
-                                direction = "down";
+                                directionLine = "down";
                                 ifDot = false;
                                 DrawBlackDotBetweenSquares(square1, square2);
                             }
@@ -375,7 +382,7 @@ public class SudokuGrid : MonoBehaviour
                                     (i * 9) + j + 9
                                 ].GetComponent<GridSquare>();
 
-                                direction = "down";
+                                directionLine = "down";
                                 ifDot = true;
                                 DrawBlackDotBetweenSquares(square1, square2);
                             }
@@ -392,7 +399,7 @@ public class SudokuGrid : MonoBehaviour
                                     (i * 9) + j - 9
                                 ].GetComponent<GridSquare>();
                                 ifDot = false;
-                                direction = "up";
+                                directionLine = "up";
 
                                 DrawBlackDotBetweenSquares(square1, square2);
                             }
@@ -403,7 +410,7 @@ public class SudokuGrid : MonoBehaviour
                                     (i * 9) + j - 9
                                 ].GetComponent<GridSquare>();
                                 ifDot = true;
-                                direction = "up";
+                                directionLine = "up";
 
                                 DrawBlackDotBetweenSquares(square1, square2);
                             }
@@ -420,7 +427,7 @@ public class SudokuGrid : MonoBehaviour
                                     (i * 9) + j + 1
                                 ].GetComponent<GridSquare>();
                                 ifDot = false;
-                                direction = "left";
+                                directionLine = "left";
 
                                 DrawBlackDotBetweenSquares(square1, square2);
                             }
@@ -431,7 +438,7 @@ public class SudokuGrid : MonoBehaviour
                                     (i * 9) + j + 1
                                 ].GetComponent<GridSquare>();
                                 ifDot = true;
-                                direction = "left";
+                                directionLine = "left";
 
                                 DrawBlackDotBetweenSquares(square1, square2);
                             }
@@ -448,7 +455,7 @@ public class SudokuGrid : MonoBehaviour
                                     (i * 9) + j - 1
                                 ].GetComponent<GridSquare>();
                                 ifDot = false;
-                                direction = "right";
+                                directionLine = "right";
 
                                 DrawBlackDotBetweenSquares(square1, square2);
                             }
@@ -459,7 +466,7 @@ public class SudokuGrid : MonoBehaviour
                                     (i * 9) + j - 1
                                 ].GetComponent<GridSquare>();
                                 ifDot = true;
-                                direction = "right";
+                                directionLine = "right";
 
                                 DrawBlackDotBetweenSquares(square1, square2);
                             }
@@ -638,6 +645,9 @@ public class SudokuGrid : MonoBehaviour
         {
             // Number of killer cages to generate
             int numberOfCages = 25;
+
+           
+
       
             // Random object to generate numbers
             System.Random rand = new System.Random();
@@ -692,6 +702,7 @@ public class SudokuGrid : MonoBehaviour
                     loopCounter = 0;
                     while (cageCells.Count < cageSize)
                     {
+                        
                         cageCells = cageCells.OrderBy(cell =>
                         {
                             // Convert the 1D index to 2D coordinates (x, y)
@@ -727,10 +738,23 @@ public class SudokuGrid : MonoBehaviour
                                 var square = grid_squares_[newCell].GetComponent<GridSquare>();
                                 var square2 = grid_squares_[currentCell].GetComponent<GridSquare>();
 
+                                int rowDiff = (newCell / 9) - (currentCell / 9);
+                                int colDiff = (newCell % 9) - (currentCell % 9);
+                                directionLine = "";
+
+                                if (rowDiff == -1 && colDiff == 0) directionLine = "down";
+                              
+                                else if (rowDiff == 0 && colDiff == 1) directionLine = "right";
+                           
+                                else if (rowDiff == 1 && colDiff == 0) directionLine = "up";
+                         
+                                else if (rowDiff == 0 && colDiff == -1) directionLine = "left";
+
 
                                 DrawLineBetweenSquares(square, square2);
                                 visited[newCell] = true;
                                 visitedThisCage.Add(newCell); // Add to visited this cage
+                                directionLine = "";
                             }
                             
                         }
@@ -749,20 +773,28 @@ public class SudokuGrid : MonoBehaviour
                                var square = grid_squares_[newFirstCell].GetComponent<GridSquare>();
                                 var square2 = grid_squares_[firstCell].GetComponent<GridSquare>();
 
+                                int rowDiff = (newFirstCell / 9) - (firstCell / 9);
+                                int colDiff = (newFirstCell % 9) - (firstCell % 9);
+                                directionLine = "";
+
+                                if (rowDiff == -1 && colDiff == 0) directionLine = "down";
+
+                                else if (rowDiff == 0 && colDiff == 1) directionLine = "right";
+
+                                else if (rowDiff == 1 && colDiff == 0) directionLine = "up";
+
+                                else if (rowDiff == 0 && colDiff == -1) directionLine = "left";
+
+
 
                                 DrawLineBetweenSquares(square, square2);
                                 visited[newFirstCell] = true;
                                visitedThisCage.Add(newFirstCell); // Add to visited this cage
-                           }
+                                directionLine = "";
+                            }
 
                         }
-                        UnityEngine.Debug.Log("thermo Cells: ");
-                        foreach (var cell in cageCells)
-                        {
-                            int x = cell / 9;
-                            int y = cell % 9;
-                            UnityEngine.Debug.Log($"Cell {cell} -> Grid[{x}, {y}] = {grid[x, y]}");
-                        }
+                       
 
                         loopCounter++;
                         if (loopCounter >= 4)
@@ -791,7 +823,7 @@ public class SudokuGrid : MonoBehaviour
                         int firstCellIndex = cageCells[0];
                         var firstSquare = grid_squares_[firstCellIndex].GetComponent<GridSquare>();
 
-                        SpriteRenderer spriteRenderer = firstSquare.GetComponentInChildren<SpriteRenderer>();
+                        Image spriteRenderer = firstSquare.GetComponentInChildren<Image>();
 
 
                         // Deactivate the SpriteRenderer
@@ -891,27 +923,27 @@ public class SudokuGrid : MonoBehaviour
         Vector3 endPosition = new Vector3(square2.transform.position.x, square2.transform.position.y, z2);
 
 
-        float offset = 0.02f;
+        float offset = 0.03f;
 
         startPosition.x -= offset;
         endPosition.x -= offset;
         
-        if (direction == "up")
+        if (directionLine == "up")
         {
             startPosition.y -= 0.1f;
             endPosition.y += 0.1f;
         }
-        else if (direction == "down")
+        else if (directionLine == "down")
         {
             startPosition.y += 0.1f;
             endPosition.y -= 0.1f;
         }
-        else if (direction == "left")
+        else if (directionLine == "left")
         {
             startPosition.x -= 0.1f;
             endPosition.x += 0.1f;
         }
-        else if (direction == "right")
+        else if (directionLine == "right")
         {
             startPosition.x += 0.1f;
             endPosition.x -= 0.1f;
@@ -944,22 +976,22 @@ public class SudokuGrid : MonoBehaviour
 
         startPosition.x -= offset;
         endPosition.x -= offset;
-        if (direction == "up")
+        if (directionLine == "up")
         {
             startPosition.y += 0.2f;
             endPosition.y -= 0.12f;
         }
-        else if (direction == "down")
+        else if (directionLine == "down")
         {
             startPosition.y -= 0.12f;
             endPosition.y += 0.2f;
         }
-        else if (direction == "left")
+        else if (directionLine == "left")
         {
             startPosition.x += 0.16f;
             endPosition.x -= 0.16f;
         }
-        else if (direction == "right")
+        else if (directionLine == "right")
         {
             startPosition.x -= 0.16f;
             endPosition.x += 0.16f;

@@ -33,7 +33,7 @@ public class LoadingScene : MonoBehaviour
         animationCoroutine = StartCoroutine(AnimateImage());
 
         // Wait for 2 seconds to ensure the animation has played
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.9f);
 
         // Continue waiting until the loading is complete
         while (!operation.isDone)

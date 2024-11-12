@@ -1702,7 +1702,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: df0cb8110926e90409b93716dea4cd1d, type: 3}
   - {fileID: 21300000, guid: f8962285aa8287d4b8307a4878dcf47e, type: 3}
   - {fileID: 21300000, guid: 3d7ea907298a7a74e922c6cc12009917, type: 3}
-  frameRate: 0.1
+  frameRate: 0.08
 --- !u!4 &1393985284
 Transform:
   m_ObjectHideFlags: 0
