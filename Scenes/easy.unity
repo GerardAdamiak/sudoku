@@ -155,6 +155,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: ed183f39f0765d4418fd3fb103c6ede1, type: 3}
   sprite2: {fileID: 21300000, guid: af30246a77d8b0f4e8524590a77901d3, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!212 &289944833
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -376,7 +379,7 @@ Transform:
   m_GameObject: {fileID: 388609216}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -400.00006, y: 710, z: -16702.9}
+  m_LocalPosition: {x: -400.0001, y: 710.00006, z: 0}
   m_LocalScale: {x: 40.000267, y: 40.000267, z: 40.000267}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -396,6 +399,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: 37487cdcfa606c44c97e44ee48988bf0, type: 3}
   sprite2: {fileID: 21300000, guid: b94569b114156e343b266f04fbbe16b5, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &388609219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,7 +561,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -0.030029297, y: -0.50979614}
+  m_AnchoredPosition: {x: -0.030029297, y: -0.5097656}
   m_SizeDelta: {x: 0.049987793, y: -0.070007324}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &461736359
@@ -871,7 +877,7 @@ Transform:
   m_GameObject: {fileID: 747687979}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 710, z: -18331.87}
+  m_LocalPosition: {x: 0, y: 710, z: 0}
   m_LocalScale: {x: 81.90483, y: 81.90483, z: 120.66628}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -991,8 +997,8 @@ RectTransform:
   - {fileID: 461736358}
   - {fileID: 1003103821}
   - {fileID: 677406680}
-  - {fileID: 388609217}
   - {fileID: 747687982}
+  - {fileID: 388609217}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1020,6 +1026,7 @@ MonoBehaviour:
   square_scale: 1
   squaresToDelete: 36
   selectedCells: []
+  grid_squares_: []
   canvas: {fileID: 953300707}
   previous: {fileID: 388609216}
   diff: {fileID: 747687979}

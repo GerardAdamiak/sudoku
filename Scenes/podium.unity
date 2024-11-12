@@ -416,6 +416,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: b8df29474dd463347a37fdfcb0359ad1, type: 3}
   sprite2: {fileID: 21300000, guid: f3fc5190a81df8b448c86522206977d3, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &177525833
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,6 +602,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: ed183f39f0765d4418fd3fb103c6ede1, type: 3}
   sprite2: {fileID: 21300000, guid: af30246a77d8b0f4e8524590a77901d3, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!212 &358766584
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -826,6 +832,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: 4132226bc7a3c384fa2abbe4c2a09c99, type: 3}
   sprite2: {fileID: 21300000, guid: 93c0d337d5d49b448b328751e58721cf, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &506064545
 GameObject:
   m_ObjectHideFlags: 0
@@ -1061,6 +1070,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: 5b66d586bb7a2e34dae04cb45204a4d9, type: 3}
   sprite2: {fileID: 21300000, guid: bd2d9222c2c0816408f54c5b44b6e720, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &979469350
 GameObject:
   m_ObjectHideFlags: 0
@@ -1086,14 +1098,14 @@ Transform:
   m_GameObject: {fileID: 979469350}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -585, y: -1264.42, z: 0}
+  m_LocalPosition: {x: 0, y: 1.7, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1588556949}
   - {fileID: 652266124}
   - {fileID: 393463142}
-  m_Father: {fileID: 1082246300}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &985210913
 GameObject:
@@ -1349,7 +1361,6 @@ RectTransform:
   - {fileID: 1530305549}
   - {fileID: 1618605173}
   - {fileID: 1157594443}
-  - {fileID: 979469351}
   - {fileID: 1967230653}
   - {fileID: 2129405476}
   - {fileID: 985210914}
@@ -1471,6 +1482,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: b8df29474dd463347a37fdfcb0359ad1, type: 3}
   sprite2: {fileID: 21300000, guid: f3fc5190a81df8b448c86522206977d3, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1157594442
 GameObject:
   m_ObjectHideFlags: 0
@@ -1903,6 +1917,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: 37487cdcfa606c44c97e44ee48988bf0, type: 3}
   sprite2: {fileID: 21300000, guid: b94569b114156e343b266f04fbbe16b5, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1247309182
 GameObject:
   m_ObjectHideFlags: 0
@@ -2363,6 +2380,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: b8df29474dd463347a37fdfcb0359ad1, type: 3}
   sprite2: {fileID: 21300000, guid: f3fc5190a81df8b448c86522206977d3, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1508436025
 GameObject:
   m_ObjectHideFlags: 0
@@ -2926,6 +2946,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: b9191d30d0af56746abf201016fd1ef8, type: 3}
   sprite2: {fileID: 21300000, guid: 4ea9343e9ea668649a8405bd34959638, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1618605172
 GameObject:
   m_ObjectHideFlags: 0
@@ -3538,5 +3561,6 @@ SceneRoots:
   - {fileID: 72316826}
   - {fileID: 1556085242}
   - {fileID: 1082246300}
+  - {fileID: 979469351}
   - {fileID: 1344178057}
   - {fileID: 358766585}

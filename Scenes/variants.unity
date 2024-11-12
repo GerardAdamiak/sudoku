@@ -223,6 +223,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: 9b5d0238a1f7185478f96cd025a8a7aa, type: 3}
   sprite2: {fileID: 21300000, guid: 278eccb4924a888499bc6c04da6fd3f3, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!61 &165691810
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -883,6 +886,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: ed183f39f0765d4418fd3fb103c6ede1, type: 3}
   sprite2: {fileID: 21300000, guid: af30246a77d8b0f4e8524590a77901d3, type: 3}
+  panel: {fileID: 2018451954}
+  lightColor: {r: 0.9372549, g: 0.9372549, b: 0.8156863, a: 1}
+  darkColor: {r: 0.18039216, g: 0.19215687, b: 0.21960784, a: 1}
 --- !u!212 &843563064
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1050,6 +1056,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: 0d7e65923eff5154cbc2089096c39d17, type: 3}
   sprite2: {fileID: 21300000, guid: e98f8a20a76813448bffba3b560b7645, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!61 &895945626
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1426,6 +1435,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: ce52d04d92455d8418ac7e8e7b4248db, type: 3}
   sprite2: {fileID: 21300000, guid: 832a8c7c1c6deef4bbf3da3c03e8381b, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!61 &1328998871
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1506,6 +1518,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: 37487cdcfa606c44c97e44ee48988bf0, type: 3}
   sprite2: {fileID: 21300000, guid: b94569b114156e343b266f04fbbe16b5, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &1386323069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1513,7 +1528,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1386323067}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 154a31183d9c67b4c81e7da3b2db2319, type: 3}
   m_Name: 
@@ -1639,7 +1654,7 @@ Transform:
   m_GameObject: {fileID: 1386323067}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.6153, y: 3.8953, z: 0}
+  m_LocalPosition: {x: -1.47, y: 3.77, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.5233665}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1911,6 +1926,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: 449afa6571acb1f4889aba8a7ac68782, type: 3}
   sprite2: {fileID: 21300000, guid: 872b4a5eebfe08b4a8e04cfdb42d4018, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!61 &1567430273
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2036,7 +2054,7 @@ Transform:
   m_GameObject: {fileID: 1737565128}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.86, y: 4.04, z: 0}
+  m_LocalPosition: {x: 1.58, y: 3.83, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2056,6 +2074,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: 9dde64010c8cca046be3b09452c889d3, type: 3}
   sprite2: {fileID: 21300000, guid: e71bb49cad2b1834886276fc9d0da200, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!61 &1737565132
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2329,6 +2350,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: 8fa609967c04bf84387823511b9c819a, type: 3}
   sprite2: {fileID: 21300000, guid: 1535b7eab1a94b84abebeec293d935e6, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!61 &1756756938
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2409,8 +2433,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00024414062}
-  m_SizeDelta: {x: -1361, y: -2945.3438}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2018451954
 MonoBehaviour:

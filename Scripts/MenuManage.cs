@@ -17,6 +17,7 @@ public class TouchToChangeScene : MonoBehaviour
     private string sudoku5;
     private SwipeDiff swipeDiff;
     private LoadingScene loadingScene;
+    private bool ifLoadingScene = false;
 
     void Start()
     {
@@ -86,7 +87,7 @@ public class TouchToChangeScene : MonoBehaviour
                             
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
                             loadingScene.LoadScene(13);
-                           
+                            ifLoadingScene = true;
                         }
                         else if (hit.collider.gameObject.CompareTag("backArrowMenu"))
                         {
@@ -97,21 +98,25 @@ public class TouchToChangeScene : MonoBehaviour
                         {
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
                             loadingScene.LoadScene(15);
+                            ifLoadingScene = true;
                         }
                         else if (hit.collider.gameObject.CompareTag("kropki"))
                         {
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
                             loadingScene.LoadScene(17);
+                            ifLoadingScene = true;
                         }
                         else if (hit.collider.gameObject.CompareTag("renban"))
                         {
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
                             loadingScene.LoadScene(16);
+                            ifLoadingScene = true;
                         }
                         else if (hit.collider.gameObject.CompareTag("killer"))
                         {
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
                             loadingScene.LoadScene(18);
+                            ifLoadingScene = true;
                         }
                         else if (hit.collider.gameObject.CompareTag("easy"))
                         {
@@ -121,11 +126,13 @@ public class TouchToChangeScene : MonoBehaviour
                             {
                                 // Code to execute if swipeDiff is not found (null)
                                 loadingScene.LoadScene(6);
+                                ifLoadingScene = true;
                             }
                             else if (swipeDiff.canClickDiff == true)
                             {
 
                                 loadingScene.LoadScene(6);
+                                ifLoadingScene = true;
                             }
                         }
                         else if (hit.collider.gameObject.CompareTag("medium"))
@@ -136,11 +143,13 @@ public class TouchToChangeScene : MonoBehaviour
                             {
                                 // Code to execute if swipeDiff is not found (null)
                                 loadingScene.LoadScene(7);
+                                ifLoadingScene = true;
                             }
                             else if (swipeDiff.canClickDiff == true)
                             {
 
                                 loadingScene.LoadScene(7);
+                                ifLoadingScene = true;
                             }
                             
                         }
@@ -152,11 +161,13 @@ public class TouchToChangeScene : MonoBehaviour
                             {
                                 // Code to execute if swipeDiff is not found (null)
                                 loadingScene.LoadScene(8);
+                                ifLoadingScene = true;
                             }
                             else if (swipeDiff.canClickDiff == true)
                             {
 
                                 loadingScene.LoadScene(8);
+                                ifLoadingScene = true;
                             }
                             
                         }
@@ -262,7 +273,7 @@ public class TouchToChangeScene : MonoBehaviour
                             sceneToLoad = test;
                         }
 
-                        if (sceneToLoad != null)
+                        if (sceneToLoad != null || ifLoadingScene == true)
                         {
                             StartCoroutine(PlaySoundAndChangeScene(sceneToLoad));
                         }
@@ -279,7 +290,7 @@ public class TouchToChangeScene : MonoBehaviour
             // Play the sound or do whatever is needed with it
             audioSource.PlayOneShot(clickSound);
             yield return new WaitForSeconds(clickSound.length);
-            SceneManager.LoadScene(sceneName);
+            if(ifLoadingScene != true)SceneManager.LoadScene(sceneName);
         }
         
     

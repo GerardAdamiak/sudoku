@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using Unity.VisualScripting;
 
+
 public class SudokuGrid : MonoBehaviour
 {
     //dodac:
@@ -29,7 +30,7 @@ public class SudokuGrid : MonoBehaviour
     public float square_scale = 1.0f;
     public int squaresToDelete;
     public List<GridSquare> selectedCells = new();
-    private List<GameObject> grid_squares_ = new();
+    public List<GameObject> grid_squares_ = new();
     public Canvas canvas;
     public GameObject previous;
     public GameObject diff;
@@ -818,7 +819,7 @@ public class SudokuGrid : MonoBehaviour
     {
         GetCurrentGridState();
 
-        FixZPosition();
+    
 
         ChangeColor();
         ChangeKillerColor();
@@ -873,16 +874,28 @@ public class SudokuGrid : MonoBehaviour
         LineRenderer lineRenderer = lineObject.GetComponent<LineRenderer>();
 
         // Define the pixel offset (in world units)
+        // Get the RawImage and TextMeshProUGUI components from the children of square1 and square2
+        RawImage image1 = square1.GetComponentInChildren<RawImage>();
+        RawImage image2 = square2.GetComponentInChildren<RawImage>();
+
+        TextMeshProUGUI text1 = square1.GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI text2 = square2.GetComponentInChildren<TextMeshProUGUI>();
+
+        // Calculate the average Z positions
+        float z1 = (image1.transform.position.z + text1.transform.position.z) / 2;
+        float z2 = (image2.transform.position.z + text2.transform.position.z) / 2;
 
 
         // Get the start and end positions
-        Vector3 startPosition = square1.transform.position;
-        Vector3 endPosition = square2.transform.position;
+        Vector3 startPosition = new Vector3(square1.transform.position.x, square1.transform.position.y, z1);
+        Vector3 endPosition = new Vector3(square2.transform.position.x, square2.transform.position.y, z2);
+
 
         float offset = 0.02f;
 
         startPosition.x -= offset;
         endPosition.x -= offset;
+        
         if (direction == "up")
         {
             startPosition.y -= 0.1f;
@@ -905,10 +918,11 @@ public class SudokuGrid : MonoBehaviour
         }
         // Move both ends of the line to the left (along the x-axis)
 
-
+        
         // Set the start and end positions of the line
         lineRenderer.SetPosition(0, startPosition);
         lineRenderer.SetPosition(1, endPosition);
+        
     }
 
     private void DrawBlackDotBetweenSquares(GridSquare square1, GridSquare square2)
@@ -1064,7 +1078,7 @@ public class SudokuGrid : MonoBehaviour
                 grid_squares_[^1].transform.localScale = new Vector3(
                     square_scale,
                     square_scale,
-                    square_scale
+                    1
                 );
             }
         }
@@ -1111,10 +1125,18 @@ public class SudokuGrid : MonoBehaviour
             }
             var pos_x_offset = offset.x * column_number + row_offset * counterX;
             var pos_y_offset = offset.y * row_number + column_offset * counterY;
-            square.GetComponent<RectTransform>().anchoredPosition = new Vector3(
+            square.GetComponent<RectTransform>().anchoredPosition = new Vector2(
                 start_position.x + pos_x_offset + 10,
                 start_position.y - pos_y_offset
             );
+
+            // Store the current X and Y values
+            float x = square.transform.position.x;
+            float y = square.transform.position.y;
+
+            // Update the position, keeping X and Y the same, and setting Z to 90
+            square.transform.position = new Vector3(x, y, 90);
+
 
             column_number++;
             if (column_number % 3 == 0)
@@ -1130,7 +1152,7 @@ public class SudokuGrid : MonoBehaviour
         // Set the image's position by defining offsets for the corners
         rectTransform.offsetMin = new Vector2(-400, -310); // Bottom-left corner
         rectTransform.offsetMax = new Vector2(510, 600); // Top-right corner
-        image.transform.position = new Vector3(0, 1, 0);
+        image.transform.position = new Vector3(0, 1, 90);
         // Ensure the image stretches fully
         //rectTransform.anchorMin = new Vector2(0, 0);
         //rectTransform.anchorMax = new Vector2(1, 1);

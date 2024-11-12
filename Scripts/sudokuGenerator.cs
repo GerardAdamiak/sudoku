@@ -50,7 +50,7 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         squareRawImage = GetComponentInChildren<RawImage>(); // Get the RawImage component from children
         squareRenderer = GetComponent<Renderer>();
         // Store the original texture
-        originalTexture = squareRawImage.texture;
+        if(squareRawImage != null)originalTexture = squareRawImage.texture;
 
     }
     
