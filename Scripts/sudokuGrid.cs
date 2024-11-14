@@ -324,11 +324,36 @@ public class SudokuGrid : MonoBehaviour
                                                 lineCells.Add(newCell);
                                                 var square = grid_squares_[newCell].GetComponent<GridSquare>();
                                                 var square2 = grid_squares_[currentCell].GetComponent<GridSquare>();
-                                                
+
+
+                                                int rowDiff = (newCell / 9) - (currentCell / 9);
+                                                int colDiff = (newCell % 9) - (currentCell % 9);
+                                                directionLine = "";
+
+                                                if (rowDiff == -1 && colDiff == 0) directionLine = "down";
+
+                                                else if (rowDiff == 0 && colDiff == 1) directionLine = "right";
+
+                                                else if (rowDiff == 1 && colDiff == 0) directionLine = "up";
+
+                                                else if (rowDiff == 0 && colDiff == -1) directionLine = "left";
+
+                                                else if (rowDiff == 1 && colDiff == 1) directionLine = "right-up";
+
+                                                else if (rowDiff == -1 && colDiff == 1) directionLine = "right-down";
+
+                                                else if (rowDiff == 1 && colDiff == -1) directionLine = "left-up";
+
+                                                else if (rowDiff == -1 && colDiff == -1) directionLine = "left-down";
+
+
+
+
 
                                                 DrawLineBetweenSquares(square, square2);
                                                 visited[newCell] = true;
                                                 visitedThisLine.Add(newCell); // Add to visited this cage
+                                                directionLine = "";
                                             }
                                         }
                                     }
@@ -948,9 +973,37 @@ public class SudokuGrid : MonoBehaviour
             startPosition.x += 0.1f;
             endPosition.x -= 0.1f;
         }
+        else if (directionLine == "left-up")
+        {
+            startPosition.y -= 0.1f;
+            endPosition.y += 0.1f;
+            startPosition.x -= 0.1f;
+            endPosition.x += 0.1f;
+        }
+        else if (directionLine == "left-down")
+        {
+            startPosition.y += 0.1f;
+            endPosition.y -= 0.1f;
+            startPosition.x -= 0.1f;
+            endPosition.x += 0.1f;
+        }
+        else if (directionLine == "right-up")
+        {
+            startPosition.x += 0.1f;
+            endPosition.x -= 0.1f;
+            startPosition.y -= 0.1f;
+            endPosition.y += 0.1f;
+        }
+        else if (directionLine == "right-down")
+        {
+            startPosition.x += 0.1f;
+            endPosition.x -= 0.1f;
+            startPosition.y += 0.1f;
+            endPosition.y -= 0.1f;
+        }
         // Move both ends of the line to the left (along the x-axis)
 
-        
+
         // Set the start and end positions of the line
         lineRenderer.SetPosition(0, startPosition);
         lineRenderer.SetPosition(1, endPosition);

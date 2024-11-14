@@ -521,6 +521,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: ed183f39f0765d4418fd3fb103c6ede1, type: 3}
   sprite2: {fileID: 21300000, guid: af30246a77d8b0f4e8524590a77901d3, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!212 &358403583
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -696,6 +699,7 @@ MonoBehaviour:
   square_scale: 1
   squaresToDelete: 45
   selectedCells: []
+  grid_squares_: []
   canvas: {fileID: 660208938}
   previous: {fileID: 1279194658}
   diff: {fileID: 2130026451}
@@ -1011,7 +1015,7 @@ GameObject:
   - component: {fileID: 1279194660}
   m_Layer: 0
   m_Name: previous
-  m_TagString: backArrowSolve
+  m_TagString: backSudokuDiff
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1045,6 +1049,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: 37487cdcfa606c44c97e44ee48988bf0, type: 3}
   sprite2: {fileID: 21300000, guid: b94569b114156e343b266f04fbbe16b5, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &1279194661
 MonoBehaviour:
   m_ObjectHideFlags: 0

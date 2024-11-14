@@ -249,6 +249,37 @@ public class TouchToChangeScene : MonoBehaviour
                             PlayerPrefs.SetInt("number", 2);
                             sceneToLoad = "Custom";
                         }
+                        else if (hit.collider.gameObject.CompareTag("sudokuDiff"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            
+                            swipeDiff = FindObjectOfType<SwipeDiff>();
+                            if (swipeDiff == null)
+                            {
+                                // Code to execute if swipeDiff is not found (null)
+                                sceneToLoad = "sudokuDiffs";
+                            }
+                            else if (swipeDiff.canClickDiff == true)
+                            {
+
+                                sceneToLoad = "sudokuDiffs";
+                            }
+                        }
+                        else if (hit.collider.gameObject.CompareTag("backSudokuDiff"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            swipeDiff = FindObjectOfType<SwipeDiff>();
+                            if (swipeDiff == null)
+                            {
+                                // Code to execute if swipeDiff is not found (null)
+                                sceneToLoad = "sudokuDiffs";
+                            }
+                            else if (swipeDiff.canClickDiff == true)
+                            {
+
+                                sceneToLoad = "sudokuDiffs";
+                            }
+                        }
                         else if (hit.collider.gameObject.CompareTag("sudoku3"))
                         {
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);

@@ -8,7 +8,7 @@ public class SwipeDiff : MonoBehaviour
 
     public bool isDragging = false;
     public bool canClickDiff = true;
-    private float swipeThreshold = 50f; // Minimum distance for a swipe to be recognized
+    private float swipeThreshold = 20; // Minimum distance for a swipe to be recognized
     public GameObject[] elements; // Array of elements
     private int currentIndex = 0;
 
@@ -69,7 +69,7 @@ public class SwipeDiff : MonoBehaviour
         // Move each element horizontally along with the swipe
         
             elements[currentIndex].transform.localPosition = initialPositions[currentIndex] + new Vector3((deltaX / 150), 0, 0);
-        elements[currentIndex + 5].transform.localPosition = initialPositions[currentIndex + 5] + new Vector3((deltaX / 250), 0, 0);
+        elements[currentIndex + 3].transform.localPosition = initialPositions[currentIndex + 3] + new Vector3((deltaX / 250), 0, 0);
 
     }
 
@@ -105,7 +105,7 @@ public class SwipeDiff : MonoBehaviour
     void OnSwipeLeft()
     {
         currentIndex++;
-        if (currentIndex >= elements.Length - 5)
+        if (currentIndex >= elements.Length - 3)
         {
             currentIndex = 0; // Loop back to the first element
         }
@@ -117,7 +117,7 @@ public class SwipeDiff : MonoBehaviour
         currentIndex--;
         if (currentIndex < 0)
         {
-            currentIndex = 4; // Loop back to the last element
+            currentIndex = 2; // Loop back to the last element
         }
         ShowElement(currentIndex);
     }
@@ -132,6 +132,6 @@ public class SwipeDiff : MonoBehaviour
 
         // Enable the current element and the next ones in the list (e.g. showing 5 elements)
         elements[index].SetActive(true);
-        elements[index + 5].SetActive(true);
+        elements[index + 3].SetActive(true);
     }
 }
