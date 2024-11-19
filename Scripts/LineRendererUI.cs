@@ -145,7 +145,7 @@ public class LineRendererUi : MonoBehaviour
             // If both TMP_Text components are found, copy the properties
             if (textComponent != null && textComponent2 != null)
             {
-                textComponent.color = Color.black;
+                
                 textComponent.text = textComponent2.text;           // Copy text
                 textComponent.fontSize = textComponent2.fontSize;   // Copy font size
                 textComponent.color = textComponent2.color;         // Copy color

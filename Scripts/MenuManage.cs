@@ -18,11 +18,29 @@ public class TouchToChangeScene : MonoBehaviour
     private SwipeDiff swipeDiff;
     private LoadingScene loadingScene;
     private bool ifLoadingScene = false;
+    private int PlayCount;
+    public bool ifFirst;
 
     void Start()
     {
+        if (!PlayerPrefs.HasKey("PlayCount"))
+        {
+         
+            ifFirst = true;
+
+
+            if (SceneManager.GetActiveScene().name != "savedList" && SceneManager.GetActiveScene().name != "Custom" && SceneManager.GetActiveScene().name != "mainMenu" && SceneManager.GetActiveScene().name != "solve")
+            {
+                ifFirst = false;
+                PlayerPrefs.SetInt("PlayCount", 1);
+
+
+            }
+        }
        
+        
        
+        
         whichSet = PlayerPrefs.GetString("whichSet");
         sudoku1 = PlayerPrefs.GetString("Sudoku1");
         sudoku2 = PlayerPrefs.GetString("Sudoku2");
