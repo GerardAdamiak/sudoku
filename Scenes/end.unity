@@ -155,6 +155,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: ed183f39f0765d4418fd3fb103c6ede1, type: 3}
   sprite2: {fileID: 21300000, guid: af30246a77d8b0f4e8524590a77901d3, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!212 &43869521
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -300,6 +303,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: b8df29474dd463347a37fdfcb0359ad1, type: 3}
   sprite2: {fileID: 21300000, guid: f3fc5190a81df8b448c86522206977d3, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!212 &58910966
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -535,6 +541,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: e4ba4932e946027448d1fcfcae48532d, type: 3}
   sprite2: {fileID: 21300000, guid: f48f02bae98cca041a3e173d5721cfca, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &510089088
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,12 +726,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 946, y: 2048}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -737,8 +746,8 @@ Canvas:
   m_GameObject: {fileID: 530998103}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1217143943}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -850,6 +859,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: b8df29474dd463347a37fdfcb0359ad1, type: 3}
   sprite2: {fileID: 21300000, guid: f3fc5190a81df8b448c86522206977d3, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!212 &617660822
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -932,6 +944,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 0}
   clickSound: {fileID: 0}
+  ifFirst: 0
 --- !u!1 &697056502
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,6 +1105,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: e59e65d7cddc2e440a6b43a870757e52, type: 3}
   sprite2: {fileID: 21300000, guid: a015632dc76b3e647a84a8564de80da0, type: 3}
+  panel: {fileID: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  darkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!212 &1082686772
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1367,6 +1383,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 697056503}
   clickSound: {fileID: 8300000, guid: 61724ff32ad2a594d9e8773210be37f4, type: 3}
+  ifFirst: 0
 --- !u!1 &1503590822
 GameObject:
   m_ObjectHideFlags: 0
@@ -1433,8 +1450,8 @@ Transform:
   m_GameObject: {fileID: 1507336913}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 879, z: -5.3067474}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 719, z: -5.3067474}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 510089089}

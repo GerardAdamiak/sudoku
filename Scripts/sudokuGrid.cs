@@ -24,8 +24,8 @@ public class SudokuGrid : MonoBehaviour
     private string[,] currentGrid = new string[9, 9];
     public char[,] currentGridInt = new char[9, 9];
     private int[,] temp = new int[9, 9];
-    public int columns = 9;
-    public int rows = 9;
+    public int columns = 4;
+    public int rows = 4;
     public float every_square_offset = 0.0f;
     public GameObject grid_square;
     public Vector2 start_position = new(0.0f, 0.0f);
@@ -96,7 +96,7 @@ public class SudokuGrid : MonoBehaviour
         }
         
         currentSceneName = SceneManager.GetActiveScene().name;
-        if (currentSceneName == "tutorial") sudokuLog = "000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+        if (currentSceneName == "tutorial") sudokuLog = "007008000050073846300000007084000002700042390602005071870904065020780010406000780";
         ResolveLog();
         if (grid_square.GetComponent<GridSquare>() == null)
             UnityEngine.Debug.LogError(

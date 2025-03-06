@@ -1548,6 +1548,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1751480842}
   clickSound: {fileID: 8300000, guid: 61724ff32ad2a594d9e8773210be37f4, type: 3}
+  ifFirst: 0
 --- !u!61 &1386323071
 BoxCollider2D:
   m_ObjectHideFlags: 0
