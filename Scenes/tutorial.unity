@@ -1122,19 +1122,25 @@ MonoBehaviour:
   - You can see that there are 3 thermos in grid
   - On thermo, digits have to rise from the bulb to the end
   - Type in digits in the yellow squares
-  - Let's start from the bulb of the thermo
-  - What would happen if we started from too high digit?
-  - We cannot fill the end of thermo, since 9 is the biggest number
-  - Fill the notes in bulb, type in 12, since 3 is too high
-  - Now let's go up the thermo, type in 23 in next cell
-  - Fill rest of thermo with notes
-  - Good job, now is time to do German Whispers
-  - There are 3 Whisper lines in the grid
-  - Adjacent digits on whispers lines need to differ by at least 5
-  - Because of that, digits on line alternate between high and low
-  - We can fill the notes for german whispers
-  - Next on, we have renban lines
-  cycleInterval: 5
+  - Amazing! You did all thermos! Now let's look at renbans
+  - You can see 3 renban lines on the grid
+  - For each line, we have to find digit, that is missing
+  - Look at this line, we have 2346789, what is missing?
+  - That's right, 5 was missing. Now try and fill other renbans
+  - Super! All renbans are done, now let's look at dots (kropki)
+  - In grid you can find one black dot and one white dot.
+  - Digits connected by black dot need to be in 2:1 ratio. Digits connected with
+    white dot, need to differ by 1
+  - Type in digits in highlighted places, based on black/white kropki
+  - You got it! Last variant ahead of us, German Whispers
+  - There are 3 German Whisper lines on the grid.
+  - On the line, digits that are next to each other, must differ by at least 5
+  - Let's look at this line. Can you find missing digits?
+  - Great work! Now try to do other Whisper Lines, finish is close!
+  - You finished variant part of this sudoku! Now finish rest of the grid using normal
+    sudoku rules
+  - You finished tutorial, good job!
+  cycleInterval: 2
   tutoSquare: {fileID: 2800000, guid: 476542b4e041369429bf4429f4036f50, type: 3}
   normalSquare: {fileID: 2800000, guid: 69f7b197b916b6641a7d6500678078d5, type: 3}
 --- !u!1 &950495213

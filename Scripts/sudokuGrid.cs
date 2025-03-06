@@ -66,6 +66,7 @@ public class SudokuGrid : MonoBehaviour
     private bool ifSingleCage = false;
     public Image blackSquare;
     private int randomDigit;
+    public bool tutorialDone = false;
     void Start()
     {
         
@@ -96,7 +97,7 @@ public class SudokuGrid : MonoBehaviour
         }
         
         currentSceneName = SceneManager.GetActiveScene().name;
-        if (currentSceneName == "tutorial") sudokuLog = "007008000050073846300000007084000002700042390602005071870904065020780010406000780";
+        if (currentSceneName == "tutorial") sudokuLog = "007008000050073846300000007084000002700042390602005071870904265020780010406000700";
         ResolveLog();
         if (grid_square.GetComponent<GridSquare>() == null)
             UnityEngine.Debug.LogError(
@@ -1680,8 +1681,8 @@ public class SudokuGrid : MonoBehaviour
                     endChecker = false;
             }
         }
-
-        if (endChecker)
+        if (endChecker && currentSceneName == "tutorial") tutorialDone = true;
+        if (endChecker && currentSceneName != "tutorial")
         {
             if (done == false)
             {
