@@ -1,6 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -30,10 +32,16 @@ public class TextCycler : MonoBehaviour
     private DigitKeyboard digitKeyboard;
     public Texture tutoSquare;
     public Texture normalSquare;
+    public Image image;
+    public Image image2;
     private Texture prevText1, prevText2, prevText3, prevText4, prevText5, prevText6, prevText7;
 
+    public EventSystem eventSystem;
+    public GraphicRaycaster raycaster;
+    private LoadingScene loadingScene;
+
     // Current index in the array
-    private int currentIndex = 0;
+    public int currentIndex = 0;
 
     private void Start()
     {
@@ -51,16 +59,63 @@ public class TextCycler : MonoBehaviour
             return;
         }
 
+
         // Start the text cycling coroutine
         StartCoroutine(CycleText());
     }
 
+    private void Increment()
+    {
+       currentIndex++;
+    }
+
+    public void Decrement()
+    {
+        currentIndex--;
+    }
+
+    void Update()
+    {
+
+        if (Input.touchCount > 0)
+        {
+            for (int i = 0; i < Input.touchCount; i++)
+            {
+                if (Input.GetTouch(i).phase == TouchPhase.Ended)
+                {
+                    PointerEventData pointerData = new PointerEventData(eventSystem)
+                    {
+                        position = Input.GetTouch(i).position
+                    };
+
+                    List<RaycastResult> results = new List<RaycastResult>();
+                    raycaster.Raycast(pointerData, results);
+
+                    foreach (RaycastResult result in results)
+                    {
+                        if (result.gameObject.CompareTag("tutoPrev"))
+                        {
+                            Decrement();
+                            Debug.Log(currentIndex);
+                            break;
+                        }
+                        else if (result.gameObject.CompareTag("tutoNext"))
+                        {
+                            Increment();
+                            Debug.Log(currentIndex);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private IEnumerator CycleText()
     {
-        sudokuGrid = FindObjectOfType<SudokuGrid>();
-        digitKeyboard = FindObjectOfType<DigitKeyboard>();
         
-
+        
+        
 
         prevText1 = sudokuGrid.grid_squares_[31].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture;
         prevText2 = sudokuGrid.grid_squares_[40].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture;
@@ -71,7 +126,7 @@ public class TextCycler : MonoBehaviour
         prevText7 = sudokuGrid.grid_squares_[57].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture;
 
 
-        while (true)
+        while (currentIndex != 29)
         {
             if (currentIndex == 3)
             {
@@ -102,11 +157,12 @@ public class TextCycler : MonoBehaviour
             if (currentIndex == 5)
             {
                 sudokuGrid.grid_squares_[31].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-
+                
             }
 
             if (currentIndex == 6)
             {
+                
                
                 //targetSpriteRenderer.enabled = true;
                 // Wait until the condition is met
@@ -117,6 +173,7 @@ public class TextCycler : MonoBehaviour
                     yield return new WaitForSeconds(0.1f);
                    
                 }
+                
             }
             if (currentIndex == 7)
             {
@@ -437,12 +494,12 @@ public class TextCycler : MonoBehaviour
             }
 
             // Set the text to the current array element
-            tmpText.text = textArray[currentIndex];
+            if(currentIndex >= 0) tmpText.text = textArray[currentIndex];
 
             
 
             // Increment the index and loop back if necessary
-            currentIndex = (currentIndex + 1) % textArray.Length;
+            //currentIndex = currentIndex + 1;
 
             // Wait for the specified interval
             yield return new WaitForSeconds(cycleInterval);

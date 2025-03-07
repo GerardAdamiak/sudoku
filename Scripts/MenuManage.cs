@@ -25,11 +25,11 @@ public class TouchToChangeScene : MonoBehaviour
     {
         if (!PlayerPrefs.HasKey("PlayCount"))
         {
-         
+            if(SceneManager.GetActiveScene().name != "tutorial") SceneManager.LoadScene("tutorial");
             ifFirst = true;
 
 
-            if (SceneManager.GetActiveScene().name != "savedList" && SceneManager.GetActiveScene().name != "Custom" && SceneManager.GetActiveScene().name != "mainMenu" && SceneManager.GetActiveScene().name != "solve")
+            if (SceneManager.GetActiveScene().name != "savedList" && SceneManager.GetActiveScene().name != "Custom" && SceneManager.GetActiveScene().name != "mainMenu" && SceneManager.GetActiveScene().name != "solve" && SceneManager.GetActiveScene().name != "tutorial")
             {
                 ifFirst = false;
                 PlayerPrefs.SetInt("PlayCount", 1);
@@ -59,6 +59,7 @@ public class TouchToChangeScene : MonoBehaviour
     {
         if (Input.touchCount > 0)
         {
+            
             for (int i = 0; i < Input.touchCount; i++)
             {
                 if (Input.GetTouch(i).phase == TouchPhase.Ended)
@@ -70,6 +71,7 @@ public class TouchToChangeScene : MonoBehaviour
 
                     if (hit.collider != null)
                     {
+                        
                         string sceneToLoad = null;
                         loadingScene = FindObjectOfType<LoadingScene>();
 
@@ -321,6 +323,7 @@ public class TouchToChangeScene : MonoBehaviour
                             string test = PlayerPrefs.GetString("PreviousScene");
                             sceneToLoad = test;
                         }
+                        
 
                         if (sceneToLoad != null || ifLoadingScene == true)
                         {
