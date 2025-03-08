@@ -160,8 +160,17 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     {
 
         squareRawImage = GetComponentInChildren<RawImage>();
-     
-            squareRawImage.texture = selectedTexture;
+
+        if (squareRawImage == null)
+        {
+            Debug.LogError("squareRawImage is NULL! Did you assign it in the Inspector?");
+        }
+        if (selectedTexture == null)
+        {
+            Debug.LogError("selectedTexture is NULL! Check if it was properly loaded.");
+        }
+
+        squareRawImage.texture = selectedTexture;
         
         
     }
