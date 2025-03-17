@@ -1414,11 +1414,11 @@ MonoBehaviour:
   - Welcome to Sudoku Variants Tutorial
   - I'm gonna guide you to solve your first variant puzzle
   - 'Let''s start off with cages:'
-  - In the grid you can see 2 cages with dotted lines
+  - In the grid you can see 3 cages with dotted lines
   - Make sure that digits in a cage sum up to total given in the corner of cage.
   - Type in missing digit in 7 cage
   - Good job! 1+2+4=7, so our cage is finished
-  - Now type in missing digit in 30 cage
+  - Now type in missing digit in 14 cage
   - Good job! Let's move on to thermos
   - You can see that there are 3 thermos in grid
   - On thermo, digits have to rise from the bulb to the end
@@ -1428,25 +1428,25 @@ MonoBehaviour:
   - For each line, we have to find digit, that is missing
   - Look at this line, we have 2346789, what is missing?
   - That's right, 5 was missing. Now try and fill other renbans
-  - Super! All renbans are done, now let's look at dots (kropki)
-  - In grid you can find one black dot and one white dot.
-  - Digits connected by black dot need to be in 2:1 ratio. Digits connected with
-    white dot, need to differ by 1
-  - Type in digits in highlighted places, based on black/white kropki
-  - You got it! Last variant ahead of us, German Whispers
+  - Super! All renbans are done, now let's look at German Whispers
   - There are 3 German Whisper lines on the grid.
   - On the line, digits that are next to each other, must differ by at least 5
   - Let's look at this line. Can you find missing digits?
   - Great work! Now try to do other Whisper Lines, finish is close!
+  - You got it! Last variant ahead of us, Kropki (Dots)
+  - In grid you can find one black dot and one white dot.
+  - Digits connected by black dot need to be in 2:1 ratio. Digits connected with
+    white dot, need to differ by 1
+  - Type in digits in highlighted places, based on black/white kropki
   - You finished variant part of this sudoku! Now finish rest of the grid using normal
     sudoku rules
   - You finished tutorial, good job!
   - You finished tutorial, good job!
   cycleInterval: 0.2
   tutoSquare: {fileID: 2800000, guid: 476542b4e041369429bf4429f4036f50, type: 3}
-  normalSquare: {fileID: 2800000, guid: 69f7b197b916b6641a7d6500678078d5, type: 3}
-  image: {fileID: 294362306}
-  image2: {fileID: 973225326}
+  normalSquare: {fileID: 2800000, guid: e01ee4c1fae9629438a75d6b93905019, type: 3}
+  image: {fileID: 294362304}
+  image2: {fileID: 973225323}
   eventSystem: {fileID: 435657987}
   raycaster: {fileID: 935473020}
   currentIndex: 0

@@ -87,7 +87,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 2a899a516f7047248afa6c7c5cd67a65, type: 3}
   - {fileID: 2800000, guid: 0c95bbe61434ff948b336f37a128e582, type: 3}
   - {fileID: 2800000, guid: 0858a56097923ea48b84c7ed5cf33985, type: 3}
-  - {fileID: 2800000, guid: 747fab44667dc5d45b2285ccb7fe494c, type: 3}
+  - {fileID: 2800000, guid: 01c450a6de4423649819b0b962d216a1, type: 3}
   ifDigitFill: 0
 --- !u!61 &5818397811844253585
 BoxCollider2D:

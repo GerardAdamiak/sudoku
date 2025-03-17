@@ -67,6 +67,208 @@ public class SudokuGrid : MonoBehaviour
     public Image blackSquare;
     private int randomDigit;
     public bool tutorialDone = false;
+    private bool ifFirstCage = true;
+
+
+    public void DrawGerman()
+    {
+        var squareIndices = new int[]
+            {
+        11, 12, 13, 4, 5, 14, 23, 24, 15, // First group
+        72, 73, 64, 55, 56, 57, 79, 80, 0, 9, 18, 19, 10, 1, 2, 11, 31, 30, 29, 28, 27, 68, 69, 27, 36, 45, 54, 63, 72, 15, 16, 17, 26, 35, 34, 43, 42, 69, 78, 79    // Second group
+            };
+
+        var directions = new string[]
+        {
+        "left", "left", "up", "left", "down", "down", "left", "up", // Directions for the first group
+        "left", "left", "up", "up", "left", "left", "left", "left"                 // Directions for the second group
+        };
+
+        // Get all the squares
+        var squares = squareIndices.Select(index => grid_squares_[index].GetComponent<GridSquare>()).ToArray();
+
+        // Draw lines between squares
+        for (int i = 0; i < 16; i++)
+        {
+            if (i != 8 && i != 14)
+            {
+                directionLine = directions[i];
+                DrawLineBetweenSquares(squares[i], squares[i + 1]);
+            }
+        }
+    }
+    public void DrawThermo()
+    {
+        var squareIndices = new int[]
+           {
+        11, 12, 13, 4, 5, 14, 23, 24, 15, // First group
+        72, 73, 64, 55, 56, 57, 79, 80, 0, 9, 18, 19, 10, 1, 2, 11, 31, 30, 29, 28, 27, 68, 69, 27, 36, 45, 54, 63, 72, 15, 16, 17, 26, 35, 34, 43, 42, 69, 78, 79    // Second group
+           };
+
+        var directions = new string[]
+        {
+        "left", "left", "up", "left", "down", "down", "left", "up", // Directions for the first group
+        "left", "left", "up", "up", "left", "left", "left", "left"                 // Directions for the second group
+        };
+
+        // Get all the squares
+        var squares = squareIndices.Select(index => grid_squares_[index].GetComponent<GridSquare>()).ToArray();
+
+        for (int i = 17; i < 31; i++)
+        {
+            if (i == 24 || i == 29) continue;
+            int rowDiff = (squareIndices[i] / 9) - (squareIndices[i + 1] / 9);
+            int colDiff = (squareIndices[i] % 9) - (squareIndices[i + 1] % 9);
+            directionLine = "";
+
+            if (rowDiff == -1 && colDiff == 0) directionLine = "down";
+
+            else if (rowDiff == 0 && colDiff == 1) directionLine = "right";
+
+            else if (rowDiff == 1 && colDiff == 0) directionLine = "up";
+
+            else if (rowDiff == 0 && colDiff == -1) directionLine = "left";
+
+            DrawThermoLineBetweenSquares(squares[i], squares[i + 1]);
+        }
+
+        var firstSquare = grid_squares_[0].GetComponent<GridSquare>();
+        var firstSquare2 = grid_squares_[31].GetComponent<GridSquare>();
+        var firstSquare3 = grid_squares_[68].GetComponent<GridSquare>();
+
+        Image spriteRenderer = firstSquare.GetComponentInChildren<Image>();
+        Image spriteRenderer2 = firstSquare2.GetComponentInChildren<Image>();
+        Image spriteRenderer3 = firstSquare3.GetComponentInChildren<Image>();
+
+
+        // Deactivate the SpriteRenderer
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = true;
+            spriteRenderer2.enabled = true;
+            spriteRenderer3.enabled = true;
+        }
+    }
+
+    public void DrawRenban()
+    {
+        var squareIndices = new int[]
+           {
+        11, 12, 13, 4, 5, 14, 23, 24, 15, // First group
+        72, 73, 64, 55, 56, 57, 79, 80, 0, 9, 18, 19, 10, 1, 2, 11, 31, 30, 29, 28, 27, 68, 69, 27, 36, 45, 54, 63, 72, 15, 16, 17, 26, 35, 34, 43, 42, 69, 78, 79    // Second group
+           };
+
+        var directions = new string[]
+        {
+        "left", "left", "up", "left", "down", "down", "left", "up", // Directions for the first group
+        "left", "left", "up", "up", "left", "left", "left", "left"                 // Directions for the second group
+        };
+
+        // Get all the squares
+        var squares = squareIndices.Select(index => grid_squares_[index].GetComponent<GridSquare>()).ToArray();
+
+        for (int i = 32; i < 48; i++)
+        {
+            if (i == 37 || i == 45) continue;
+            int rowDiff = (squareIndices[i] / 9) - (squareIndices[i + 1] / 9);
+            int colDiff = (squareIndices[i] % 9) - (squareIndices[i + 1] % 9);
+            directionLine = "";
+
+            if (rowDiff == -1 && colDiff == 0) directionLine = "down";
+
+            else if (rowDiff == 0 && colDiff == 1) directionLine = "right";
+
+            else if (rowDiff == 1 && colDiff == 0) directionLine = "up";
+
+            else if (rowDiff == 0 && colDiff == -1) directionLine = "left";
+
+            else if (rowDiff == 1 && colDiff == 1) directionLine = "right-up";
+
+            else if (rowDiff == -1 && colDiff == 1) directionLine = "right-down";
+
+            else if (rowDiff == 1 && colDiff == -1) directionLine = "left-up";
+
+            else if (rowDiff == -1 && colDiff == -1) directionLine = "left-down";
+
+            DrawRenbanLineBetweenSquares(squares[i], squares[i + 1]);
+        }
+
+    }
+
+    public void DrawKillers()
+    {
+        var square = grid_squares_[31].GetComponent<GridSquare>();
+        square.SetTexture(12);
+        var textComponents = square.GetComponentsInChildren<TextMeshProUGUI>();
+
+        // Find the specific TextMeshPro component with the GameObject name "killerSum"
+        TextMeshProUGUI killerText = textComponents.FirstOrDefault(
+            tmp => tmp.gameObject.name == "killerSum"
+        );
+
+        if (ifFirstCage == true)
+        {
+            killerText.text = "";
+        }
+        else killerText.text = "7";
+        square = grid_squares_[40].GetComponent<GridSquare>();
+        square.SetTexture(1);
+        square = grid_squares_[41].GetComponent<GridSquare>();
+        square.SetTexture(9);
+
+        square = grid_squares_[67].GetComponent<GridSquare>();
+        square.SetTexture(11);
+
+        textComponents = square.GetComponentsInChildren<TextMeshProUGUI>();
+
+        // Find the specific TextMeshPro component with the GameObject name "killerSum"
+        killerText = textComponents.FirstOrDefault(
+            tmp => tmp.gameObject.name == "killerSum"
+        );
+        if (ifFirstCage == true)
+        {
+            killerText.text = "";
+        }
+        else killerText.text = "14";
+
+        square = grid_squares_[68].GetComponent<GridSquare>();
+        square.SetTexture(9);
+
+        square = grid_squares_[20].GetComponent<GridSquare>();
+        square.SetTexture(15);
+
+        textComponents = square.GetComponentsInChildren<TextMeshProUGUI>();
+
+        // Find the specific TextMeshPro component with the GameObject name "killerSum"
+        killerText = textComponents.FirstOrDefault(
+            tmp => tmp.gameObject.name == "killerSum"
+        );
+        if (ifFirstCage == true)
+        {
+            killerText.text = "";
+        }
+        else killerText.text = "8";
+
+        ifFirstCage = false;
+    }
+
+    public void DrawKropki()
+    {
+        var square3 = grid_squares_[33].GetComponent<GridSquare>();
+        var square4 = grid_squares_[34].GetComponent<GridSquare>();
+        ifDot = true;
+        directionLine = "left";
+
+        DrawBlackDotBetweenSquares(square3, square4);
+
+        var square1 = grid_squares_[45].GetComponent<GridSquare>();
+        var square2 = grid_squares_[46].GetComponent<GridSquare>();
+        ifDot = false;
+        directionLine = "left";
+
+        DrawBlackDotBetweenSquares(square1, square2);
+    }
+
     void Start()
     {
         
@@ -161,145 +363,9 @@ public class SudokuGrid : MonoBehaviour
             spriteRenderer.enabled = false;
             counter++;
         }
-        if (currentSceneName == "tutorial")
-        {
-            // Define grid square indices and corresponding directions
-            var squareIndices = new int[]
-            {
-        11, 12, 13, 4, 5, 14, 23, 24, 15, // First group
-        72, 73, 64, 55, 56, 57, 79, 80, 0, 9, 18, 19, 10, 1, 2, 11, 31, 30, 29, 28, 27, 68, 69, 27, 36, 45, 54, 63, 72, 15, 16, 17, 26, 35, 34, 43, 42, 69, 78, 79    // Second group
-            };
+       
 
-            var directions = new string[]
-            {
-        "left", "left", "up", "left", "down", "down", "left", "up", // Directions for the first group
-        "left", "left", "up", "up", "left", "left", "left", "left"                 // Directions for the second group
-            };
-
-            // Get all the squares
-            var squares = squareIndices.Select(index => grid_squares_[index].GetComponent<GridSquare>()).ToArray();
-
-            // Draw lines between squares
-            for (int i = 0; i < 16; i++)
-            {
-                if (i != 8 && i!=14)
-                {
-                    directionLine = directions[i];
-                    DrawLineBetweenSquares(squares[i], squares[i + 1]);
-                }
-            }
-
-            for (int i = 17; i < 31; i++)
-            {
-                if (i == 24 || i == 29) continue;
-                int rowDiff = (squareIndices[i] / 9) - (squareIndices[i+1] / 9);
-                int colDiff = (squareIndices[i] % 9) - (squareIndices[i+1] % 9);
-                directionLine = "";
-
-                if (rowDiff == -1 && colDiff == 0) directionLine = "down";
-
-                else if (rowDiff == 0 && colDiff == 1) directionLine = "right";
-
-                else if (rowDiff == 1 && colDiff == 0) directionLine = "up";
-
-                else if (rowDiff == 0 && colDiff == -1) directionLine = "left";
-
-                DrawThermoLineBetweenSquares(squares[i], squares[i + 1]);
-            }
-
-            for (int i = 32; i < 48; i++)
-            {
-                if (i == 37 || i == 45) continue;
-                int rowDiff = (squareIndices[i] / 9) - (squareIndices[i + 1] / 9);
-                int colDiff = (squareIndices[i] % 9) - (squareIndices[i + 1] % 9);
-                directionLine = "";
-
-                if (rowDiff == -1 && colDiff == 0) directionLine = "down";
-
-                else if (rowDiff == 0 && colDiff == 1) directionLine = "right";
-
-                else if (rowDiff == 1 && colDiff == 0) directionLine = "up";
-
-                else if (rowDiff == 0 && colDiff == -1) directionLine = "left";
-
-                else if (rowDiff == 1 && colDiff == 1) directionLine = "right-up";
-
-                else if (rowDiff == -1 && colDiff == 1) directionLine = "right-down";
-
-                else if (rowDiff == 1 && colDiff == -1) directionLine = "left-up";
-
-                else if (rowDiff == -1 && colDiff == -1) directionLine = "left-down";
-
-                DrawRenbanLineBetweenSquares(squares[i], squares[i + 1]);
-            }
-            var firstSquare = grid_squares_[0].GetComponent<GridSquare>();
-            var firstSquare2 = grid_squares_[31].GetComponent<GridSquare>();
-            var firstSquare3= grid_squares_[68].GetComponent<GridSquare>();
-
-            Image spriteRenderer = firstSquare.GetComponentInChildren<Image>();
-            Image spriteRenderer2 = firstSquare2.GetComponentInChildren<Image>();
-            Image spriteRenderer3 = firstSquare3.GetComponentInChildren<Image>();
-
-
-            // Deactivate the SpriteRenderer
-            if (spriteRenderer != null)
-            {
-                spriteRenderer.enabled = true;
-                spriteRenderer2.enabled = true;
-                spriteRenderer3.enabled = true;
-            }
-
-            var square = grid_squares_[31].GetComponent<GridSquare>();
-            square.SetTexture(12);
-            var textComponents = square.GetComponentsInChildren<TextMeshProUGUI>();
-
-            // Find the specific TextMeshPro component with the GameObject name "killerSum"
-            TextMeshProUGUI killerText = textComponents.FirstOrDefault(
-                tmp => tmp.gameObject.name == "killerSum"
-            );
-          
-            killerText.text = "7";
-            square = grid_squares_[40].GetComponent<GridSquare>();
-            square.SetTexture(1);
-            square = grid_squares_[41].GetComponent<GridSquare>();
-            square.SetTexture(9);
-
-            square = grid_squares_[57].GetComponent<GridSquare>();
-            square.SetTexture(12);
-            textComponents = square.GetComponentsInChildren<TextMeshProUGUI>();
-
-            // Find the specific TextMeshPro component with the GameObject name "killerSum"
-            killerText = textComponents.FirstOrDefault(
-                tmp => tmp.gameObject.name == "killerSum"
-            );
-
-            killerText.text = "30";
-            square = grid_squares_[66].GetComponent<GridSquare>();
-            square.SetTexture(1);
-            square = grid_squares_[67].GetComponent<GridSquare>();
-            square.SetTexture(14);
-            square = grid_squares_[68].GetComponent<GridSquare>();
-            square.SetTexture(9);
-
-            
-
-            var square3 = grid_squares_[33].GetComponent<GridSquare>();
-            var square4 = grid_squares_[34].GetComponent<GridSquare>();
-            ifDot = true;
-            directionLine = "left";
-
-            DrawBlackDotBetweenSquares(square3, square4);
-
-            var square1 = grid_squares_[45].GetComponent<GridSquare>();
-            var square2 = grid_squares_[46].GetComponent<GridSquare>();
-            ifDot = false;
-            directionLine = "left";
-
-            DrawBlackDotBetweenSquares(square1, square2);
-
-        }
-
-        else if (currentSceneName == "whispers")
+        if (currentSceneName == "whispers")
         {
            
                 for (int i = 0; i < 9; i++)
