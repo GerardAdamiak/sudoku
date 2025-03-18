@@ -26,7 +26,11 @@ public class TouchToChangeScene : MonoBehaviour
         if (!PlayerPrefs.HasKey("PlayCount"))
         {
             if(SceneManager.GetActiveScene().name != "tutorial") SceneManager.LoadScene("tutorial");
-            ifFirst = true;
+            {
+                PlayerPrefs.SetInt("PlayCount", 1);
+                ifFirst = true;
+            }
+            
 
 
             if (SceneManager.GetActiveScene().name != "savedList" && SceneManager.GetActiveScene().name != "Custom" && SceneManager.GetActiveScene().name != "mainMenu" && SceneManager.GetActiveScene().name != "solve" && SceneManager.GetActiveScene().name != "tutorial")
@@ -120,6 +124,23 @@ public class TouchToChangeScene : MonoBehaviour
                             loadingScene.LoadScene(15);
                             ifLoadingScene = true;
                         }
+                        else if (hit.collider.gameObject.CompareTag("tEasy"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            loadingScene.LoadScene(22);
+                            ifLoadingScene = true;
+                        }
+                        else if (hit.collider.gameObject.CompareTag("tMedium"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            loadingScene.LoadScene(23);
+                            ifLoadingScene = true;
+                        }
+                        else if (hit.collider.gameObject.CompareTag("tDiff"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            sceneToLoad = "thermoDiff";
+                        }
                         else if (hit.collider.gameObject.CompareTag("kropki"))
                         {
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
@@ -137,6 +158,74 @@ public class TouchToChangeScene : MonoBehaviour
                             PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
                             loadingScene.LoadScene(18);
                             ifLoadingScene = true;
+                        }
+                        else if (hit.collider.gameObject.CompareTag("cEasy"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            loadingScene.LoadScene(25);
+                            ifLoadingScene = true;
+                        }
+                        else if (hit.collider.gameObject.CompareTag("cMedium"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            loadingScene.LoadScene(26);
+                            ifLoadingScene = true;
+                        }
+                        else if (hit.collider.gameObject.CompareTag("cDiff"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            sceneToLoad = "killerDiff";
+                        }
+                        else if (hit.collider.gameObject.CompareTag("wEasy"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            loadingScene.LoadScene(28);
+                            ifLoadingScene = true;
+                        }
+                        else if (hit.collider.gameObject.CompareTag("wMedium"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            loadingScene.LoadScene(27);
+                            ifLoadingScene = true;
+                        }
+                        else if (hit.collider.gameObject.CompareTag("wDiff"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            sceneToLoad = "whispersDiff";
+                        }
+                        else if (hit.collider.gameObject.CompareTag("kEasy"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            loadingScene.LoadScene(31);
+                            ifLoadingScene = true;
+                        }
+                        else if (hit.collider.gameObject.CompareTag("kMedium"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            loadingScene.LoadScene(32);
+                            ifLoadingScene = true;
+                        }
+                        else if (hit.collider.gameObject.CompareTag("kDiff"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            sceneToLoad = "kropkiDiff";
+                        }
+                        else if (hit.collider.gameObject.CompareTag("rEasy"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            loadingScene.LoadScene(34);
+                            ifLoadingScene = true;
+                        }
+                        else if (hit.collider.gameObject.CompareTag("rMedium"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            loadingScene.LoadScene(33);
+                            ifLoadingScene = true;
+                        }
+                        else if (hit.collider.gameObject.CompareTag("rDiff"))
+                        {
+                            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
+                            sceneToLoad = "renbanDiff";
                         }
                         else if (hit.collider.gameObject.CompareTag("easy"))
                         {

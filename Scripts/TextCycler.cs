@@ -24,6 +24,11 @@ public class TextCycler : MonoBehaviour
     private DigitKeyboard digitKeyboard;
     public Texture tutoSquare;
     public Texture normalSquare;
+    public Texture goraSelect;
+    public Texture prawoSelect;
+    public Texture lewoSelect;
+    public Texture zakretSelect;
+    public Texture caloscSelect;
     public GameObject image;
     public GameObject image2;
     private Texture prevText1, prevText2, prevText3, prevText4, prevText5, prevText6, prevText7;
@@ -179,12 +184,12 @@ public class TextCycler : MonoBehaviour
         if (currentIndex == 3)
             {
             ClearSquares();
-            sudokuGrid.grid_squares_[31].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[40].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[41].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[68].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[67].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[20].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+            sudokuGrid.grid_squares_[31].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = goraSelect;
+                sudokuGrid.grid_squares_[40].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = zakretSelect;
+                sudokuGrid.grid_squares_[41].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = prawoSelect;
+                sudokuGrid.grid_squares_[68].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = prawoSelect;
+                sudokuGrid.grid_squares_[67].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = lewoSelect;
+                sudokuGrid.grid_squares_[20].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = caloscSelect;
             //targetSpriteRenderer.enabled = true;
            
             // Wait until the condition is met
@@ -206,7 +211,7 @@ public class TextCycler : MonoBehaviour
             //targetSpriteRenderer.enabled = true;
             // Wait until the condition is met
             if (sudokuGrid.grid_squares_[31].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "1") canNext = true;
-            sudokuGrid.grid_squares_[31].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+            sudokuGrid.grid_squares_[31].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = goraSelect;
               
             }
 
@@ -223,7 +228,7 @@ public class TextCycler : MonoBehaviour
             //targetSpriteRenderer2.enabled = true;
             // Wait until the condition is met
             if (sudokuGrid.grid_squares_[68].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "6") canNext = true;
-            sudokuGrid.grid_squares_[68].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+            sudokuGrid.grid_squares_[68].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = prawoSelect;
 
                
             }

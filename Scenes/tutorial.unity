@@ -1443,8 +1443,13 @@ MonoBehaviour:
   - You finished tutorial, good job!
   - You finished tutorial, good job!
   cycleInterval: 0.2
-  tutoSquare: {fileID: 2800000, guid: 476542b4e041369429bf4429f4036f50, type: 3}
+  tutoSquare: {fileID: 2800000, guid: 62217ed8ff1238a4d98a5a2dec4c589b, type: 3}
   normalSquare: {fileID: 2800000, guid: e01ee4c1fae9629438a75d6b93905019, type: 3}
+  goraSelect: {fileID: 2800000, guid: 2a6d1b75568781e48894712af9b8389b, type: 3}
+  prawoSelect: {fileID: 2800000, guid: 2c85950661ecb25439198cc18b09bb3e, type: 3}
+  lewoSelect: {fileID: 2800000, guid: a9ff37183464b9048a7f87f77bf97cd5, type: 3}
+  zakretSelect: {fileID: 2800000, guid: b6492fe5058b97e4ab29449a3c6f633f, type: 3}
+  caloscSelect: {fileID: 2800000, guid: 208046785d1ce684fa24f8bd1823b8ef, type: 3}
   image: {fileID: 294362304}
   image2: {fileID: 973225323}
   eventSystem: {fileID: 435657987}

@@ -271,8 +271,8 @@ public class SudokuGrid : MonoBehaviour
 
     void Start()
     {
-        
-        
+
+
         customNumber = PlayerPrefs.GetInt("number");
         whichSet = PlayerPrefs.GetString("whichSet");
         PlayerPrefs.SetInt("GameReady", 0);
@@ -297,7 +297,7 @@ public class SudokuGrid : MonoBehaviour
                 sudokuLog = PlayerPrefs.GetString("Sudoku5");
                 break;
         }
-        
+
         currentSceneName = SceneManager.GetActiveScene().name;
         if (currentSceneName == "tutorial") sudokuLog = "007008000050073846300000007084000002700042390602005071870904265020780010406000700";
         ResolveLog();
@@ -308,9 +308,9 @@ public class SudokuGrid : MonoBehaviour
         CreateGrid();
         if (currentSceneName != "set" && currentSceneName != "Custom" && currentSceneName != "tutorial")
         {
-            
-            
-            
+
+
+
             do
             {
                 GenerateSudoku();
@@ -323,9 +323,20 @@ public class SudokuGrid : MonoBehaviour
                     || currentSceneName == "killer"
                     || currentSceneName == "thermo"
                     || currentSceneName == "tutorial"
+                    || currentSceneName == "killerEasy"
+                    || currentSceneName == "killerMedium"
+                    || currentSceneName == "thermoEasy"
+                    || currentSceneName == "thermoMedium"
+                    || currentSceneName == "whispersEasy"
+                    || currentSceneName == "whispersMedium"
+                    || currentSceneName == "kropkiEasy"
+                    || currentSceneName == "kropkiMedium"
+                    || currentSceneName == "renbanEasy"
+                    || currentSceneName == "renbanMedium"
+
                 )
                     ifOk = true;
-                
+
             } while (ifOk == false);
             if (
                 currentSceneName == "whispers"
@@ -334,16 +345,27 @@ public class SudokuGrid : MonoBehaviour
                 || currentSceneName == "killer"
                 || currentSceneName == "thermo"
                 || currentSceneName == "tutorial"
+                || currentSceneName == "killerEasy"
+                || currentSceneName == "killerMedium"
+                || currentSceneName == "thermoEasy"
+                || currentSceneName == "thermoMedium"
+                || currentSceneName == "whispersEasy"
+                || currentSceneName == "whispersMedium"
+                || currentSceneName == "kropkiEasy"
+                || currentSceneName == "kropkiMedium"
+                || currentSceneName == "renbanEasy"
+                || currentSceneName == "renbanMedium"
             )
                 GetCurrentGridState();
             UnclickableDigits();
         }
-        
+
         if (currentSceneName == "Custom" || currentSceneName == "tutorial")
         {
             ConvertTables();
             // PrintGrid2(grid);
             SetGridNumbers();
+            UnclickableDigits();
             // UnclickableDigits();
         }
 
@@ -363,12 +385,12 @@ public class SudokuGrid : MonoBehaviour
             spriteRenderer.enabled = false;
             counter++;
         }
-       
 
-        if (currentSceneName == "whispers")
+
+        if (currentSceneName == "whispers" || currentSceneName == "whispersMedium" || currentSceneName == "whispersEasy")
         {
-           
-                for (int i = 0; i < 9; i++)
+
+            for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
@@ -443,7 +465,7 @@ public class SudokuGrid : MonoBehaviour
                 }
             }
         }
-        else if (currentSceneName == "renban")
+        else if (currentSceneName == "renban" || currentSceneName == "renbanEasy" || currentSceneName == "renbanMedium")
         {
             // Random generator for renban line creation
             System.Random rand = new System.Random();
@@ -493,21 +515,21 @@ public class SudokuGrid : MonoBehaviour
 
                     // Populate the cage
                     loopCounter = 0;
-                    while (lineCells.Count-1 < lineSize)
+                    while (lineCells.Count - 1 < lineSize)
                     {
                         int currentCell = lineCells[lineCells.Count - 1];
-                   
+
                         int newCell = -1;
                         int size = lineCells.Count;
-                        
-                        for(int z =0;z<8;z++)
+
+                        for (int z = 0; z < 8; z++)
                         {
                             int direction = directions[z];
-                         
+
                             if (IsValidMove(currentCell, direction))
                             {
                                 newCell = currentCell + direction;
-                              
+
                                 if (!visited[newCell] && !lineCells.Contains(newCell))
                                 {
                                     bool ifUnique = true;
@@ -526,7 +548,7 @@ public class SudokuGrid : MonoBehaviour
                                             var renbanLine = grid_squares_[
                                                 lineCells[i]
                                             ].GetComponent<GridSquare>();
-                                            
+
                                             if (
                                                 grid[((lineCells[i]) / 9), ((lineCells[i]) % 9)]
                                                     == grid[(newCell / 9), (newCell % 9)] + 1
@@ -572,10 +594,10 @@ public class SudokuGrid : MonoBehaviour
                                     }
                                 }
                             }
-                           
+
                         }
                         loopCounter++;
-                        if(loopCounter == 10)
+                        if (loopCounter == 10)
                         {
                             break;
                         }
@@ -586,13 +608,13 @@ public class SudokuGrid : MonoBehaviour
                     // Determine the correct texture based on neighbors within this cage only
 
 
-                    
+
 
                     lineGenerated = true;
                 }
             }
         }
-        else if (currentSceneName == "kropki")
+        else if (currentSceneName == "kropki" || currentSceneName == "kropkiEasy" || currentSceneName == "kropkiMedium")
         {
             for (int i = 0; i < 9; i++)
             {
@@ -713,7 +735,7 @@ public class SudokuGrid : MonoBehaviour
                 }
             }
         }
-        else if (currentSceneName == "killer")
+        else if (currentSceneName == "killer" || currentSceneName == "killerEasy" || currentSceneName == "killerMedium")
         {
             // Number of killer cages to generate
             int numberOfCages = 35;
@@ -879,7 +901,7 @@ public class SudokuGrid : MonoBehaviour
             }
         }
 
-        else if (currentSceneName == "thermo")
+        else if (currentSceneName == "thermo" || currentSceneName == "thermoEasy" || currentSceneName == "thermoMedium")
         {
             // Number of killer cages to generate
             int numberOfCages = 25;
@@ -2247,6 +2269,7 @@ public class SudokuGrid : MonoBehaviour
         {
             for (int col = 0; col < 9; col++)
             {
+    
                 if (currentGridInt[row, col] != '0')
                 {
                     lockedDigits.Add((row * 9) + col);
