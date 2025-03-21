@@ -29,6 +29,7 @@ public class TextCycler : MonoBehaviour
     public Texture lewoSelect;
     public Texture zakretSelect;
     public Texture caloscSelect;
+    public Texture selectedTexture;
     public GameObject image;
     public GameObject image2;
     private Texture prevText1, prevText2, prevText3, prevText4, prevText5, prevText6, prevText7;
@@ -44,7 +45,7 @@ public class TextCycler : MonoBehaviour
     private bool ifGerman = false;
 
     // Current index in the array
-    public int currentIndex = 0;
+    public int currentIndex = 21;
 
     private void Start()
     {
@@ -103,7 +104,7 @@ public class TextCycler : MonoBehaviour
     {
         for (int i = 0; i < 81; i++)
         {
-            if(i!=31 && i!=40 && i!=41 && i!=68 && i!=67 && i!=20)sudokuGrid.grid_squares_[i].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
+            if(i!=31 && i!=40 && i!=41 && i!=68 && i!=67 && i!=20 && sudokuGrid.grid_squares_[i].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture != selectedTexture)sudokuGrid.grid_squares_[i].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
             sudokuGrid.grid_squares_[31].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = prevText1;
             sudokuGrid.grid_squares_[40].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = prevText2;
             sudokuGrid.grid_squares_[41].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = prevText3;
@@ -203,7 +204,31 @@ public class TextCycler : MonoBehaviour
             // Wait until the condition is met
             canNext = true;
         }
-            if (currentIndex == 5)
+
+
+        if (currentIndex == 5)
+        {
+            ClearSquares();
+
+            //targetSpriteRenderer.enabled = true;
+            // Wait until the condition is met
+            sudokuGrid.grid_squares_[20].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = caloscSelect;
+
+        }
+
+        if (currentIndex == 6)
+        {
+            ClearSquares();
+            canNext = false;
+
+            //targetSpriteRenderer.enabled = true;
+            // Wait until the condition is met
+            if (sudokuGrid.grid_squares_[20].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "8") canNext = true;
+            sudokuGrid.grid_squares_[20].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = caloscSelect;
+
+        }
+
+        if (currentIndex == 7)
             {
             ClearSquares();
             canNext = false;
@@ -215,13 +240,13 @@ public class TextCycler : MonoBehaviour
               
             }
 
-            if (currentIndex == 6)
+            if (currentIndex == 8)
             {
             ClearSquares();
             canNext = true;
 
         }
-            if (currentIndex == 7)
+            if (currentIndex == 9)
             {
             ClearSquares();
             canNext = false;
@@ -233,7 +258,7 @@ public class TextCycler : MonoBehaviour
                
             }
 
-            if (currentIndex == 8)
+            if (currentIndex == 10)
             {
             ClearSquares();
             if(ifThermo == false)
@@ -246,7 +271,7 @@ public class TextCycler : MonoBehaviour
 
         }
 
-            if (currentIndex == 9)
+            if (currentIndex == 11)
             {
             ClearSquares();
             sudokuGrid.grid_squares_[0].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
@@ -268,15 +293,35 @@ public class TextCycler : MonoBehaviour
 
             }
 
-            if (currentIndex == 10)
+            if (currentIndex == 12)
             {
             ClearSquares();
 
             canNext = true;
 
         }
+        if (currentIndex == 13)
+        {
+            ClearSquares();
 
-            if (currentIndex == 11)
+            sudokuGrid.grid_squares_[30].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+
+
+        }
+
+        if (currentIndex == 14)
+        {
+            ClearSquares();
+            canNext = false;
+            if (sudokuGrid.grid_squares_[30].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "3") canNext = true;
+
+            sudokuGrid.grid_squares_[30].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+
+
+        }
+
+
+        if (currentIndex == 15)
             {
             ClearSquares();
             canNext = false;
@@ -303,7 +348,7 @@ public class TextCycler : MonoBehaviour
 
             }
 
-            if (currentIndex == 12)
+            if (currentIndex == 16)
             {
 
             ClearSquares();
@@ -317,7 +362,7 @@ public class TextCycler : MonoBehaviour
 
         }
 
-            if (currentIndex == 13)
+            if (currentIndex == 17)
             {
             ClearSquares();
             sudokuGrid.grid_squares_[15].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
@@ -341,7 +386,7 @@ public class TextCycler : MonoBehaviour
 
 
             }
-            if (currentIndex == 14)
+            if (currentIndex == 18)
             {
             ClearSquares();
             sudokuGrid.grid_squares_[15].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
@@ -365,25 +410,18 @@ public class TextCycler : MonoBehaviour
         }
 
 
-            if (currentIndex == 15)
+            if (currentIndex == 19)
             {
             ClearSquares();
             canNext = false;
-            if (sudokuGrid.grid_squares_[34].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "5") canNext = true;
+            if (sudokuGrid.grid_squares_[63].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "5") canNext = true;
 
-                sudokuGrid.grid_squares_[15].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[16].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[17].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[26].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[35].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[34].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[43].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[42].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+                sudokuGrid.grid_squares_[63].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
 
            
         }
 
-            if (currentIndex == 16)
+            if (currentIndex == 20)
             {
             ClearSquares();
             canNext = false;
@@ -393,6 +431,26 @@ public class TextCycler : MonoBehaviour
             // Wait until the condition is met
 
 
+            sudokuGrid.grid_squares_[15].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+                sudokuGrid.grid_squares_[16].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+                sudokuGrid.grid_squares_[17].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+                sudokuGrid.grid_squares_[26].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+                sudokuGrid.grid_squares_[35].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+                sudokuGrid.grid_squares_[34].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+                sudokuGrid.grid_squares_[43].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+                sudokuGrid.grid_squares_[42].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+
+                sudokuGrid.grid_squares_[63].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
+
+                sudokuGrid.grid_squares_[78].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+                sudokuGrid.grid_squares_[69].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+                sudokuGrid.grid_squares_[79].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+                
+
+            }
+            if (currentIndex == 21)
+            {
+            ClearSquares();
             sudokuGrid.grid_squares_[15].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
                 sudokuGrid.grid_squares_[16].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
                 sudokuGrid.grid_squares_[17].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
@@ -401,34 +459,12 @@ public class TextCycler : MonoBehaviour
                 sudokuGrid.grid_squares_[34].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
                 sudokuGrid.grid_squares_[43].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
                 sudokuGrid.grid_squares_[42].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
-
-                sudokuGrid.grid_squares_[27].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[36].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[45].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[54].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[63].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[72].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[78].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[69].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                sudokuGrid.grid_squares_[79].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-                
-
-            }
-            if (currentIndex == 17)
-            {
-            ClearSquares();
-            sudokuGrid.grid_squares_[27].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
-                sudokuGrid.grid_squares_[36].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
-                sudokuGrid.grid_squares_[45].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
-                sudokuGrid.grid_squares_[54].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
-                sudokuGrid.grid_squares_[63].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
-                sudokuGrid.grid_squares_[72].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
                 sudokuGrid.grid_squares_[78].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
                 sudokuGrid.grid_squares_[69].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
                 sudokuGrid.grid_squares_[79].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
             
         }
-        if (currentIndex == 17)
+        if (currentIndex == 21)
         {
             ClearSquares();
             if (ifGerman == false)
@@ -439,7 +475,7 @@ public class TextCycler : MonoBehaviour
             }
 
         }
-        if (currentIndex == 18)
+        if (currentIndex == 22)
         {
             ClearSquares();
             // Wait until the condition is met
@@ -460,17 +496,16 @@ public class TextCycler : MonoBehaviour
             sudokuGrid.grid_squares_[79].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
             sudokuGrid.grid_squares_[80].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
         }
-        if (currentIndex == 19)
+        if (currentIndex == 23)
         {
             ClearSquares();
             canNext = true;
         }
-
-        if (currentIndex == 20)
+        if (currentIndex == 24)
         {
             ClearSquares();
-            canNext = false;
-            if (sudokuGrid.grid_squares_[73].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "9" && sudokuGrid.grid_squares_[56].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "1") canNext = true;
+            
+            canNext = true;
 
             // Wait until the condition is met
             sudokuGrid.grid_squares_[4].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
@@ -479,36 +514,44 @@ public class TextCycler : MonoBehaviour
             sudokuGrid.grid_squares_[12].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
             sudokuGrid.grid_squares_[13].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
             sudokuGrid.grid_squares_[14].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
-            sudokuGrid.grid_squares_[23].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
+            sudokuGrid.grid_squares_[23].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
             sudokuGrid.grid_squares_[24].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
-            sudokuGrid.grid_squares_[72].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-            sudokuGrid.grid_squares_[73].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-            sudokuGrid.grid_squares_[64].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-            sudokuGrid.grid_squares_[55].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-            sudokuGrid.grid_squares_[56].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-            sudokuGrid.grid_squares_[57].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
-            sudokuGrid.grid_squares_[79].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
-            sudokuGrid.grid_squares_[80].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
-
-        }
-        if (currentIndex == 21)
-        {
-            ClearSquares();
-            canNext = false;
-            // Wait until the condition is met
-            if (sudokuGrid.grid_squares_[12].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "1" && sudokuGrid.grid_squares_[4].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "2" && sudokuGrid.grid_squares_[23].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "9" && sudokuGrid.grid_squares_[24].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "1" && sudokuGrid.grid_squares_[80].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "3") canNext = true;
-
-            // Wait until the condition is met
             sudokuGrid.grid_squares_[72].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
             sudokuGrid.grid_squares_[73].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
             sudokuGrid.grid_squares_[64].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
             sudokuGrid.grid_squares_[55].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
             sudokuGrid.grid_squares_[56].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
             sudokuGrid.grid_squares_[57].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
+            sudokuGrid.grid_squares_[79].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
+            sudokuGrid.grid_squares_[80].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = normalSquare;
+
+        }
+
+        if (currentIndex == 25)
+        {
+            ClearSquares();
+            canNext = false;
+            if (sudokuGrid.grid_squares_[23].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "9") canNext = true;
+
+            // Wait until the condition is met
+    
+            sudokuGrid.grid_squares_[23].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
+   
 
 
         }
-        if (currentIndex == 22)
+        if (currentIndex == 26)
+        {
+            ClearSquares();
+            canNext = false;
+            // Wait until the condition is met
+            if (sudokuGrid.grid_squares_[12].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "1" && sudokuGrid.grid_squares_[4].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "2" && sudokuGrid.grid_squares_[23].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "9" && sudokuGrid.grid_squares_[24].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "1" && sudokuGrid.grid_squares_[80].GetComponent<GridSquare>().GetComponentInChildren<TextMeshProUGUI>().text == "3") canNext = true;
+
+            
+
+
+        }
+        if (currentIndex == 27)
         {
             ClearSquares();
             if (ifKropki == false)
@@ -518,7 +561,7 @@ public class TextCycler : MonoBehaviour
                 ifKropki = true;
             }
         }
-            if (currentIndex == 23)
+            if (currentIndex == 28)
             {
             
  
@@ -529,14 +572,14 @@ public class TextCycler : MonoBehaviour
                 sudokuGrid.grid_squares_[33].GetComponent<GridSquare>().GetComponentInChildren<RawImage>().texture = tutoSquare;
 
             }
-            if(currentIndex == 24)
+            if(currentIndex == 29)
         {
             ClearSquares();
             
             canNext = true;
         }
 
-            if (currentIndex == 25)
+            if (currentIndex == 30)
             {
             ClearSquares();
             canNext = false;
@@ -552,7 +595,7 @@ public class TextCycler : MonoBehaviour
             }
             
 
-            if (currentIndex == 26)
+            if (currentIndex == 31)
             {
             ClearSquares();
             canNext = false;
@@ -560,13 +603,13 @@ public class TextCycler : MonoBehaviour
                 if (sudokuGrid.tutorialDone == true) canNext = true;
             }
 
-            if (currentIndex == 27)
+            if (currentIndex == 32)
             {
             ClearSquares();
             SceneManager.LoadScene("mainMenu");
         }
 
-            if (currentIndex == 28)
+            if (currentIndex == 32)
             {
                
                

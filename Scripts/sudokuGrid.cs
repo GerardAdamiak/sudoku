@@ -299,7 +299,7 @@ public class SudokuGrid : MonoBehaviour
         }
 
         currentSceneName = SceneManager.GetActiveScene().name;
-        if (currentSceneName == "tutorial") sudokuLog = "007008000050073846300000007084000002700042390602005071870904265020780010406000700";
+        if (currentSceneName == "tutorial") sudokuLog = "007028000050073846300000107084000002700042390602005071871904265020780010406000700";
         ResolveLog();
         if (grid_square.GetComponent<GridSquare>() == null)
             UnityEngine.Debug.LogError(

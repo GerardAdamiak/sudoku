@@ -1416,32 +1416,37 @@ MonoBehaviour:
   - 'Let''s start off with cages:'
   - In the grid you can see 3 cages with dotted lines
   - Make sure that digits in a cage sum up to total given in the corner of cage.
-  - Type in missing digit in 7 cage
+  - Look at highlighted square. There is small number in its corner.
+  - This number is called a sum. Type in digit in highlighted cell, to make it equal
+    to cage sum.
+  - Great work! Now type in missing digit in cage with sum 7. Keep in mind, 2 and
+    4 are already in cage
   - Good job! 1+2+4=7, so our cage is finished
-  - Now type in missing digit in 14 cage
+  - Now type in missing digit in cage with sum 14
   - Good job! Let's move on to thermos
   - You can see that there are 3 thermos in grid
   - On thermo, digits have to rise from the bulb to the end
-  - Type in digits in the yellow squares
+  - Take a look at green square. It is on thermo between 1 and 4
+  - That means, that this square can only by 2 or 3, can you find which one is good?
+  - Outstanding! Now type in digits in the green squares with same logic
   - Amazing! You did all thermos! Now let's look at renbans
   - You can see 3 renban lines on the grid
-  - For each line, we have to find digit, that is missing
-  - Look at this line, we have 2346789, what is missing?
+  - For each line, we have to find digit, that is missing from the set
+  - Look at this square, on the line we have 4,6,7,8,9, what is missing?
   - That's right, 5 was missing. Now try and fill other renbans
   - Super! All renbans are done, now let's look at German Whispers
   - There are 3 German Whisper lines on the grid.
   - On the line, digits that are next to each other, must differ by at least 5
-  - Let's look at this line. Can you find missing digits?
+  - Let's look at this square. It needs to be at least 5 higher than 3
+  - That means, that options that we have are 8 and 9. Which one should be in there?
   - Great work! Now try to do other Whisper Lines, finish is close!
-  - You got it! Last variant ahead of us, Kropki (Dots)
+  - You got it! Last variant ahead of us, Kropki
   - In grid you can find one black dot and one white dot.
   - Digits connected by black dot need to be in 2:1 ratio. Digits connected with
     white dot, need to differ by 1
   - Type in digits in highlighted places, based on black/white kropki
   - You finished variant part of this sudoku! Now finish rest of the grid using normal
     sudoku rules
-  - You finished tutorial, good job!
-  - You finished tutorial, good job!
   cycleInterval: 0.2
   tutoSquare: {fileID: 2800000, guid: 62217ed8ff1238a4d98a5a2dec4c589b, type: 3}
   normalSquare: {fileID: 2800000, guid: e01ee4c1fae9629438a75d6b93905019, type: 3}
@@ -1450,11 +1455,12 @@ MonoBehaviour:
   lewoSelect: {fileID: 2800000, guid: a9ff37183464b9048a7f87f77bf97cd5, type: 3}
   zakretSelect: {fileID: 2800000, guid: b6492fe5058b97e4ab29449a3c6f633f, type: 3}
   caloscSelect: {fileID: 2800000, guid: 208046785d1ce684fa24f8bd1823b8ef, type: 3}
+  selectedTexture: {fileID: 2800000, guid: 2428588a17b15ef428db72470f9aba50, type: 3}
   image: {fileID: 294362304}
   image2: {fileID: 973225323}
   eventSystem: {fileID: 435657987}
   raycaster: {fileID: 935473020}
-  currentIndex: 0
+  currentIndex: 21
 --- !u!1 &950495213
 GameObject:
   m_ObjectHideFlags: 0
