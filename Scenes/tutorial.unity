@@ -1460,7 +1460,7 @@ MonoBehaviour:
   image2: {fileID: 973225323}
   eventSystem: {fileID: 435657987}
   raycaster: {fileID: 935473020}
-  currentIndex: 21
+  currentIndex: 0
 --- !u!1 &950495213
 GameObject:
   m_ObjectHideFlags: 0

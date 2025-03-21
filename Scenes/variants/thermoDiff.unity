@@ -860,7 +860,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite1: {fileID: 21300000, guid: ed183f39f0765d4418fd3fb103c6ede1, type: 3}
   sprite2: {fileID: 21300000, guid: af30246a77d8b0f4e8524590a77901d3, type: 3}
-  panel: {fileID: 0}
+  panel: {fileID: 588148620}
   lightColor: {r: 0.9372549, g: 0.9372549, b: 0.8156863, a: 1}
   darkColor: {r: 0.18039216, g: 0.19215687, b: 0.21960784, a: 1}
 --- !u!212 &843563064

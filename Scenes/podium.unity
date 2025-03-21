@@ -454,7 +454,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 450, y: -50}
+  m_AnchoredPosition: {x: 450, y: -94.00001}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &177525835
@@ -570,6 +570,13 @@ MonoBehaviour:
   value: 0
   colorForZero: {r: 0.93725497, g: 0.93725497, b: 0.81568635, a: 1}
   colorForOne: {r: 0, g: 0, b: 0, a: 1}
+  easyMedalImage: {fileID: 1726639235}
+  mediumMedalImage: {fileID: 1091823641}
+  hardMedalImage: {fileID: 610586107}
+  bronzeMedal: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
+  silverMedal: {fileID: 21300000, guid: ae31cba069f8f6a4aab8b227be55c380, type: 3}
+  goldMedal: {fileID: 21300000, guid: f1178f5f8376a3347b2e3bad26664ef5, type: 3}
+  emptyMedal: {fileID: 0}
 --- !u!1 &358766582
 GameObject:
   m_ObjectHideFlags: 0
@@ -910,6 +917,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 506064545}
+  m_CullTransparentMesh: 1
+--- !u!1 &610586105
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 610586106}
+  - component: {fileID: 610586108}
+  - component: {fileID: 610586107}
+  m_Layer: 5
+  m_Name: hardMedal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &610586106
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610586105}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1228880819}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 403, y: -2}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &610586107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610586105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &610586108
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610586105}
   m_CullTransparentMesh: 1
 --- !u!1 &652266120
 GameObject:
@@ -1377,6 +1459,81 @@ MonoBehaviour:
   progressBar1: {fileID: 167952773}
   progressBar2: {fileID: 1144516985}
   progressBar3: {fileID: 1478630007}
+--- !u!1 &1091823639
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1091823640}
+  - component: {fileID: 1091823642}
+  - component: {fileID: 1091823641}
+  m_Layer: 5
+  m_Name: mediumMedal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1091823640
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091823639}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1228880819}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 403, y: 285}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1091823641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091823639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1091823642
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091823639}
+  m_CullTransparentMesh: 1
 --- !u!1 &1144516983
 GameObject:
   m_ObjectHideFlags: 0
@@ -1505,7 +1662,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 450, y: -50}
+  m_AnchoredPosition: {x: 450, y: -94.00001}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1157594444
@@ -1621,6 +1778,13 @@ MonoBehaviour:
   value: 0
   colorForZero: {r: 0.93725497, g: 0.93725497, b: 0.81568635, a: 1}
   colorForOne: {r: 0, g: 0, b: 0, a: 1}
+  easyMedalImage: {fileID: 1726639235}
+  mediumMedalImage: {fileID: 1091823641}
+  hardMedalImage: {fileID: 610586107}
+  bronzeMedal: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
+  silverMedal: {fileID: 21300000, guid: ae31cba069f8f6a4aab8b227be55c380, type: 3}
+  goldMedal: {fileID: 21300000, guid: 26b9d95aa6a48c74c9c0be54b43df32c, type: 3}
+  emptyMedal: {fileID: 0}
 --- !u!1 &1222008649
 GameObject:
   m_ObjectHideFlags: 0
@@ -1953,6 +2117,9 @@ RectTransform:
   - {fileID: 167952772}
   - {fileID: 1144516984}
   - {fileID: 1478630006}
+  - {fileID: 1726639234}
+  - {fileID: 1091823640}
+  - {fileID: 610586106}
   m_Father: {fileID: 1082246300}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1995,7 +2162,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 450, y: 550}
+  m_AnchoredPosition: {x: 450, y: 506}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1247309184
@@ -2111,6 +2278,13 @@ MonoBehaviour:
   value: 0
   colorForZero: {r: 0.93725497, g: 0.93725497, b: 0.81568635, a: 1}
   colorForOne: {r: 0, g: 0, b: 0, a: 1}
+  easyMedalImage: {fileID: 1726639235}
+  mediumMedalImage: {fileID: 1091823641}
+  hardMedalImage: {fileID: 610586107}
+  bronzeMedal: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
+  silverMedal: {fileID: 21300000, guid: ae31cba069f8f6a4aab8b227be55c380, type: 3}
+  goldMedal: {fileID: 21300000, guid: f1178f5f8376a3347b2e3bad26664ef5, type: 3}
+  emptyMedal: {fileID: 0}
 --- !u!1 &1344178054
 GameObject:
   m_ObjectHideFlags: 0
@@ -2214,7 +2388,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 450, y: 550}
+  m_AnchoredPosition: {x: 450, y: 506}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1395693146
@@ -2330,6 +2504,13 @@ MonoBehaviour:
   value: 0
   colorForZero: {r: 0.93725497, g: 0.93725497, b: 0.81568635, a: 1}
   colorForOne: {r: 0, g: 0, b: 0, a: 1}
+  easyMedalImage: {fileID: 1726639235}
+  mediumMedalImage: {fileID: 1091823641}
+  hardMedalImage: {fileID: 610586107}
+  bronzeMedal: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
+  silverMedal: {fileID: 21300000, guid: ae31cba069f8f6a4aab8b227be55c380, type: 3}
+  goldMedal: {fileID: 21300000, guid: f1178f5f8376a3347b2e3bad26664ef5, type: 3}
+  emptyMedal: {fileID: 0}
 --- !u!1 &1478630005
 GameObject:
   m_ObjectHideFlags: 0
@@ -2458,7 +2639,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 450, y: 250}
+  m_AnchoredPosition: {x: 450, y: 206}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1508436027
@@ -2574,6 +2755,13 @@ MonoBehaviour:
   value: 0
   colorForZero: {r: 0.93725497, g: 0.93725497, b: 0.81568635, a: 1}
   colorForOne: {r: 0, g: 0, b: 0, a: 1}
+  easyMedalImage: {fileID: 1726639235}
+  mediumMedalImage: {fileID: 1091823641}
+  hardMedalImage: {fileID: 610586107}
+  bronzeMedal: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
+  silverMedal: {fileID: 21300000, guid: ae31cba069f8f6a4aab8b227be55c380, type: 3}
+  goldMedal: {fileID: 21300000, guid: f1178f5f8376a3347b2e3bad26664ef5, type: 3}
+  emptyMedal: {fileID: 0}
 --- !u!1 &1530305548
 GameObject:
   m_ObjectHideFlags: 0
@@ -2609,7 +2797,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 450, y: 550}
+  m_AnchoredPosition: {x: 450, y: 506}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1530305550
@@ -2725,6 +2913,13 @@ MonoBehaviour:
   value: 0
   colorForZero: {r: 0.93725497, g: 0.93725497, b: 0.81568635, a: 1}
   colorForOne: {r: 0, g: 0, b: 0, a: 1}
+  easyMedalImage: {fileID: 1726639235}
+  mediumMedalImage: {fileID: 1091823641}
+  hardMedalImage: {fileID: 610586107}
+  bronzeMedal: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
+  silverMedal: {fileID: 21300000, guid: ae31cba069f8f6a4aab8b227be55c380, type: 3}
+  goldMedal: {fileID: 21300000, guid: f1178f5f8376a3347b2e3bad26664ef5, type: 3}
+  emptyMedal: {fileID: 0}
 --- !u!1 &1556085239
 GameObject:
   m_ObjectHideFlags: 0
@@ -3025,7 +3220,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 450, y: 250}
+  m_AnchoredPosition: {x: 450, y: 206}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1618605174
@@ -3141,6 +3336,13 @@ MonoBehaviour:
   value: 0
   colorForZero: {r: 0.93725497, g: 0.93725497, b: 0.81568635, a: 1}
   colorForOne: {r: 0, g: 0, b: 0, a: 1}
+  easyMedalImage: {fileID: 1726639235}
+  mediumMedalImage: {fileID: 1091823641}
+  hardMedalImage: {fileID: 610586107}
+  bronzeMedal: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
+  silverMedal: {fileID: 21300000, guid: ae31cba069f8f6a4aab8b227be55c380, type: 3}
+  goldMedal: {fileID: 21300000, guid: f1178f5f8376a3347b2e3bad26664ef5, type: 3}
+  emptyMedal: {fileID: 0}
 --- !u!1 &1705897963
 GameObject:
   m_ObjectHideFlags: 0
@@ -3176,7 +3378,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 450, y: 250}
+  m_AnchoredPosition: {x: 450, y: 206}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1705897965
@@ -3292,6 +3494,88 @@ MonoBehaviour:
   value: 0
   colorForZero: {r: 0.93725497, g: 0.93725497, b: 0.81568635, a: 1}
   colorForOne: {r: 0, g: 0, b: 0, a: 1}
+  easyMedalImage: {fileID: 1726639235}
+  mediumMedalImage: {fileID: 1091823641}
+  hardMedalImage: {fileID: 610586107}
+  bronzeMedal: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
+  silverMedal: {fileID: 21300000, guid: ae31cba069f8f6a4aab8b227be55c380, type: 3}
+  goldMedal: {fileID: 21300000, guid: f1178f5f8376a3347b2e3bad26664ef5, type: 3}
+  emptyMedal: {fileID: 0}
+--- !u!1 &1726639233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1726639234}
+  - component: {fileID: 1726639236}
+  - component: {fileID: 1726639235}
+  m_Layer: 5
+  m_Name: easyMedal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1726639234
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726639233}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1228880819}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 403, y: 592}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1726639235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726639233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1726639236
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726639233}
+  m_CullTransparentMesh: 1
 --- !u!1 &1967230652
 GameObject:
   m_ObjectHideFlags: 0
@@ -3402,7 +3686,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 450, y: -50}
+  m_AnchoredPosition: {x: 450, y: -94.00001}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1978817620
@@ -3518,6 +3802,13 @@ MonoBehaviour:
   value: 0
   colorForZero: {r: 0.93725497, g: 0.93725497, b: 0.81568635, a: 1}
   colorForOne: {r: 0, g: 0, b: 0, a: 1}
+  easyMedalImage: {fileID: 1726639235}
+  mediumMedalImage: {fileID: 1091823641}
+  hardMedalImage: {fileID: 610586107}
+  bronzeMedal: {fileID: 21300000, guid: d79741e345e2fa547a3fa73f744e3808, type: 3}
+  silverMedal: {fileID: 21300000, guid: ae31cba069f8f6a4aab8b227be55c380, type: 3}
+  goldMedal: {fileID: 21300000, guid: f1178f5f8376a3347b2e3bad26664ef5, type: 3}
+  emptyMedal: {fileID: 0}
 --- !u!1 &2129405475
 GameObject:
   m_ObjectHideFlags: 0

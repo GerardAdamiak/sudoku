@@ -1777,6 +1777,12 @@ public class SudokuGrid : MonoBehaviour
                 int countEasy = PlayerPrefs.GetInt("medalEasy");
                 int countMed = PlayerPrefs.GetInt("medalMed");
                 int countHard = PlayerPrefs.GetInt("medalHard");
+                int countWhisper = PlayerPrefs.GetInt("medalWhisper");
+                int countRenban = PlayerPrefs.GetInt("medalRenban");
+                int countThermo = PlayerPrefs.GetInt("medalThermo");
+                int countKiller = PlayerPrefs.GetInt("medalKiller");
+                int countKropki = PlayerPrefs.GetInt("medalKropki");
+
                 if (currentSceneName == "easy")
                 {
                     countEasy++;
@@ -1792,6 +1798,32 @@ public class SudokuGrid : MonoBehaviour
                     countHard++;
                     PlayerPrefs.SetInt("medalHard", countHard);
                 }
+                else if (currentSceneName == "thermo" || currentSceneName == "thermoMedium" || currentSceneName == "thermoEasy")
+                {
+                    countThermo++;
+                    PlayerPrefs.SetInt("medalThermo", countThermo);
+                }
+                else if (currentSceneName == "kropki" || currentSceneName == "kropkiEasy" || currentSceneName == "kropkiMedium")
+                {
+                    countKropki++;
+                    PlayerPrefs.SetInt("medalKropki", countKropki);
+                }
+                else if (currentSceneName == "killer" || currentSceneName == "killerEasy" || currentSceneName == "killerMedium")
+                {
+                    countKiller++;
+                    PlayerPrefs.SetInt("medalKiller", countKiller);
+                }
+                else if (currentSceneName == "renban" || currentSceneName == "renbanMedium" || currentSceneName == "renbanEasy")
+                {
+                    countRenban++;
+                    PlayerPrefs.SetInt("medalRenban", countRenban);
+                }
+                else if (currentSceneName == "whispers" || currentSceneName == "whispersEasy" || currentSceneName == "whispersMedium")
+                {
+                    countWhisper++;
+                    PlayerPrefs.SetInt("medalWhisper", countWhisper);
+                }
+
                 done = true;
             }
             GameObject panel = new("DimPanel");

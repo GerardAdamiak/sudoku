@@ -1026,7 +1026,7 @@ MonoBehaviour:
   grid_square: {fileID: 441655348958707135, guid: 94037ad8b668e4642a43907c9621fdca, type: 3}
   start_position: {x: -410, y: 600}
   square_scale: 1
-  squaresToDelete: 1
+  squaresToDelete: 40
   selectedCells: []
   grid_squares_: []
   canvas: {fileID: 953300707}
@@ -1042,6 +1042,7 @@ MonoBehaviour:
   dotPrefab: {fileID: 0}
   ifMore: 0
   blackSquare: {fileID: 1003103819}
+  tutorialDone: 0
 --- !u!1 &1003103818
 GameObject:
   m_ObjectHideFlags: 0
