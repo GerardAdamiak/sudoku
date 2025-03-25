@@ -1417,8 +1417,8 @@ MonoBehaviour:
   - In the grid you can see 3 cages with dotted lines
   - Make sure that digits in a cage sum up to total given in the corner of cage.
   - Look at highlighted square. There is small number in its corner.
-  - This number is called a sum. Type in digit in highlighted cell, to make it equal
-    to cage sum.
+  - This number is called a sum. Tap the square and type in digit that equals cage
+    sum.
   - Great work! Now type in missing digit in cage with sum 7. Keep in mind, 2 and
     4 are already in cage
   - Good job! 1+2+4=7, so our cage is finished
