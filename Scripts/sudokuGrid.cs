@@ -1774,14 +1774,14 @@ public class SudokuGrid : MonoBehaviour
         {
             if (done == false)
             {
-                int countEasy = PlayerPrefs.GetInt("medalEasy");
-                int countMed = PlayerPrefs.GetInt("medalMed");
-                int countHard = PlayerPrefs.GetInt("medalHard");
-                int countWhisper = PlayerPrefs.GetInt("medalWhisper");
-                int countRenban = PlayerPrefs.GetInt("medalRenban");
-                int countThermo = PlayerPrefs.GetInt("medalThermo");
-                int countKiller = PlayerPrefs.GetInt("medalKiller");
-                int countKropki = PlayerPrefs.GetInt("medalKropki");
+                int countEasy = PlayerPrefs.GetInt("medalEasy", 0);
+                int countMed = PlayerPrefs.GetInt("medalMed", 0);
+                int countHard = PlayerPrefs.GetInt("medalHard", 0);
+                int countWhisper = PlayerPrefs.GetInt("medalWhispers", 0);
+                int countRenban = PlayerPrefs.GetInt("medalRenban", 0);
+                int countThermo = PlayerPrefs.GetInt("medalThermo", 0);
+                int countKiller = PlayerPrefs.GetInt("medalKiller", 0);
+                int countKropki = PlayerPrefs.GetInt("medalKropki", 0);
 
                 if (currentSceneName == "easy")
                 {
@@ -1798,30 +1798,80 @@ public class SudokuGrid : MonoBehaviour
                     countHard++;
                     PlayerPrefs.SetInt("medalHard", countHard);
                 }
-                else if (currentSceneName == "thermo" || currentSceneName == "thermoMedium" || currentSceneName == "thermoEasy")
+                else if (currentSceneName == "thermo")
+                {
+                    countThermo = countThermo + 3;
+                    PlayerPrefs.SetInt("medalThermo", countThermo);
+                }
+                else if (currentSceneName == "thermoMedium")
+                {
+                    countThermo = countThermo + 2;
+                    PlayerPrefs.SetInt("medalThermo", countThermo);
+                }
+                else if (currentSceneName == "thermoEasy")
                 {
                     countThermo++;
                     PlayerPrefs.SetInt("medalThermo", countThermo);
                 }
-                else if (currentSceneName == "kropki" || currentSceneName == "kropkiEasy" || currentSceneName == "kropkiMedium")
+                else if (currentSceneName == "kropki")
+                {
+                    countKropki = countKropki + 3;
+                    PlayerPrefs.SetInt("medalKropki", countKropki);
+                }
+                else if (currentSceneName == "kropkiEasy")
                 {
                     countKropki++;
                     PlayerPrefs.SetInt("medalKropki", countKropki);
                 }
-                else if (currentSceneName == "killer" || currentSceneName == "killerEasy" || currentSceneName == "killerMedium")
+                else if (currentSceneName == "kropkiMedium")
+                {
+                    countKropki = countKropki + 2;
+                    PlayerPrefs.SetInt("medalKropki", countKropki);
+                }
+                else if (currentSceneName == "killer")
+                {
+                    countKiller = countKiller + 3;
+                    PlayerPrefs.SetInt("medalKiller", countKiller);
+                }
+                else if (currentSceneName == "killerEasy")
                 {
                     countKiller++;
                     PlayerPrefs.SetInt("medalKiller", countKiller);
                 }
-                else if (currentSceneName == "renban" || currentSceneName == "renbanMedium" || currentSceneName == "renbanEasy")
+                else if (currentSceneName == "killerMedium")
+                {
+                    countKiller = countKiller + 2;
+                    PlayerPrefs.SetInt("medalKiller", countKiller);
+                }
+                else if (currentSceneName == "renbanEasy")
                 {
                     countRenban++;
                     PlayerPrefs.SetInt("medalRenban", countRenban);
                 }
-                else if (currentSceneName == "whispers" || currentSceneName == "whispersEasy" || currentSceneName == "whispersMedium")
+                else if (currentSceneName == "renbanMedium")
+                {
+                    countRenban = countRenban + 2;
+                    PlayerPrefs.SetInt("medalRenban", countRenban);
+                }
+                else if (currentSceneName == "renban")
+                {
+                    countRenban = countRenban + 3;
+                    PlayerPrefs.SetInt("medalRenban", countRenban);
+                }
+                else if (currentSceneName == "whispersEasy")
                 {
                     countWhisper++;
-                    PlayerPrefs.SetInt("medalWhisper", countWhisper);
+                    PlayerPrefs.SetInt("medalWhispers", countWhisper);
+                }
+                else if (currentSceneName == "whispersMedium")
+                {
+                    countWhisper = countWhisper + 2;
+                    PlayerPrefs.SetInt("medalWhispers", countWhisper);
+                }
+                else if (currentSceneName == "whispers")
+                {
+                    countWhisper = countWhisper + 3;
+                    PlayerPrefs.SetInt("medalWhispers", countWhisper);
                 }
 
                 done = true;
