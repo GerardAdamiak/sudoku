@@ -1782,96 +1782,133 @@ public class SudokuGrid : MonoBehaviour
                 int countThermo = PlayerPrefs.GetInt("medalThermo", 0);
                 int countKiller = PlayerPrefs.GetInt("medalKiller", 0);
                 int countKropki = PlayerPrefs.GetInt("medalKropki", 0);
+                int exp = PlayerPrefs.GetInt("Exp", 0);
 
                 if (currentSceneName == "easy")
                 {
+                    exp = exp + 10;
                     countEasy++;
                     PlayerPrefs.SetInt("medalEasy", countEasy);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "medium")
                 {
                     countMed++;
+                    exp = exp + 20;
                     PlayerPrefs.SetInt("medalMed", countMed);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "hard")
                 {
                     countHard++;
+                    exp = exp + 30;
                     PlayerPrefs.SetInt("medalHard", countHard);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "thermo")
                 {
+                    exp = exp + 50;
                     countThermo = countThermo + 3;
                     PlayerPrefs.SetInt("medalThermo", countThermo);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "thermoMedium")
                 {
+                    exp = exp + 35;
                     countThermo = countThermo + 2;
                     PlayerPrefs.SetInt("medalThermo", countThermo);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "thermoEasy")
                 {
+                    exp = exp + 20;
                     countThermo++;
                     PlayerPrefs.SetInt("medalThermo", countThermo);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "kropki")
                 {
+                    exp = exp + 50;
                     countKropki = countKropki + 3;
                     PlayerPrefs.SetInt("medalKropki", countKropki);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "kropkiEasy")
                 {
+                    exp = exp + 20;
                     countKropki++;
                     PlayerPrefs.SetInt("medalKropki", countKropki);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "kropkiMedium")
                 {
+                    exp = exp + 35;
                     countKropki = countKropki + 2;
                     PlayerPrefs.SetInt("medalKropki", countKropki);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "killer")
                 {
+                    exp = exp + 50;
                     countKiller = countKiller + 3;
                     PlayerPrefs.SetInt("medalKiller", countKiller);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "killerEasy")
                 {
+                    exp = exp + 20;
                     countKiller++;
                     PlayerPrefs.SetInt("medalKiller", countKiller);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "killerMedium")
                 {
+                    exp = exp + 35;
                     countKiller = countKiller + 2;
                     PlayerPrefs.SetInt("medalKiller", countKiller);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "renbanEasy")
                 {
+                    exp = exp + 20;
                     countRenban++;
                     PlayerPrefs.SetInt("medalRenban", countRenban);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "renbanMedium")
                 {
+                    exp = exp + 35;
                     countRenban = countRenban + 2;
                     PlayerPrefs.SetInt("medalRenban", countRenban);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "renban")
                 {
+                    exp = exp + 50;
                     countRenban = countRenban + 3;
                     PlayerPrefs.SetInt("medalRenban", countRenban);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "whispersEasy")
                 {
+                    exp = exp + 20;
                     countWhisper++;
                     PlayerPrefs.SetInt("medalWhispers", countWhisper);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "whispersMedium")
                 {
+                    exp = exp + 35;
                     countWhisper = countWhisper + 2;
                     PlayerPrefs.SetInt("medalWhispers", countWhisper);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
                 else if (currentSceneName == "whispers")
                 {
+                    exp = exp + 50;
                     countWhisper = countWhisper + 3;
                     PlayerPrefs.SetInt("medalWhispers", countWhisper);
+                    PlayerPrefs.SetInt("Exp", exp);
                 }
 
                 done = true;

@@ -1,12 +1,15 @@
+using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MedalHandler : MonoBehaviour
 {
     public TextMeshProUGUI tmpText;
+    public TextMeshProUGUI tmpTextLevel;
     public int value;
 
     private int countEasy;
@@ -17,6 +20,9 @@ public class MedalHandler : MonoBehaviour
     private int countKropki;
     private int countThermo;
     private int countWhispers;
+    private int countExp;
+    private static int baseXP = 15;
+    private static int startXP = 50;
 
 
     public Color colorForZero = Color.red;
@@ -47,6 +53,7 @@ public class MedalHandler : MonoBehaviour
         countKiller = PlayerPrefs.GetInt("medalKiller", 0);
         countRenban = PlayerPrefs.GetInt("medalRenban", 0);
         countThermo = PlayerPrefs.GetInt("medalThermo", 0);
+        countExp = PlayerPrefs.GetInt("Exp", 0);
 
 
         value = PlayerPrefs.GetInt("IsLight", 0);
@@ -55,10 +62,52 @@ public class MedalHandler : MonoBehaviour
         UpdateMedalImages();
     }
 
+
+    public static int CalculateXPNeeded(int level)
+    {
+        
+        return baseXP * (level * level) + startXP;
+    }
+    public static int GetPlayerLevel(int totalXP)
+    {
+        int sumXP = 0;
+        int level = 0;
+        while(sumXP < totalXP)
+        {
+            sumXP += CalculateXPNeeded(level);
+            if(sumXP<=totalXP)level++;
+        }
+        return level; // Ensure minimum level 1
+    }
+
+    public static int GetXPInCurrentLevel(int totalXP)
+    {
+        int level = GetPlayerLevel(totalXP);
+
+        int xpNeededForPreviousLevels = 0;
+        for (int i = 0; i < (level); i++)
+        {
+            xpNeededForPreviousLevels += CalculateXPNeeded(i);
+        }
+
+        return totalXP - xpNeededForPreviousLevels;
+    }
+
     void UpdateTextColor()
     {
 
         MultiProgressBar progressBar = FindObjectOfType<MultiProgressBar>();
+
+        int level = GetPlayerLevel(countExp);
+
+        int neededXP = CalculateXPNeeded(level);
+
+        int currentXP = GetXPInCurrentLevel(countExp);
+    
+
+        tmpTextLevel.text = "User  |  Level " + level;
+
+        progressBar.SetProgressBar9(currentXP, neededXP);
 
         if (tmpText.CompareTag("easyBronze"))
         {

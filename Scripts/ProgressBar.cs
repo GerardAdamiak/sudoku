@@ -11,6 +11,7 @@ public class MultiProgressBar : MonoBehaviour
     public Image progressBar6;   // Reference to the second progress bar
     public Image progressBar7;   // Reference to the third progress bar
     public Image progressBar8;
+    public Image progressBar9;
 
     private int maxValue1;
     private int maxValue2;
@@ -20,6 +21,8 @@ public class MultiProgressBar : MonoBehaviour
     private int maxValue6;
     private int maxValue7;
     private int maxValue8;
+    private int maxValue9;
+
 
     private int currentValue1;                     // Current value for the first bar
     private int currentValue2;                     // Current value for the second bar
@@ -28,8 +31,9 @@ public class MultiProgressBar : MonoBehaviour
     private int currentValue5;                     // Current value for the second bar
     private int currentValue6;
     private int currentValue7;                     // Current value for the first bar
-    private int currentValue8;                     // Current value for the second bar
- // Current value for the third bar
+    private int currentValue8;
+    private int currentValue9; // Current value for the second bar
+                               // Current value for the third bar
 
     void Start()
     {
@@ -89,6 +93,12 @@ public class MultiProgressBar : MonoBehaviour
         currentValue8 = Mathf.Clamp(value, 0, maxValue8);
         UpdateProgressBar(progressBar8, currentValue8, maxValue8);
     }
+    public void SetProgressBar9(int value, int maxValue)
+    {
+        maxValue9 = maxValue;
+        currentValue9 = Mathf.Clamp(value, 0, maxValue9);
+        UpdateProgressBar(progressBar9, currentValue9, maxValue9);
+    }
 
     // Helper function to update a specific bar's fill amount
     private void UpdateProgressBar(Image barImage, int currentValue, int maxValue)
@@ -108,6 +118,7 @@ public class MultiProgressBar : MonoBehaviour
         UpdateProgressBar(progressBar6, currentValue6, maxValue6);
         UpdateProgressBar(progressBar7, currentValue7, maxValue7);
         UpdateProgressBar(progressBar8, currentValue8, maxValue8);
- 
+        UpdateProgressBar(progressBar9, currentValue9, maxValue9);
+
     }
 }

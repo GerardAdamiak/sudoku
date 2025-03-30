@@ -1437,7 +1437,7 @@ MonoBehaviour:
   - Super! All renbans are done, now let's look at German Whispers
   - There are 3 German Whisper lines on the grid.
   - On the line, digits that are next to each other, must differ by at least 5
-  - Let's look at this square. It needs to be at least 5 higher than 3
+  - Let's look at this square. It needs to be at least 5 digits higher than 3
   - That means, that options that we have are 8 and 9. Which one should be in there?
   - Great work! Now try to do other Whisper Lines, finish is close!
   - You got it! Last variant ahead of us, Kropki

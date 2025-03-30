@@ -146,13 +146,13 @@ public class TextCycler : MonoBehaviour
             image.SetActive(false);
 
             // Pulsating effect by modifying the scale
-            float scaleFactor = 1f + Mathf.PingPong(Time.time * 0.25f, 0.15f); // Scale between 1 and 1.2
+            float scaleFactor = 0.7f + Mathf.PingPong(Time.time * 0.25f, 0.15f); // Scale between 1 and 1.2
             image2.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
         }
         else
         {
             image.SetActive(true);
-            image2.transform.localScale = Vector3.one; // Reset scale when not needed
+            image2.transform.localScale = new Vector3(0.7f,0.7f, 0.7f); // Reset scale when not needed
         }
     }
 
