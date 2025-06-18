@@ -10,6 +10,8 @@ using Random = System.Random;
 using System.Diagnostics;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEngine.UIElements;
+using Image = UnityEngine.UI.Image;
 
 
 public class SudokuGrid : MonoBehaviour
@@ -272,7 +274,9 @@ public class SudokuGrid : MonoBehaviour
     void Start()
     {
 
-
+        
+        bool ifContinue = TouchToChangeScene.ifContinue;
+        UnityEngine.Debug.Log("ifContinue: " + ifContinue);
         customNumber = PlayerPrefs.GetInt("number");
         whichSet = PlayerPrefs.GetString("whichSet");
         PlayerPrefs.SetInt("GameReady", 0);
@@ -306,7 +310,7 @@ public class SudokuGrid : MonoBehaviour
                 "grid_square object needs to have GridSquare script attached"
             );
         CreateGrid();
-        if (currentSceneName != "set" && currentSceneName != "Custom" && currentSceneName != "tutorial")
+        if (currentSceneName != "set" && currentSceneName != "Custom" && currentSceneName != "tutorial" && ifContinue == false)
         {
 
 
@@ -359,13 +363,28 @@ public class SudokuGrid : MonoBehaviour
                 GetCurrentGridState();
             UnclickableDigits();
         }
+        if (ifContinue)
+        {
+            SudokuSaveSystem save = FindAnyObjectByType<SudokuSaveSystem>();
+            save.LoadGame();
+            
+            for(int a = 0; a<9; a++)
+            {
+                for (int b = 0; b < 9; b++)
+                {
+                    currentGrid[a, b] = save.currentGrid[a, b];
+                }
 
-        if (currentSceneName == "Custom" || currentSceneName == "tutorial")
+            }
+        }
+        if (currentSceneName == "Custom" || currentSceneName == "tutorial" || ifContinue == true)
         {
             ConvertTables();
             // PrintGrid2(grid);
             SetGridNumbers();
             UnclickableDigits();
+            Timer timer = FindObjectOfType<Timer>();
+            timer.currentTime = PlayerPrefs.GetFloat("SudokuSave_Time");
             // UnclickableDigits();
         }
 
@@ -385,9 +404,7 @@ public class SudokuGrid : MonoBehaviour
             spriteRenderer.enabled = false;
             counter++;
         }
-
-
-        if (currentSceneName == "whispers" || currentSceneName == "whispersMedium" || currentSceneName == "whispersEasy")
+        if ((currentSceneName == "whispers" || currentSceneName == "whispersMedium" || currentSceneName == "whispersEasy") && ifContinue == false)
         {
 
             for (int i = 0; i < 9; i++)
@@ -465,7 +482,7 @@ public class SudokuGrid : MonoBehaviour
                 }
             }
         }
-        else if (currentSceneName == "renban" || currentSceneName == "renbanEasy" || currentSceneName == "renbanMedium")
+        else if ((currentSceneName == "renban" || currentSceneName == "renbanEasy" || currentSceneName == "renbanMedium") && ifContinue == false)
         {
             // Random generator for renban line creation
             System.Random rand = new System.Random();
@@ -614,7 +631,7 @@ public class SudokuGrid : MonoBehaviour
                 }
             }
         }
-        else if (currentSceneName == "kropki" || currentSceneName == "kropkiEasy" || currentSceneName == "kropkiMedium")
+        else if ((currentSceneName == "kropki" || currentSceneName == "kropkiEasy" || currentSceneName == "kropkiMedium") && ifContinue == false)
         {
             for (int i = 0; i < 9; i++)
             {
@@ -735,7 +752,7 @@ public class SudokuGrid : MonoBehaviour
                 }
             }
         }
-        else if (currentSceneName == "killer" || currentSceneName == "killerEasy" || currentSceneName == "killerMedium")
+        else if ((currentSceneName == "killer" || currentSceneName == "killerEasy" || currentSceneName == "killerMedium") && ifContinue == false)
         {
             // Number of killer cages to generate
             int numberOfCages = 35;
@@ -901,7 +918,7 @@ public class SudokuGrid : MonoBehaviour
             }
         }
 
-        else if (currentSceneName == "thermo" || currentSceneName == "thermoEasy" || currentSceneName == "thermoMedium")
+        else if ((currentSceneName == "thermo" || currentSceneName == "thermoEasy" || currentSceneName == "thermoMedium") && ifContinue == false)
         {
             // Number of killer cages to generate
             int numberOfCages = 25;
@@ -1135,6 +1152,25 @@ public class SudokuGrid : MonoBehaviour
         }
         if (currentSceneName != "Custom" || whichSet != "set")
             EndCheck();
+
+        SudokuSaveSystem sudokusave = FindObjectOfType<SudokuSaveSystem>();
+        bool hasNonZeroValues = false;
+
+        for (int i = 0; i < 9 && !hasNonZeroValues; i++)
+        {
+            for (int j = 0; j < 9 && !hasNonZeroValues; j++)
+            {
+                if (currentGrid[i, j] != "0")
+                {
+                    hasNonZeroValues = true;
+                }
+            }
+        }
+
+        if (hasNonZeroValues)
+        {
+            sudokusave.SaveGame(currentGrid);
+        }
     }
 
     public void UpdateSelectedCell(int number)
@@ -2219,6 +2255,41 @@ public class SudokuGrid : MonoBehaviour
         {
             for (int col = 0; col < 9; col++)
             {
+                switch (currentGrid[row, col])
+                {
+                    default:
+                        currentGridInt[row, col] = '0';
+                        break;
+                    case "1":
+                        currentGridInt[row, col] = '1';
+                        break;
+                    case "2":
+                        currentGridInt[row, col] = '2';
+                        break;
+                    case "3":
+                        currentGridInt[row, col] = '3';
+                        break;
+                    case "4":
+                        currentGridInt[row, col] = '4';
+                        break;
+                    case "5":
+                        currentGridInt[row, col] = '5';
+                        break;
+                    case "6":
+                        currentGridInt[row, col] = '6';
+                        break;
+                    case "7":
+                        currentGridInt[row, col] = '7';
+                        break;
+                    case "8":
+                        currentGridInt[row, col] = '8';
+                        break;
+                    case "9":
+                        currentGridInt[row, col] = '9';
+                        break;
+                }
+
+
                 switch (currentGridInt[row, col])
                 {
                     default:

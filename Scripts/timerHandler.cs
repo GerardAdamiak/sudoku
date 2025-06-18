@@ -7,7 +7,7 @@ public class Timer : MonoBehaviour
 {
     public TMP_Text timerText;
     public float startTime = 0f; // Start time in seconds
-    private float currentTime;
+    public float currentTime;
     public static float finalTime;
     private string currentSceneName;
 

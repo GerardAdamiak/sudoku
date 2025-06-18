@@ -1156,6 +1156,7 @@ GameObject:
   - component: {fileID: 2060321194}
   - component: {fileID: 2060321193}
   - component: {fileID: 2060321198}
+  - component: {fileID: 2060321199}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1297,6 +1298,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b04596bba6f7c40aea3c65fae48df4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2060321199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2060321192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f0aa17d7f494ec478923cb0841aa389, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveKey: SudokuSave
 --- !u!1 &2067678548
 GameObject:
   m_ObjectHideFlags: 0

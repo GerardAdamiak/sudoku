@@ -18,16 +18,16 @@ public class TextColorChanger : MonoBehaviour
 
     void UpdateTextColor()
     {
-        int isLight = PlayerPrefs.GetInt("isLight", 1); // Default to 1 if not set
-        Color newColor;
+        int isLight = PlayerPrefs.GetInt("IsLight"); // Default to 1 if not set
+        
 
-        if (ColorUtility.TryParseHtmlString(isLight == 1 ? "#EFEFD0" : "#2E3138", out newColor))
+        if (isLight == 1)
         {
-            textMeshPro.color = newColor;
+            textMeshPro.color = new Color32(46, 49, 56, 255); ;
         }
         else
         {
-            Debug.LogError("Failed to parse color string");
+            textMeshPro.color = new Color32(239, 239, 208, 255); ;
         }
     }
 }

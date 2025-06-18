@@ -20,6 +20,7 @@ public class TouchToChangeScene : MonoBehaviour
     private bool ifLoadingScene = false;
     private int PlayCount;
     public bool ifFirst;
+    public static bool ifContinue;
 
     void Start()
     {
@@ -40,6 +41,7 @@ public class TouchToChangeScene : MonoBehaviour
 
 
             }
+            
         }
        
         
@@ -61,14 +63,29 @@ public class TouchToChangeScene : MonoBehaviour
 
     void Update()
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 || Input.GetMouseButtonDown(0))
         {
-            
-            for (int i = 0; i < Input.touchCount; i++)
+            bool ifMouse = false;
+            int counter = Input.touchCount;
+            if (Input.touchCount == 0)
             {
-                if (Input.GetTouch(i).phase == TouchPhase.Ended)
+                counter = 1; // Simulate a touch input if mouse is used
+                ifMouse = true;
+            }
+            for (int i = 0; i < counter; i++)
+            {
+                if (Input.GetTouch(i).phase == TouchPhase.Ended || ifMouse == true)
                 {
-                    Vector3 touchPosWorld = Camera.main.ScreenToWorldPoint(Input.GetTouch(i).position);
+                    Vector3 touchPosWorld;
+                    if (ifMouse == false)
+                    {
+                        touchPosWorld = Camera.main.ScreenToWorldPoint(Input.GetTouch(i).position);
+                    }
+                    else
+                    {
+                        touchPosWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    }
+                  
                     Vector2 touchPosWorld2D = (Vector2)touchPosWorld;
 
                     RaycastHit2D hit = Physics2D.Raycast(touchPosWorld2D, Camera.main.transform.forward);
@@ -78,6 +95,13 @@ public class TouchToChangeScene : MonoBehaviour
                         
                         string sceneToLoad = null;
                         loadingScene = FindObjectOfType<LoadingScene>();
+
+                       if (hit.collider.gameObject.CompareTag("continue"))
+                        {
+                            ifContinue = true;
+                            Debug.Log("Continue button pressed, ifContinue set to true.");
+                        }
+                       else ifContinue = false;
 
                         if (hit.collider.gameObject.CompareTag("solve"))
                         {
@@ -412,12 +436,35 @@ public class TouchToChangeScene : MonoBehaviour
                             string test = PlayerPrefs.GetString("PreviousScene");
                             sceneToLoad = test;
                         }
-                        
+                        else if (hit.collider.gameObject.CompareTag("continue"))
+                        {
+                            SudokuSaveSystem saveSystem = FindObjectOfType<SudokuSaveSystem>();
+                            if (PlayerPrefs.GetInt("SudokuSave_HasSave") == 1)
+                            {
+                                //if (saveSystem.LoadGame())
+                                //{
+                                //    // Get the loaded grid
+                                //    string[,] loadedGrid = saveSystem.currentGrid;
+                                //    // Or get a copy
+                                //    string[,] gridCopy = saveSystem.GetGridCopy();
+                                //    // Apply it to your game UI
+                                //}
+                            }
+                            
+                            string test = PlayerPrefs.GetString("SudokuSave_Scene");
+                            sceneToLoad = test;
+                        }
+
+                       
+
 
                         if (sceneToLoad != null || ifLoadingScene == true)
                         {
                             StartCoroutine(PlaySoundAndChangeScene(sceneToLoad));
                         }
+
+
+
                     }
                 }
             }
