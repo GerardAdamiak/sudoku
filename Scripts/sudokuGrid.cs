@@ -70,7 +70,28 @@ public class SudokuGrid : MonoBehaviour
     private int randomDigit;
     public bool tutorialDone = false;
     private bool ifFirstCage = true;
+    public bool ifAddedDot = false;
 
+    [System.Serializable]
+    public class GermanConnection
+    {
+        public int fromIndex;
+        public int toIndex;
+        public string direction;
+    }
+
+
+    List<GermanConnection> GermanConnections = new List<GermanConnection>();
+
+    [System.Serializable]
+    public class DotConnection
+    {
+        public int fromIndex;
+        public int toIndex;
+        public string direction;
+        public bool isDot; // true for black dot, false for white dot
+    }
+    List<DotConnection> DotConnections = new List<DotConnection>();
 
     public void DrawGerman()
     {
@@ -404,84 +425,251 @@ public class SudokuGrid : MonoBehaviour
             spriteRenderer.enabled = false;
             counter++;
         }
-        if ((currentSceneName == "whispers" || currentSceneName == "whispersMedium" || currentSceneName == "whispersEasy") && ifContinue == false)
+        void SaveGermanConnections()
         {
-
-            for (int i = 0; i < 9; i++)
+            string connectionData = "";
+            foreach (var connection in GermanConnections)
             {
-                for (int j = 0; j < 9; j++)
+                connectionData += connection.fromIndex + "," + connection.toIndex + "," + connection.direction + ";";
+            }
+            PlayerPrefs.SetString("GermanConnections", connectionData);
+            PlayerPrefs.Save();
+
+            UnityEngine.Debug.Log("=== LINE CONNECTIONS SAVED ===");
+            UnityEngine.Debug.Log("Total connections: " + GermanConnections.Count);
+            UnityEngine.Debug.Log("Saved data: " + connectionData);
+
+            for (int i = 0; i < GermanConnections.Count; i++)
+            {
+                var connection = GermanConnections[i];
+                UnityEngine.Debug.Log($"Connection {i + 1}: From index {connection.fromIndex} to index {connection.toIndex}, Direction: {connection.direction}");
+            }
+            UnityEngine.Debug.Log("=== END OF SAVED CONNECTIONS ===");
+        }
+
+        void LoadGermanConnections()
+        {
+            string connectionData = PlayerPrefs.GetString("GermanConnections", "");
+            if (connectionData != "")
+            {
+                GermanConnections.Clear();
+                string[] connections = connectionData.Split(';');
+
+                UnityEngine.Debug.Log("=== LINE CONNECTIONS LOADED ===");
+                UnityEngine.Debug.Log("Raw data: " + connectionData);
+                UnityEngine.Debug.Log("Total connections to load: " + (connections.Length - 1)); // -1 because last element is empty
+
+                foreach (string conn in connections)
                 {
-                    if (i != 8)
+                    if (conn != "")
                     {
-                        if (grid[i, j] != 0 && grid[i + 1, j] != 0)
+                        string[] parts = conn.Split(',');
+                        if (parts.Length == 3)
                         {
-                            if (((grid[i, j] - grid[i + 1, j]) >= 5))
+                            GermanConnection connection = new GermanConnection
                             {
-                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
-                                var square2 = grid_squares_[
-                                    (i * 9) + j + 9
-                                ].GetComponent<GridSquare>();
+                                fromIndex = int.Parse(parts[0]),
+                                toIndex = int.Parse(parts[1]),
+                                direction = parts[2]
+                            };
+                            GermanConnections.Add(connection);
 
-                                directionLine = "down";
+                            UnityEngine.Debug.Log($"Loaded connection: From index {connection.fromIndex} to index {connection.toIndex}, Direction: {connection.direction}");
 
-                                DrawLineBetweenSquares(square1, square2);
-                            }
+                            // Reconstruct the line
+                            var square1 = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                            var square2 = grid_squares_[connection.toIndex].GetComponent<GridSquare>();
+                            directionLine = connection.direction;
+                            DrawLineBetweenSquares(square1, square2);
                         }
                     }
-                    if (i != 0)
+                }
+                UnityEngine.Debug.Log("=== END OF LOADED CONNECTIONS ===");
+            }
+            else
+            {
+                    UnityEngine.Debug.Log("No saved line connections found in PlayerPrefs");
+            }
+        }
+
+        void SaveDotConnections()
+        {
+            string connectionData = "";
+            foreach (var connection in DotConnections)
+            {
+                connectionData += connection.fromIndex + "," + connection.toIndex + "," + connection.direction + "," + connection.isDot + ";";
+            }
+            PlayerPrefs.SetString("DotConnections", connectionData);
+            PlayerPrefs.Save();
+
+            UnityEngine.Debug.Log("=== LINE CONNECTIONS SAVED ===");
+            UnityEngine.Debug.Log("Total connections: " + DotConnections.Count);
+
+            for (int i = 0; i < DotConnections.Count; i++)
+            {
+                var connection = DotConnections[i];
+                string dotType = connection.isDot ? "White Dot" : "Black Dot";
+                UnityEngine.Debug.Log($"Connection {i + 1}: From index {connection.fromIndex} to index {connection.toIndex}, Direction: {connection.direction}, Type: {dotType}");
+            }
+            UnityEngine.Debug.Log("=== END OF SAVED CONNECTIONS ===");
+        }
+
+        void LoadDotConnections()
+        {
+            string connectionData = PlayerPrefs.GetString("DotConnections", "");
+            if (connectionData != "")
+            {
+                DotConnections.Clear();
+                string[] connections = connectionData.Split(';');
+
+                UnityEngine.Debug.Log("=== LINE CONNECTIONS LOADED ===");
+                UnityEngine.Debug.Log("Total connections to load: " + (connections.Length - 1));
+
+                foreach (string conn in connections)
+                {
+                    if (conn != "")
                     {
-                        if (grid[i, j] != 0 && grid[i - 1, j] != 0)
+                        string[] parts = conn.Split(',');
+                        if (parts.Length == 4) // Now we have 4 parts: fromIndex, toIndex, direction, isDot
                         {
-                            if (((grid[i, j] - grid[i - 1, j]) >= 5))
+                            DotConnection connection = new DotConnection
                             {
-                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
-                                var square2 = grid_squares_[
-                                    (i * 9) + j - 9
-                                ].GetComponent<GridSquare>();
+                                fromIndex = int.Parse(parts[0]),
+                                toIndex = int.Parse(parts[1]),
+                                direction = parts[2],
+                                isDot = bool.Parse(parts[3])
+                            };
+                            DotConnections.Add(connection);
 
-                                directionLine = "up";
+                            string dotType = connection.isDot ? "White Dot" : "Black Dot";
+                            UnityEngine.Debug.Log($"Loaded connection: From index {connection.fromIndex} to index {connection.toIndex}, Direction: {connection.direction}, Type: {dotType}");
 
-                                DrawLineBetweenSquares(square1, square2);
-                            }
+                            // Reconstruct the dot
+                            var square1 = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                            var square2 = grid_squares_[connection.toIndex].GetComponent<GridSquare>();
+                            directionLine = connection.direction;
+                            ifDot = connection.isDot;
+                            DrawBlackDotBetweenSquares(square1, square2);
                         }
                     }
-                    if (j != 8)
+                }
+                UnityEngine.Debug.Log("=== END OF LOADED CONNECTIONS ===");
+            }
+            else
+            {
+                UnityEngine.Debug.Log("No saved line connections found in PlayerPrefs");
+            }
+        }
+
+
+
+
+        if ((currentSceneName == "whispers" || currentSceneName == "whispersMedium" || currentSceneName == "whispersEasy"))
+        {
+            if (ifContinue == false)
+            {
+                GermanConnections.Clear(); // Clear existing connections
+
+                for (int i = 0; i < 9; i++)
+                {
+                    for (int j = 0; j < 9; j++)
                     {
-                        if (grid[i, j] != 0 && grid[i, j + 1] != 0)
+                        if (i != 8)
                         {
-                            if (((grid[i, j] - grid[i, j + 1]) >= 5))
+                            if (grid[i, j] != 0 && grid[i + 1, j] != 0)
                             {
-                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
-                                var square2 = grid_squares_[
-                                    (i * 9) + j + 1
-                                ].GetComponent<GridSquare>();
+                                if (((grid[i, j] - grid[i + 1, j]) >= 5))
+                                {
+                                    var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                    var square2 = grid_squares_[(i * 9) + j + 9].GetComponent<GridSquare>();
+                                    directionLine = "down";
+                                    DrawLineBetweenSquares(square1, square2);
 
-                                directionLine = "left";
-
-                                DrawLineBetweenSquares(square1, square2);
+                                    // Save connection
+                                    GermanConnections.Add(new GermanConnection
+                                    {
+                                        fromIndex = (i * 9) + j,
+                                        toIndex = (i * 9) + j + 9,
+                                        direction = "down"
+                                    });
+                                }
                             }
                         }
-                    }
-                    if (j != 0)
-                    {
-                        if (grid[i, j] != 0 && grid[i, j - 1] != 0)
+                        if (i != 0)
                         {
-                            if (((grid[i, j] - grid[i, j - 1]) >= 5))
+                            if (grid[i, j] != 0 && grid[i - 1, j] != 0)
                             {
-                                var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
-                                var square2 = grid_squares_[
-                                    (i * 9) + j - 1
-                                ].GetComponent<GridSquare>();
+                                if (((grid[i, j] - grid[i - 1, j]) >= 5))
+                                {
+                                    var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                    var square2 = grid_squares_[(i * 9) + j - 9].GetComponent<GridSquare>();
+                                    directionLine = "up";
+                                    DrawLineBetweenSquares(square1, square2);
 
-                                directionLine = "right";
+                                    // Save connection
+                                    GermanConnections.Add(new GermanConnection
+                                    {
+                                        fromIndex = (i * 9) + j,
+                                        toIndex = (i * 9) + j - 9,
+                                        direction = "up"
+                                    });
+                                }
+                            }
+                        }
+                        if (j != 8)
+                        {
+                            if (grid[i, j] != 0 && grid[i, j + 1] != 0)
+                            {
+                                if (((grid[i, j] - grid[i, j + 1]) >= 5))
+                                {
+                                    var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                    var square2 = grid_squares_[(i * 9) + j + 1].GetComponent<GridSquare>();
+                                    directionLine = "left";
+                                    DrawLineBetweenSquares(square1, square2);
 
-                                DrawLineBetweenSquares(square1, square2);
+                                    // Save connection
+                                    GermanConnections.Add(new GermanConnection
+                                    {
+                                        fromIndex = (i * 9) + j,
+                                        toIndex = (i * 9) + j + 1,
+                                        direction = "left"
+                                    });
+                                }
+                            }
+                        }
+                        if (j != 0)
+                        {
+                            if (grid[i, j] != 0 && grid[i, j - 1] != 0)
+                            {
+                                if (((grid[i, j] - grid[i, j - 1]) >= 5))
+                                {
+                                    var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
+                                    var square2 = grid_squares_[(i * 9) + j - 1].GetComponent<GridSquare>();
+                                    directionLine = "right";
+                                    DrawLineBetweenSquares(square1, square2);
+
+                                    // Save connection
+                                    GermanConnections.Add(new GermanConnection
+                                    {
+                                        fromIndex = (i * 9) + j,
+                                        toIndex = (i * 9) + j - 1,
+                                        direction = "right"
+                                    });
+                                }
                             }
                         }
                     }
                 }
+
+                // Save to PlayerPrefs
+                SaveGermanConnections();
             }
+            else LoadGermanConnections();
         }
+
+
+       
+
         else if ((currentSceneName == "renban" || currentSceneName == "renbanEasy" || currentSceneName == "renbanMedium") && ifContinue == false)
         {
             // Random generator for renban line creation
@@ -631,8 +819,13 @@ public class SudokuGrid : MonoBehaviour
                 }
             }
         }
-        else if ((currentSceneName == "kropki" || currentSceneName == "kropkiEasy" || currentSceneName == "kropkiMedium") && ifContinue == false)
+        else if ((currentSceneName == "kropki" || currentSceneName == "kropkiEasy" || currentSceneName == "kropkiMedium"))
         {
+            if(ifContinue == false)
+            {
+               
+            DotConnections.Clear(); // Clear existing connections
+
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
@@ -644,24 +837,44 @@ public class SudokuGrid : MonoBehaviour
                             if (((grid[i, j] - grid[i + 1, j]) == grid[i + 1, j]))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
-                                var square2 = grid_squares_[
-                                    (i * 9) + j + 9
-                                ].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j + 9].GetComponent<GridSquare>();
 
                                 directionLine = "down";
                                 ifDot = false;
                                 DrawBlackDotBetweenSquares(square1, square2);
+
+                                    // Save connection
+                                    if (ifAddedDot == true)
+                                    {
+                                        DotConnections.Add(new DotConnection
+                                        {
+                                            fromIndex = (i * 9) + j,
+                                            toIndex = (i * 9) + j + 9,
+                                            direction = "down",
+                                            isDot = false // black dot
+                                        });
+                                    }
                             }
                             else if (((grid[i, j] - grid[i + 1, j]) == 1))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
-                                var square2 = grid_squares_[
-                                    (i * 9) + j + 9
-                                ].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j + 9].GetComponent<GridSquare>();
 
                                 directionLine = "down";
                                 ifDot = true;
                                 DrawBlackDotBetweenSquares(square1, square2);
+
+                                    // Save connection
+                                    if (ifAddedDot == true)
+                                    {
+                                        DotConnections.Add(new DotConnection
+                                        {
+                                            fromIndex = (i * 9) + j,
+                                            toIndex = (i * 9) + j + 9,
+                                            direction = "down",
+                                            isDot = true // white dot
+                                        });
+                                    }
                             }
                         }
                     }
@@ -672,24 +885,42 @@ public class SudokuGrid : MonoBehaviour
                             if (((grid[i, j] - grid[i - 1, j]) == grid[i - 1, j]))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
-                                var square2 = grid_squares_[
-                                    (i * 9) + j - 9
-                                ].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j - 9].GetComponent<GridSquare>();
                                 ifDot = false;
                                 directionLine = "up";
-
                                 DrawBlackDotBetweenSquares(square1, square2);
+
+                                    // Save connection
+                                    if (ifAddedDot == true)
+                                    {
+                                        DotConnections.Add(new DotConnection
+                                        {
+                                            fromIndex = (i * 9) + j,
+                                            toIndex = (i * 9) + j - 9,
+                                            direction = "up",
+                                            isDot = false // black dot
+                                        });
+                                    }
                             }
                             else if (((grid[i, j] - grid[i - 1, j]) == 1))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
-                                var square2 = grid_squares_[
-                                    (i * 9) + j - 9
-                                ].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j - 9].GetComponent<GridSquare>();
                                 ifDot = true;
                                 directionLine = "up";
-
                                 DrawBlackDotBetweenSquares(square1, square2);
+
+                                    // Save connection
+                                    if (ifAddedDot == true)
+                                    {
+                                        DotConnections.Add(new DotConnection
+                                        {
+                                            fromIndex = (i * 9) + j,
+                                            toIndex = (i * 9) + j - 9,
+                                            direction = "up",
+                                            isDot = true // white dot
+                                        });
+                                    }
                             }
                         }
                     }
@@ -700,24 +931,42 @@ public class SudokuGrid : MonoBehaviour
                             if (((grid[i, j] - grid[i, j + 1]) == grid[i, j + 1]))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
-                                var square2 = grid_squares_[
-                                    (i * 9) + j + 1
-                                ].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j + 1].GetComponent<GridSquare>();
                                 ifDot = false;
                                 directionLine = "left";
-
                                 DrawBlackDotBetweenSquares(square1, square2);
+
+                                    // Save connection
+                                    if (ifAddedDot == true)
+                                    {
+                                        DotConnections.Add(new DotConnection
+                                        {
+                                            fromIndex = (i * 9) + j,
+                                            toIndex = (i * 9) + j + 1,
+                                            direction = "left",
+                                            isDot = false // black dot
+                                        });
+                                    }
                             }
                             else if (((grid[i, j] - grid[i, j + 1]) == 1))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
-                                var square2 = grid_squares_[
-                                    (i * 9) + j + 1
-                                ].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j + 1].GetComponent<GridSquare>();
                                 ifDot = true;
                                 directionLine = "left";
-
                                 DrawBlackDotBetweenSquares(square1, square2);
+
+                                    // Save connection
+                                    if (ifAddedDot == true)
+                                    {
+                                        DotConnections.Add(new DotConnection
+                                        {
+                                            fromIndex = (i * 9) + j,
+                                            toIndex = (i * 9) + j + 1,
+                                            direction = "left",
+                                            isDot = true // white dot
+                                        });
+                                    }
                             }
                         }
                     }
@@ -728,30 +977,56 @@ public class SudokuGrid : MonoBehaviour
                             if (((grid[i, j] - grid[i, j - 1]) == grid[i, j - 1]))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
-                                var square2 = grid_squares_[
-                                    (i * 9) + j - 1
-                                ].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j - 1].GetComponent<GridSquare>();
                                 ifDot = false;
                                 directionLine = "right";
-
                                 DrawBlackDotBetweenSquares(square1, square2);
+
+                                    // Save connection
+                                    if (ifAddedDot == true)
+                                    {
+                                        DotConnections.Add(new DotConnection
+                                        {
+                                            fromIndex = (i * 9) + j,
+                                            toIndex = (i * 9) + j - 1,
+                                            direction = "right",
+                                            isDot = false // black dot
+                                        });
+                                    }
                             }
                             else if (((grid[i, j] - grid[i, j - 1]) == 1))
                             {
                                 var square1 = grid_squares_[(i * 9) + j].GetComponent<GridSquare>();
-                                var square2 = grid_squares_[
-                                    (i * 9) + j - 1
-                                ].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[(i * 9) + j - 1].GetComponent<GridSquare>();
                                 ifDot = true;
                                 directionLine = "right";
-
                                 DrawBlackDotBetweenSquares(square1, square2);
+
+                                    // Save connection
+                                    if (ifAddedDot == true)
+                                    {
+                                        DotConnections.Add(new DotConnection
+                                        {
+                                            fromIndex = (i * 9) + j,
+                                            toIndex = (i * 9) + j - 1,
+                                            direction = "right",
+                                            isDot = true // white dot
+                                        });
+                                    }
                             }
                         }
                     }
                 }
             }
+
+            // Save to PlayerPrefs
+            SaveDotConnections();
+
+            }
+            else LoadDotConnections();
         }
+
+
         else if ((currentSceneName == "killer" || currentSceneName == "killerEasy" || currentSceneName == "killerMedium") && ifContinue == false)
         {
             // Number of killer cages to generate
@@ -1501,19 +1776,23 @@ public class SudokuGrid : MonoBehaviour
         double randomNumber = random.NextDouble();
         if (currentSceneName != "tutorial")
         {
-            if (randomNumber > 0.3)
+            bool ifContinue = TouchToChangeScene.ifContinue;
+            if (randomNumber > 0.3 || ifContinue)
             {
                 if (ifDot == false)
                 {
                     lineRenderer.SetPosition(0, startPosition);
                     lineRenderer.SetPosition(1, endPosition);
+                    ifAddedDot = true;
                 }
                 else
                 {
                     lineRendererDot.SetPosition(0, startPosition);
                     lineRendererDot.SetPosition(1, endPosition);
+                    ifAddedDot = true;
                 }
             }
+            else ifAddedDot = false;
         }
         else
         {
@@ -1521,11 +1800,13 @@ public class SudokuGrid : MonoBehaviour
             {
                 lineRenderer.SetPosition(0, startPosition);
                 lineRenderer.SetPosition(1, endPosition);
+               
             }
             else
             {
                 lineRendererDot.SetPosition(0, startPosition);
                 lineRendererDot.SetPosition(1, endPosition);
+                
             }
         }
     }
