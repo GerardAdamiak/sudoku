@@ -12,6 +12,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
+using Debug = UnityEngine.Debug;
 
 
 public class SudokuGrid : MonoBehaviour
@@ -93,6 +94,17 @@ public class SudokuGrid : MonoBehaviour
     }
     List<DotConnection> DotConnections = new List<DotConnection>();
 
+    [System.Serializable]
+    public class ThermoConnection
+    {
+        public int fromIndex;
+        public int toIndex;
+        public string direction;
+        public bool isDot; // for kropki dots
+        public bool isThermo; // true if this is a thermo connection
+        public bool isThermoStart; // true if this cell has the thermo bulb/circle
+    }
+    List<ThermoConnection> ThermoConnections = new List<ThermoConnection>();
     public void DrawGerman()
     {
         var squareIndices = new int[]
@@ -558,6 +570,115 @@ public class SudokuGrid : MonoBehaviour
             else
             {
                 UnityEngine.Debug.Log("No saved line connections found in PlayerPrefs");
+            }
+        }
+
+        void SaveThermoConnections()
+        {
+            string connectionData = "";
+            foreach (var connection in ThermoConnections)
+            {
+                connectionData += connection.fromIndex + "," + connection.toIndex + "," + connection.direction + "," + connection.isDot + "," + connection.isThermo + "," + connection.isThermoStart + ";";
+            }
+            PlayerPrefs.SetString("ThermoConnections", connectionData);
+            PlayerPrefs.Save();
+
+            Debug.Log("=== Thermo CONNECTIONS SAVED ===");
+            Debug.Log("Total connections: " + ThermoConnections.Count);
+
+            for (int i = 0; i < ThermoConnections.Count; i++)
+            {
+                var connection = ThermoConnections[i];
+                string connectionType = "";
+                if (connection.isThermo && connection.isThermoStart) connectionType = "Thermo Bulb";
+                else if (connection.isThermo) connectionType = "Thermo Thermo";
+                else if (connection.isDot) connectionType = "White Dot";
+                else connectionType = "Black Dot/Thermo";
+
+                Debug.Log($"Connection {i + 1}: From index {connection.fromIndex} to index {connection.toIndex}, Direction: {connection.direction}, Type: {connectionType}");
+            }
+            Debug.Log("=== END OF SAVED CONNECTIONS ===");
+        }
+
+        void LoadThermoConnections()
+        {
+            string connectionData = PlayerPrefs.GetString("ThermoConnections", "");
+            if (connectionData != "")
+            {
+                ThermoConnections.Clear();
+                string[] connections = connectionData.Split(';');
+
+                Debug.Log("=== Thermo CONNECTIONS LOADED ===");
+                Debug.Log("Total connections to load: " + (connections.Length - 1));
+
+                foreach (string conn in connections)
+                {
+                    if (conn != "")
+                    {
+                        string[] parts = conn.Split(',');
+                        if (parts.Length == 6) // Now we have 6 parts: fromIndex, toIndex, direction, isDot, isThermo, isThermoStart
+                        {
+                            ThermoConnection connection = new ThermoConnection
+                            {
+                                fromIndex = int.Parse(parts[1]),
+                                toIndex = int.Parse(parts[0]),
+                                direction = parts[2],
+                                isDot = bool.Parse(parts[3]),
+                                isThermo = bool.Parse(parts[4]),
+                                isThermoStart = bool.Parse(parts[5])
+                            };
+                            ThermoConnections.Add(connection);
+
+                            string connectionType = "";
+                            if (connection.isThermo && connection.isThermoStart)
+                            {
+                                connectionType = "Thermo Bulb";
+                                // Reconstruct the thermo bulb
+                                var firstSquare = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                Image spriteRenderer = firstSquare.GetComponentInChildren<Image>();
+                                if (spriteRenderer != null)
+                                {
+                                    spriteRenderer.enabled = true;
+                                }
+                            }
+                            else if (connection.isThermo)
+                            {
+                                connectionType = "Thermo Thermo";
+                                // Reconstruct thermo Thermo
+                                var square1 = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[connection.toIndex].GetComponent<GridSquare>();
+                                directionLine = connection.direction;
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+                            else if (connection.isDot)
+                            {
+                                connectionType = "White Dot";
+                                // Reconstruct dot
+                                var square1 = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[connection.toIndex].GetComponent<GridSquare>();
+                                directionLine = connection.direction;
+                                ifDot = connection.isDot;
+                                DrawBlackDotBetweenSquares(square1, square2);
+                            }
+                            else
+                            {
+                                connectionType = "Line";
+                                // Reconstruct line
+                                var square1 = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[connection.toIndex].GetComponent<GridSquare>();
+                                directionLine = connection.direction;
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+
+                            Debug.Log($"Loaded connection: From index {connection.fromIndex} to index {connection.toIndex}, Direction: {connection.direction}, Type: {connectionType}");
+                        }
+                    }
+                }
+                Debug.Log("=== END OF LOADED CONNECTIONS ===");
+            }
+            else
+            {
+                Debug.Log("No saved line connections found in PlayerPrefs");
             }
         }
 
@@ -1193,68 +1314,178 @@ public class SudokuGrid : MonoBehaviour
             }
         }
 
-        else if ((currentSceneName == "thermo" || currentSceneName == "thermoEasy" || currentSceneName == "thermoMedium") && ifContinue == false)
+        else if ((currentSceneName == "thermo" || currentSceneName == "thermoEasy" || currentSceneName == "thermoMedium"))
         {
-            // Number of killer cages to generate
-            int numberOfCages = 25;
-
-           
-
-      
-            // Random object to generate numbers
-            System.Random rand = new System.Random();
-
-            // Define a 9x9 grid as a 1D array (tracking visited cells for all cages)
-            bool[] visited = new bool[81];
-
-            // Possible directions: [left, right, up, down] in 1D grid terms
-            int[] directions = { -1, 1, -9, 9 }; // left (-1), right (+1), up (-9), down (+9)
-
-            // Function to check if a move is valid (inside grid boundaries)
-            bool IsValidMove(int index, int direction)
+            if (ifContinue == false)
             {
-                // Ensure index stays in the grid
-                if (index + direction < 0 || index + direction >= 81)
-                    return false;
+                ThermoConnections.Clear(); // Clear existing connections
 
-                // Ensure left-right wrapping isn't violated
-                if (direction == -1 && index % 9 == 0) // Going left from the leftmost column
-                    return false;
-                if (direction == 1 && (index + 1) % 9 == 0) // Going right from the rightmost column
-                    return false;
+                // Number of killer cages to generate
+                int numberOfCages = 25;
 
-                return true;
-            }
+                // Random object to generate numbers
+                System.Random rand = new System.Random();
 
-            // Generate multiple killer cages
-            for (int cageCount = 0; cageCount < numberOfCages; cageCount++)
-            {
-             
-                // Retry generating a cage if there is an overlap
-                bool cageGenerated = false;
-                while (!cageGenerated)
+                // Define a 9x9 grid as a 1D array (tracking visited cells for all cages)
+                bool[] visited = new bool[81];
+
+                // Possible directions: [left, right, up, down] in 1D grid terms
+                int[] directions = { -1, 1, -9, 9 }; // left (-1), right (+1), up (-9), down (+9)
+
+                // Function to check if a move is valid (inside grid boundaries)
+                bool IsValidMove(int index, int direction)
                 {
-                    // Generate random root cell index (0 to 80 for 9x9 grid)
-                    int rootCell = rand.Next(0, 81);
+                    // Ensure index stays in the grid
+                    if (index + direction < 0 || index + direction >= 81)
+                        return false;
 
-                    // If the root cell is already visited, retry
-                    if (visited[rootCell])
-                        continue;
+                    // Ensure left-right wrapping isn't violated
+                    if (direction == -1 && index % 9 == 0) // Going left from the leftmost column
+                        return false;
+                    if (direction == 1 && (index + 1) % 9 == 0) // Going right from the rightmost column
+                        return false;
 
-                    // Mark root cell as visited and add to the cage
-                    
-                    List<int> cageCells = new List<int> { rootCell };
-                    visited[rootCell] = true;
-                    int cageSize = 6; // Random cage size between 2 and 5 cells
+                    return true;
+                }
 
-                    // Create a HashSet to track visited cells in the current cage
-                    HashSet<int> visitedThisCage = new HashSet<int>(cageCells);
-
-                    // Populate the cage
-                    loopCounter = 0;
-                    while (cageCells.Count < cageSize)
+                // Generate multiple killer cages
+                for (int cageCount = 0; cageCount < numberOfCages; cageCount++)
+                {
+                    // Retry generating a cage if there is an overlap
+                    bool cageGenerated = false;
+                    while (!cageGenerated)
                     {
-                        
+                        // Generate random root cell index (0 to 80 for 9x9 grid)
+                        int rootCell = rand.Next(0, 81);
+
+                        // If the root cell is already visited, retry
+                        if (visited[rootCell])
+                            continue;
+
+                        // Mark root cell as visited and add to the cage
+                        List<int> cageCells = new List<int> { rootCell };
+                        visited[rootCell] = true;
+                        int cageSize = 6; // Random cage size between 2 and 5 cells
+
+                        // Create a HashSet to track visited cells in the current cage
+                        HashSet<int> visitedThisCage = new HashSet<int>(cageCells);
+
+                        // Populate the cage
+                        loopCounter = 0;
+                        while (cageCells.Count < cageSize)
+                        {
+                            cageCells = cageCells.OrderBy(cell =>
+                            {
+                                // Convert the 1D index to 2D coordinates (x, y)
+                                int x = cell / 9; // Row index
+                                int y = cell % 9; // Column index
+
+                                // Return the value at grid[x, y] to sort by
+                                return grid[x, y];
+                            }).ToList();
+                            int currentCell = cageCells[cageCells.Count - 1];
+
+                            int newCell = -1;
+                            int newFirstCell = -1;
+                            if (loopCounter == 0)
+                            {
+                                randomDigit = rand.Next(4);
+                            }
+
+                            int direction = directions[(randomDigit + loopCounter) % 4];
+                            int firstDirection = directions[rand.Next(4)];
+
+                            // Check if moving in this direction is valid
+                            if (IsValidMove(currentCell, direction))
+                            {
+                                newCell = currentCell + direction;
+
+                                // If the new cell is unvisited, add it to the cage
+                                if (!visited[newCell] && (grid[newCell / 9, newCell % 9] > grid[currentCell / 9, currentCell % 9]))
+                                {
+                                    cageCells.Add(newCell);
+                                    var square = grid_squares_[newCell].GetComponent<GridSquare>();
+                                    var square2 = grid_squares_[currentCell].GetComponent<GridSquare>();
+
+                                    int rowDiff = (newCell / 9) - (currentCell / 9);
+                                    int colDiff = (newCell % 9) - (currentCell % 9);
+                                    directionLine = "";
+
+                                    if (rowDiff == -1 && colDiff == 0) directionLine = "down";
+                                    else if (rowDiff == 0 && colDiff == 1) directionLine = "right";
+                                    else if (rowDiff == 1 && colDiff == 0) directionLine = "up";
+                                    else if (rowDiff == 0 && colDiff == -1) directionLine = "left";
+
+                                    DrawLineBetweenSquares(square, square2);
+
+                                    // Save thermo connection
+                                    ThermoConnections.Add(new ThermoConnection
+                                    {
+                                        fromIndex = currentCell,
+                                        toIndex = newCell,
+                                        direction = directionLine,
+                                        isDot = false,
+                                        isThermo = true,
+                                        isThermoStart = false
+                                    });
+
+                                    visited[newCell] = true;
+                                    visitedThisCage.Add(newCell); // Add to visited this cage
+                                    directionLine = "";
+                                }
+                            }
+
+                            int firstCell = cageCells[0];
+                            if (IsValidMove(firstCell, firstDirection))
+                            {
+                                newFirstCell = firstCell + firstDirection;
+
+                                // If the new cell is unvisited, add it to the cage
+                                if (!visited[newFirstCell] && (grid[newFirstCell / 9, newFirstCell % 9] < grid[firstCell / 9, firstCell % 9]))
+                                {
+                                    cageCells.Add(newFirstCell);
+                                    var square = grid_squares_[newFirstCell].GetComponent<GridSquare>();
+                                    var square2 = grid_squares_[firstCell].GetComponent<GridSquare>();
+
+                                    int rowDiff = (newFirstCell / 9) - (firstCell / 9);
+                                    int colDiff = (newFirstCell % 9) - (firstCell % 9);
+                                    directionLine = "";
+
+                                    if (rowDiff == -1 && colDiff == 0) directionLine = "down";
+                                    else if (rowDiff == 0 && colDiff == 1) directionLine = "right";
+                                    else if (rowDiff == 1 && colDiff == 0) directionLine = "up";
+                                    else if (rowDiff == 0 && colDiff == -1) directionLine = "left";
+
+                                    DrawLineBetweenSquares(square, square2);
+
+                                    // Save thermo connection
+                                    ThermoConnections.Add(new ThermoConnection
+                                    {
+                                        fromIndex = firstCell,
+                                        toIndex = newFirstCell,
+                                        direction = directionLine,
+                                        isDot = false,
+                                        isThermo = true,
+                                        isThermoStart = false
+                                    });
+
+                                    visited[newFirstCell] = true;
+                                    visitedThisCage.Add(newFirstCell); // Add to visited this cage
+                                    directionLine = "";
+                                }
+                            }
+
+                            loopCounter++;
+                            if (loopCounter >= 4)
+                            {
+                                cageSize--;
+                                loopCounter = 0;
+                            }
+                        }
+
+                        // Cage successfully generated, print the cells
+                        cageGenerated = true;
+
                         cageCells = cageCells.OrderBy(cell =>
                         {
                             // Convert the 1D index to 2D coordinates (x, y)
@@ -1264,134 +1495,42 @@ public class SudokuGrid : MonoBehaviour
                             // Return the value at grid[x, y] to sort by
                             return grid[x, y];
                         }).ToList();
-                        int currentCell = cageCells[cageCells.Count-1];
-                        
-                        int newCell = -1;
-                        int newFirstCell = -1;
-                        if (loopCounter == 0)
-                        {
-                            randomDigit = rand.Next(4);
-                        }
-                        
-                        int direction = directions[(randomDigit + loopCounter) % 4];
-                        int firstDirection = directions[rand.Next(4)];
 
-                        // Check if moving in this direction is valid
-                        if (IsValidMove(currentCell, direction))
+                        if (cageCells.Count != 1)
                         {
-                            newCell = currentCell + direction;
-                           
+                            int firstCellIndex = cageCells[0];
+                            var firstSquare = grid_squares_[firstCellIndex].GetComponent<GridSquare>();
 
-                            // If the new cell is unvisited, add it to the cage
-                            if (!visited[newCell] && (grid[newCell / 9, newCell % 9] > grid[currentCell / 9, currentCell % 9]))
+                            Image spriteRenderer = firstSquare.GetComponentInChildren<Image>();
+
+                            // Deactivate the SpriteRenderer
+                            if (spriteRenderer != null)
                             {
-                          
-                                cageCells.Add(newCell);
-                                var square = grid_squares_[newCell].GetComponent<GridSquare>();
-                                var square2 = grid_squares_[currentCell].GetComponent<GridSquare>();
-
-                                int rowDiff = (newCell / 9) - (currentCell / 9);
-                                int colDiff = (newCell % 9) - (currentCell % 9);
-                                directionLine = "";
-
-                                if (rowDiff == -1 && colDiff == 0) directionLine = "down";
-                              
-                                else if (rowDiff == 0 && colDiff == 1) directionLine = "right";
-                           
-                                else if (rowDiff == 1 && colDiff == 0) directionLine = "up";
-                         
-                                else if (rowDiff == 0 && colDiff == -1) directionLine = "left";
-
-
-                                DrawLineBetweenSquares(square, square2);
-                                visited[newCell] = true;
-                                visitedThisCage.Add(newCell); // Add to visited this cage
-                                directionLine = "";
-                            }
-                            
-                        }
-                       
-                        int firstCell = cageCells[0];
-                        if (IsValidMove(firstCell, firstDirection))
-                        {
-                            
-                            newFirstCell = firstCell + firstDirection;
-
-                          // If the new cell is unvisited, add it to the cage
-                            if (!visited[newFirstCell] && (grid[newFirstCell / 9, newFirstCell % 9] < grid[firstCell / 9, firstCell % 9]))
-                            {
-
-                                cageCells.Add(newFirstCell);
-                               var square = grid_squares_[newFirstCell].GetComponent<GridSquare>();
-                                var square2 = grid_squares_[firstCell].GetComponent<GridSquare>();
-
-                                int rowDiff = (newFirstCell / 9) - (firstCell / 9);
-                                int colDiff = (newFirstCell % 9) - (firstCell % 9);
-                                directionLine = "";
-
-                                if (rowDiff == -1 && colDiff == 0) directionLine = "down";
-
-                                else if (rowDiff == 0 && colDiff == 1) directionLine = "right";
-
-                                else if (rowDiff == 1 && colDiff == 0) directionLine = "up";
-
-                                else if (rowDiff == 0 && colDiff == -1) directionLine = "left";
-
-
-
-                                DrawLineBetweenSquares(square, square2);
-                                visited[newFirstCell] = true;
-                               visitedThisCage.Add(newFirstCell); // Add to visited this cage
-                                directionLine = "";
+                                spriteRenderer.enabled = true;
                             }
 
+                            // Save the thermo start (bulb/circle)
+                            ThermoConnections.Add(new ThermoConnection
+                            {
+                                fromIndex = firstCellIndex,
+                                toIndex = firstCellIndex, // same cell for the bulb
+                                direction = "bulb",
+                                isDot = false,
+                                isThermo = true,
+                                isThermoStart = true
+                            });
                         }
-                       
-
-                        loopCounter++;
-                        if (loopCounter >= 4)
+                        else
                         {
-                            cageSize--;
-                            loopCounter = 0;
+                            visited[cageCells[0]] = false;
                         }
-                    }
-
-                    // Cage successfully generated, print the cells
-
-
-                    cageGenerated = true;
-
-                    cageCells = cageCells.OrderBy(cell =>
-                    {
-                        // Convert the 1D index to 2D coordinates (x, y)
-                        int x = cell / 9; // Row index
-                        int y = cell % 9; // Column index
-
-                        // Return the value at grid[x, y] to sort by
-                        return grid[x, y];
-                    }).ToList();
-                    if (cageCells.Count != 1)
-                    {
-                        int firstCellIndex = cageCells[0];
-                        var firstSquare = grid_squares_[firstCellIndex].GetComponent<GridSquare>();
-
-                        Image spriteRenderer = firstSquare.GetComponentInChildren<Image>();
-
-
-                        // Deactivate the SpriteRenderer
-                        if (spriteRenderer != null)
-                        {
-                            spriteRenderer.enabled = true;
-                        }
-
-                    }
-                    else
-                    {
-                        visited[cageCells[0]] = false;
                     }
                 }
-                
+
+                // Save to PlayerPrefs
+                SaveThermoConnections();
             }
+            else LoadThermoConnections();
         }
 
         isFinished = true;
