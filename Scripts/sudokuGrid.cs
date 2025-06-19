@@ -105,6 +105,21 @@ public class SudokuGrid : MonoBehaviour
         public bool isThermoStart; // true if this cell has the thermo bulb/circle
     }
     List<ThermoConnection> ThermoConnections = new List<ThermoConnection>();
+
+    [System.Serializable]
+    public class KillerConnection
+    {
+        public int fromIndex;
+        public int toIndex;
+        public string direction;
+        public bool isDot; // for kropki dots
+        public bool isThermo; // true if this is a thermo connection
+        public bool isThermoStart; // true if this cell has the thermo bulb/circle
+        public bool isKiller; // true if this is a killer cage connection
+        public int textureID; // for killer cage textures
+        public string killerSum; // for killer cage sum text
+    }
+    List<KillerConnection> KillerConnections = new List<KillerConnection>();
     public void DrawGerman()
     {
         var squareIndices = new int[]
@@ -682,7 +697,143 @@ public class SudokuGrid : MonoBehaviour
             }
         }
 
+        void SaveKillerConnections()
+        {
+            string connectionData = "";
+            foreach (var connection in KillerConnections)
+            {
+                connectionData += connection.fromIndex + "," + connection.toIndex + "," + connection.direction + "," +
+                                connection.isDot + "," + connection.isThermo + "," + connection.isThermoStart + "," +
+                                connection.isKiller + "," + connection.textureID + "," + connection.killerSum + ";";
+            }
+            PlayerPrefs.SetString("KillerConnections", connectionData);
+            PlayerPrefs.Save();
 
+            Debug.Log("=== Killer CONNECTIONS SAVED ===");
+            Debug.Log("Total connections: " + KillerConnections.Count);
+
+            for (int i = 0; i < KillerConnections.Count; i++)
+            {
+                var connection = KillerConnections[i];
+                string connectionType = "";
+                if (connection.isKiller && connection.direction == "sum") connectionType = "Killer Sum";
+                else if (connection.isKiller && connection.direction == "texture") connectionType = "Killer Texture";
+                else if (connection.isThermo && connection.isThermoStart) connectionType = "Thermo Bulb";
+                else if (connection.isThermo) connectionType = "Thermo Killer";
+                else if (connection.isDot) connectionType = "White Dot";
+                else connectionType = "Black Dot/Killer";
+
+                Debug.Log($"Connection {i + 1}: From index {connection.fromIndex} to index {connection.toIndex}, Direction: {connection.direction}, Type: {connectionType}");
+            }
+            Debug.Log("=== END OF SAVED CONNECTIONS ===");
+        }
+
+        // Updated Load Method
+        void LoadKillerConnections()
+        {
+            string connectionData = PlayerPrefs.GetString("KillerConnections", "");
+            if (connectionData != "")
+            {
+                KillerConnections.Clear();
+                string[] connections = connectionData.Split(';');
+
+                Debug.Log("=== Killer CONNECTIONS LOADED ===");
+                Debug.Log("Total connections to load: " + (connections.Length - 1));
+
+                foreach (string conn in connections)
+                {
+                    if (conn != "")
+                    {
+                        string[] parts = conn.Split(',');
+                        if (parts.Length == 9) // Now we have 9 parts: fromIndex, toIndex, direction, isDot, isThermo, isThermoStart, isKiller, textureID, killerSum
+                        {
+                            KillerConnection connection = new KillerConnection
+                            {
+                                fromIndex = int.Parse(parts[0]),
+                                toIndex = int.Parse(parts[1]),
+                                direction = parts[2],
+                                isDot = bool.Parse(parts[3]),
+                                isThermo = bool.Parse(parts[4]),
+                                isThermoStart = bool.Parse(parts[5]),
+                                isKiller = bool.Parse(parts[6]),
+                                textureID = int.Parse(parts[7]),
+                                killerSum = parts[8]
+                            };
+                            KillerConnections.Add(connection);
+
+                            string connectionType = "";
+                            if (connection.isKiller && connection.direction == "sum")
+                            {
+                                connectionType = "Killer Sum";
+                                // Reconstruct the killer sum text
+                                var killerSquare = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                var textComponents = killerSquare.GetComponentsInChildren<TextMeshProUGUI>();
+                                TextMeshProUGUI killerText = textComponents.FirstOrDefault(
+                                    tmp => tmp.gameObject.name == "killerSum"
+                                );
+                                if (killerText != null)
+                                {
+                                    killerText.text = connection.killerSum;
+                                }
+                            }
+                            else if (connection.isKiller && connection.direction == "texture")
+                            {
+                                connectionType = "Killer Texture";
+                                // Reconstruct killer cage texture
+                                var square = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                square.SetTexture(connection.textureID);
+                            }
+                            else if (connection.isThermo && connection.isThermoStart)
+                            {
+                                connectionType = "Thermo Bulb";
+                                // Reconstruct the thermo bulb
+                                var firstSquare = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                Image spriteRenderer = firstSquare.GetComponentInChildren<Image>();
+                                if (spriteRenderer != null)
+                                {
+                                    spriteRenderer.enabled = true;
+                                }
+                            }
+                            else if (connection.isThermo)
+                            {
+                                connectionType = "Thermo Killer";
+                                // Reconstruct thermo Killer
+                                var square1 = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[connection.toIndex].GetComponent<GridSquare>();
+                                directionLine = connection.direction;
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+                            else if (connection.isDot)
+                            {
+                                connectionType = "White Dot";
+                                // Reconstruct dot
+                                var square1 = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[connection.toIndex].GetComponent<GridSquare>();
+                                directionLine = connection.direction;
+                                ifDot = connection.isDot;
+                                DrawBlackDotBetweenSquares(square1, square2);
+                            }
+                            else
+                            {
+                                connectionType = "Line";
+                                // Reconstruct line
+                                var square1 = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[connection.toIndex].GetComponent<GridSquare>();
+                                directionLine = connection.direction;
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+
+                            Debug.Log($"Loaded connection: From index {connection.fromIndex} to index {connection.toIndex}, Direction: {connection.direction}, Type: {connectionType}");
+                        }
+                    }
+                }
+                Debug.Log("=== END OF LOADED CONNECTIONS ===");
+            }
+            else
+            {
+                Debug.Log("No saved line connections found in PlayerPrefs");
+            }
+        }
 
 
         if ((currentSceneName == "whispers" || currentSceneName == "whispersMedium" || currentSceneName == "whispersEasy"))
@@ -1148,170 +1299,205 @@ public class SudokuGrid : MonoBehaviour
         }
 
 
-        else if ((currentSceneName == "killer" || currentSceneName == "killerEasy" || currentSceneName == "killerMedium") && ifContinue == false)
+        else if ((currentSceneName == "killer" || currentSceneName == "killerEasy" || currentSceneName == "killerMedium"))
         {
-            // Number of killer cages to generate
-            int numberOfCages = 35;
-            int cageSum = 0;
-            // Random object to generate numbers
-            System.Random rand = new System.Random();
-
-            // Define a 9x9 grid as a 1D array (tracking visited cells for all cages)
-            bool[] visited = new bool[81];
-
-            // Possible directions: [left, right, up, down] in 1D grid terms
-            int[] directions = { -1, 1, -9, 9 }; // left (-1), right (+1), up (-9), down (+9)
-
-            // Function to check if a move is valid (inside grid boundaries)
-            bool IsValidMove(int index, int direction)
+            if (ifContinue == false)
             {
-                // Ensure index stays in the grid
-                if (index + direction < 0 || index + direction >= 81)
-                    return false;
+                KillerConnections.Clear(); // Clear existing connections
 
-                // Ensure left-right wrapping isn't violated
-                if (direction == -1 && index % 9 == 0) // Going left from the leftmost column
-                    return false;
-                if (direction == 1 && (index + 1) % 9 == 0) // Going right from the rightmost column
-                    return false;
+                // Number of killer cages to generate
+                int numberOfCages = 35;
+                int cageSum = 0;
+                // Random object to generate numbers
+                System.Random rand = new System.Random();
 
-                return true;
-            }
+                // Define a 9x9 grid as a 1D array (tracking visited cells for all cages)
+                bool[] visited = new bool[81];
 
-            int cageGeneratedCounter = 0;
-           
-            // Generate multiple killer cages
-            for (int cageCount = 0; cageCount < numberOfCages; cageCount++)
-            {
-                cageSum = 0;
-                // Retry generating a cage if there is an overlap
-                bool cageGenerated = false;
-                while (!cageGenerated)
+                // Possible directions: [left, right, up, down] in 1D grid terms
+                int[] directions = { -1, 1, -9, 9 }; // left (-1), right (+1), up (-9), down (+9)
+
+                // Function to check if a move is valid (inside grid boundaries)
+                bool IsValidMove(int index, int direction)
                 {
-                    cageGeneratedCounter++;
-                    if (cageGeneratedCounter > 81)
-                    {
-                        cageGeneratedCounter = 0;
-                        cageCount++;
-                        break;
-                    }
-                    // Generate random root cell index (0 to 80 for 9x9 grid)
-                    int rootCell = rand.Next(0, 81);
+                    // Ensure index stays in the grid
+                    if (index + direction < 0 || index + direction >= 81)
+                        return false;
 
-                    // If the root cell is already visited, retry
-                    if (visited[rootCell])
-                        continue;
-                    
-                    // Mark root cell as visited and add to the cage
-                    cageSum += grid[rootCell / 9, rootCell % 9];
-                    List<int> cageCells = new List<int> { rootCell };
-                    visited[rootCell] = true;
-                    int cageSize = rand.Next(2, 5); // Random cage size between 2 and 5 cells
+                    // Ensure left-right wrapping isn't violated
+                    if (direction == -1 && index % 9 == 0) // Going left from the leftmost column
+                        return false;
+                    if (direction == 1 && (index + 1) % 9 == 0) // Going right from the rightmost column
+                        return false;
 
-                    // Create a HashSet to track visited cells in the current cage
-                    HashSet<int> visitedThisCage = new HashSet<int>(cageCells);
-
-                    // Populate the cage
-                    loopCounter = 0;
-                    while (cageCells.Count < cageSize)
-                    {
-                        int currentCell = cageCells[rand.Next(cageCells.Count)];
-                        int newCell = -1;
-                        int direction = directions[rand.Next(4)];
-
-                        // Check if moving in this direction is valid
-                        if (IsValidMove(currentCell, direction))
-                        {
-                            newCell = currentCell + direction;
-
-                            // If the new cell is unvisited, add it to the cage
-                            if (!visited[newCell])
-                            {
-                                cageSum += grid[newCell / 9, newCell % 9];
-                                cageCells.Add(newCell);
-                                visited[newCell] = true;
-                                visitedThisCage.Add(newCell); // Add to visited this cage
-                            }
-                        }
-                        loopCounter++;
-                        if (loopCounter > 10)
-                        {
-                            cageSize--;
-                            loopCounter = 0;
-                        }
-                        if (cageSize == 0) break;
-                    }
-
-                    // Cage successfully generated, print the cells
-
-                    var killerSquare = grid_squares_[cageCells.Min()].GetComponent<GridSquare>();
-
-                    // Determine the correct texture based on neighbors within this cage only
-                    foreach (int cell in visitedThisCage) // Check only cells in this cage
-                    {
-                        bool hasUp = IsValidMove(cell, -9) && visitedThisCage.Contains(cell - 9);
-                        bool hasDown = IsValidMove(cell, 9) && visitedThisCage.Contains(cell + 9);
-                        bool hasLeft = IsValidMove(cell, -1) && visitedThisCage.Contains(cell - 1);
-                        bool hasRight = IsValidMove(cell, 1) && visitedThisCage.Contains(cell + 1);
-
-                        // Assign texture based on neighbor configuration
-                        int textureID = 0;
-
-                        if (hasUp && hasRight && !hasDown && !hasLeft)
-                            textureID = 1;
-                        else if (hasUp && hasLeft && !hasDown && !hasRight)
-                            textureID = 2;
-                        else if (hasDown && hasLeft && !hasUp && !hasRight)
-                            textureID = 3;
-                        else if (hasDown && hasRight && !hasUp && !hasLeft)
-                            textureID = 4;
-                        else if (hasDown && hasLeft && hasRight && !hasUp)
-                            textureID = 5;
-                        else if (hasUp && hasLeft && hasRight && !hasDown)
-                            textureID = 6;
-                        else if (hasLeft && hasUp && hasDown && !hasRight)
-                            textureID = 7;
-                        else if (hasRight && hasUp && hasDown && !hasLeft)
-                            textureID = 8;
-                        else if (hasLeft && !hasRight && !hasUp && !hasDown)
-                            textureID = 9;
-                        else if (hasUp && !hasDown && !hasLeft && !hasRight)
-                            textureID = 10;
-                        else if (hasRight && !hasLeft && !hasUp && !hasDown)
-                            textureID = 11;
-                        else if (hasDown && !hasUp && !hasLeft && !hasRight)
-                            textureID = 12;
-                        else if (hasUp && hasDown && !hasLeft && !hasRight)
-                            textureID = 13;
-                        else if (hasLeft && hasRight && !hasUp && !hasDown)
-                            textureID = 14;
-                        else if (!hasLeft && !hasRight && !hasUp && !hasDown)
-                            ifSingleCage = true;
-
-                        // Set texture on this cell based on textureID
-                        var square = grid_squares_[cell].GetComponent<GridSquare>();
-                        square.SetTexture(textureID);
-                    }
-
-                    if (ifSingleCage == false)
-                    {
-                        var textComponents = killerSquare.GetComponentsInChildren<TextMeshProUGUI>();
-
-                        // Find the specific TextMeshPro component with the GameObject name "killerSum"
-                        TextMeshProUGUI killerText = textComponents.FirstOrDefault(
-                            tmp => tmp.gameObject.name == "killerSum"
-                        );
-                        string killerSum = cageSum.ToString();
-                        killerText.text = killerSum;
-                    }
-
-                        
-
-                    cageSum = 0;
-                    cageGenerated = true;
-                    ifSingleCage = false;
+                    return true;
                 }
+
+                int cageGeneratedCounter = 0;
+
+                // Generate multiple killer cages
+                for (int cageCount = 0; cageCount < numberOfCages; cageCount++)
+                {
+                    cageSum = 0;
+                    // Retry generating a cage if there is an overlap
+                    bool cageGenerated = false;
+                    while (!cageGenerated)
+                    {
+                        cageGeneratedCounter++;
+                        if (cageGeneratedCounter > 81)
+                        {
+                            cageGeneratedCounter = 0;
+                            cageCount++;
+                            break;
+                        }
+                        // Generate random root cell index (0 to 80 for 9x9 grid)
+                        int rootCell = rand.Next(0, 81);
+
+                        // If the root cell is already visited, retry
+                        if (visited[rootCell])
+                            continue;
+
+                        // Mark root cell as visited and add to the cage
+                        cageSum += grid[rootCell / 9, rootCell % 9];
+                        List<int> cageCells = new List<int> { rootCell };
+                        visited[rootCell] = true;
+                        int cageSize = rand.Next(2, 5); // Random cage size between 2 and 5 cells
+
+                        // Create a HashSet to track visited cells in the current cage
+                        HashSet<int> visitedThisCage = new HashSet<int>(cageCells);
+
+                        // Populate the cage
+                        loopCounter = 0;
+                        while (cageCells.Count < cageSize)
+                        {
+                            int currentCell = cageCells[rand.Next(cageCells.Count)];
+                            int newCell = -1;
+                            int direction = directions[rand.Next(4)];
+
+                            // Check if moving in this direction is valid
+                            if (IsValidMove(currentCell, direction))
+                            {
+                                newCell = currentCell + direction;
+
+                                // If the new cell is unvisited, add it to the cage
+                                if (!visited[newCell])
+                                {
+                                    cageSum += grid[newCell / 9, newCell % 9];
+                                    cageCells.Add(newCell);
+                                    visited[newCell] = true;
+                                    visitedThisCage.Add(newCell); // Add to visited this cage
+                                }
+                            }
+                            loopCounter++;
+                            if (loopCounter > 10)
+                            {
+                                cageSize--;
+                                loopCounter = 0;
+                            }
+                            if (cageSize == 0) break;
+                        }
+
+                        // Cage successfully generated, print the cells
+                        var killerSquare = grid_squares_[cageCells.Min()].GetComponent<GridSquare>();
+
+                        // Determine the correct texture based on neighbors within this cage only
+                        foreach (int cell in visitedThisCage) // Check only cells in this cage
+                        {
+                            bool hasUp = IsValidMove(cell, -9) && visitedThisCage.Contains(cell - 9);
+                            bool hasDown = IsValidMove(cell, 9) && visitedThisCage.Contains(cell + 9);
+                            bool hasLeft = IsValidMove(cell, -1) && visitedThisCage.Contains(cell - 1);
+                            bool hasRight = IsValidMove(cell, 1) && visitedThisCage.Contains(cell + 1);
+
+                            // Assign texture based on neighbor configuration
+                            int textureID = 0;
+
+                            if (hasUp && hasRight && !hasDown && !hasLeft)
+                                textureID = 1;
+                            else if (hasUp && hasLeft && !hasDown && !hasRight)
+                                textureID = 2;
+                            else if (hasDown && hasLeft && !hasUp && !hasRight)
+                                textureID = 3;
+                            else if (hasDown && hasRight && !hasUp && !hasLeft)
+                                textureID = 4;
+                            else if (hasDown && hasLeft && hasRight && !hasUp)
+                                textureID = 5;
+                            else if (hasUp && hasLeft && hasRight && !hasDown)
+                                textureID = 6;
+                            else if (hasLeft && hasUp && hasDown && !hasRight)
+                                textureID = 7;
+                            else if (hasRight && hasUp && hasDown && !hasLeft)
+                                textureID = 8;
+                            else if (hasLeft && !hasRight && !hasUp && !hasDown)
+                                textureID = 9;
+                            else if (hasUp && !hasDown && !hasLeft && !hasRight)
+                                textureID = 10;
+                            else if (hasRight && !hasLeft && !hasUp && !hasDown)
+                                textureID = 11;
+                            else if (hasDown && !hasUp && !hasLeft && !hasRight)
+                                textureID = 12;
+                            else if (hasUp && hasDown && !hasLeft && !hasRight)
+                                textureID = 13;
+                            else if (hasLeft && hasRight && !hasUp && !hasDown)
+                                textureID = 14;
+                            else if (!hasLeft && !hasRight && !hasUp && !hasDown)
+                                ifSingleCage = true;
+
+                            // Set texture on this cell based on textureID
+                            var square = grid_squares_[cell].GetComponent<GridSquare>();
+                            square.SetTexture(textureID);
+
+                            // Save killer cage texture connection
+                            KillerConnections.Add(new KillerConnection
+                            {
+                                fromIndex = cell,
+                                toIndex = cell, // same cell for texture
+                                direction = "texture",
+                                isDot = false,
+                                isThermo = false,
+                                isThermoStart = false,
+                                isKiller = true,
+                                textureID = textureID,
+                                killerSum = ""
+                            });
+                        }
+
+                        if (ifSingleCage == false)
+                        {
+                            var textComponents = killerSquare.GetComponentsInChildren<TextMeshProUGUI>();
+
+                            // Find the specific TextMeshPro component with the GameObject name "killerSum"
+                            TextMeshProUGUI killerText = textComponents.FirstOrDefault(
+                                tmp => tmp.gameObject.name == "killerSum"
+                            );
+                            string killerSum = cageSum.ToString();
+                            killerText.text = killerSum;
+
+                            // Save killer cage sum connection
+                            int minCellIndex = cageCells.Min();
+                            KillerConnections.Add(new KillerConnection
+                            {
+                                fromIndex = minCellIndex,
+                                toIndex = minCellIndex, // same cell for sum text
+                                direction = "sum",
+                                isDot = false,
+                                isThermo = false,
+                                isThermoStart = false,
+                                isKiller = true,
+                                textureID = 0,
+                                killerSum = killerSum
+                            });
+                        }
+
+                        cageSum = 0;
+                        cageGenerated = true;
+                        ifSingleCage = false;
+                    }
+                }
+
+                // Save to PlayerPrefs
+                SaveKillerConnections();
             }
+            else LoadKillerConnections();
         }
 
         else if ((currentSceneName == "thermo" || currentSceneName == "thermoEasy" || currentSceneName == "thermoMedium"))
