@@ -10,11 +10,26 @@ public class SudokuSaveSystem : MonoBehaviour
     // Keys for PlayerPrefs
     private const string SCENE_KEY = "_Scene";
     private const string BOARD_KEY = "_Board";
+    private const string NOTES_KEY = "_Notes";
     private const string HAS_SAVE_KEY = "_HasSave";
     private const string TIME = "_Time";
 
     [Header("Current Game State")]
     public string[,] currentGrid = new string[9, 9];
+    public bool[,] isNote = new bool[9, 9]; // Track which cells contain notes
+
+    [System.Serializable]
+    public class CellData
+    {
+        public string value;
+        public bool isNote;
+
+        public CellData(string val, bool note)
+        {
+            value = val;
+            isNote = note;
+        }
+    }
 
     void Start()
     {
@@ -37,16 +52,55 @@ public class SudokuSaveSystem : MonoBehaviour
                 if (string.IsNullOrEmpty(currentGrid[row, col]))
                 {
                     currentGrid[row, col] = "0";
+                    isNote[row, col] = false;
                 }
             }
         }
     }
 
     /// <summary>
+    /// Updates the current grid state from the actual game board
+    /// </summary>
+    /// <param name="squares">List of GridSquare GameObjects representing the board</param>
+    public void UpdateGridFromBoard(System.Collections.Generic.List<GameObject> squares)
+    {
+        if (squares == null || squares.Count != 81)
+        {
+            Debug.LogError("Squares list must contain exactly 81 elements!");
+            return;
+        }
+
+        int index = 0;
+        for (int row = 0; row < 9; row++)
+        {
+            for (int col = 0; col < 9; col++)
+            {
+                var square = squares[index];
+                var gridSquare = square.GetComponent<GridSquare>();
+
+                if (gridSquare != null && gridSquare.number_text != null)
+                {
+                    var textComponent = gridSquare.number_text.GetComponent<TMPro.TextMeshProUGUI>();
+                    if (textComponent != null)
+                    {
+                        string cellValue = textComponent.text;
+                        bool cellIsNote = textComponent.fontSize == 35;
+
+                        // Store empty cells as "0"
+                        currentGrid[row, col] = string.IsNullOrEmpty(cellValue) ? "0" : cellValue;
+                        isNote[row, col] = cellIsNote && !string.IsNullOrEmpty(cellValue) && cellValue != "0";
+                    }
+                }
+                index++;
+            }
+        }
+    }
+    /// <summary>
     /// Saves the current game state to PlayerPrefs
     /// </summary>
     /// <param name="grid">9x9 string array representing the sudoku board</param>
-    public void SaveGame(string[,] grid)
+    /// <param name="noteGrid">9x9 bool array indicating which cells are notes</param>
+    public void SaveGame(string[,] grid, bool[,] noteGrid = null)
     {
         if (grid == null || grid.GetLength(0) != 9 || grid.GetLength(1) != 9)
         {
@@ -54,13 +108,18 @@ public class SudokuSaveSystem : MonoBehaviour
             return;
         }
 
+        // Use the class noteGrid if no parameter is provided
+        if (noteGrid == null)
+            noteGrid = isNote;
+
         // Get current scene name
         string currentScene = SceneManager.GetActiveScene().name;
         Timer timer = FindObjectOfType<Timer>();
-        float time = timer.currentTime;
+        float time = timer != null ? timer.currentTime : 0f;
 
-        // Convert 2D grid to 1D array, then to string
+        // Convert 2D grids to 1D arrays, then to strings
         string[] flatGrid = new string[81];
+        string[] flatNotes = new string[81];
         int index = 0;
 
         for (int row = 0; row < 9; row++)
@@ -73,15 +132,20 @@ public class SudokuSaveSystem : MonoBehaviour
                     value = "0";
 
                 flatGrid[index] = value;
+                flatNotes[index] = noteGrid[row, col] ? "1" : "0";
                 index++;
             }
         }
 
         string gridString = string.Join(",", flatGrid);
+        string notesString = string.Join(",", flatNotes);
+
+
 
         // Save to PlayerPrefs
         PlayerPrefs.SetString(saveKey + SCENE_KEY, currentScene);
         PlayerPrefs.SetString(saveKey + BOARD_KEY, gridString);
+        PlayerPrefs.SetString(saveKey + NOTES_KEY, notesString);
         PlayerPrefs.SetInt(saveKey + HAS_SAVE_KEY, 1);
         PlayerPrefs.SetFloat(saveKey + TIME, time);
 
@@ -89,21 +153,28 @@ public class SudokuSaveSystem : MonoBehaviour
         PlayerPrefs.Save();
 
         int filledCells = flatGrid.Count(x => x != "0" && !string.IsNullOrEmpty(x));
-       // Debug.Log($"Game saved! Scene: {currentScene}, Filled cells: {filledCells}");
-    }
+        int noteCells = flatNotes.Count(x => x == "1");
 
+    }
     /// <summary>
     /// Loads the saved game state from PlayerPrefs
     /// </summary>
     /// <returns>True if save data was found and loaded</returns>
     public bool LoadGame()
     {
-        
+        // Check if save exists
+        if (PlayerPrefs.GetInt(saveKey + HAS_SAVE_KEY, 0) == 0)
+        {
+            Debug.Log("No save data found");
+            return false;
+        }
+
         // Load scene name
         string savedScene = PlayerPrefs.GetString(saveKey + SCENE_KEY, "");
 
         // Load board data
         string gridString = PlayerPrefs.GetString(saveKey + BOARD_KEY, "");
+        string notesString = PlayerPrefs.GetString(saveKey + NOTES_KEY, "");
 
         if (string.IsNullOrEmpty(gridString))
         {
@@ -113,9 +184,9 @@ public class SudokuSaveSystem : MonoBehaviour
 
         try
         {
-            // Convert string back to array
+            // Convert strings back to arrays
             string[] flatGrid = gridString.Split(',');
-         
+            string[] flatNotes = string.IsNullOrEmpty(notesString) ? new string[81] : notesString.Split(',');
 
             if (flatGrid.Length != 81)
             {
@@ -123,23 +194,32 @@ public class SudokuSaveSystem : MonoBehaviour
                 return false;
             }
 
-            // Convert flat array back to 2D grid
+            // Ensure notes array is correct size (backward compatibility)
+            if (flatNotes.Length != 81)
+            {
+                flatNotes = new string[81];
+                for (int i = 0; i < 81; i++)
+                    flatNotes[i] = "0";
+            }
+
+            // Convert flat arrays back to 2D grids
             int index = 0;
             for (int row = 0; row < 9; row++)
             {
                 for (int col = 0; col < 9; col++)
                 {
                     currentGrid[row, col] = flatGrid[index];
+                    isNote[row, col] = flatNotes[index] == "1";
                     index++;
                 }
             }
-           
 
             int filledCells = flatGrid.Count(x => x != "0" && !string.IsNullOrEmpty(x));
-           // Debug.Log($"Game loaded! Scene: {savedScene}, Filled cells: {filledCells}");
+            int noteCells = flatNotes.Count(x => x == "1");
+            Debug.Log($"Game loaded! Scene: {savedScene}, Filled cells: {filledCells}, Note cells: {noteCells}");
 
             // Optionally load the scene if it's different from current
-            if (savedScene != SceneManager.GetActiveScene().name)
+            if (!string.IsNullOrEmpty(savedScene) && savedScene != SceneManager.GetActiveScene().name)
             {
                 Debug.Log($"Loading scene: {savedScene}");
                 SceneManager.LoadScene(savedScene);
@@ -153,9 +233,61 @@ public class SudokuSaveSystem : MonoBehaviour
             return false;
         }
     }
+    public void ApplyGridToBoard(System.Collections.Generic.List<GameObject> squares)
+    {
+        if (squares == null || squares.Count != 81)
+        {
+            Debug.LogError("Squares list must contain exactly 81 elements!");
+            return;
+        }
+
+        int index = 0;
+        for (int row = 0; row < 9; row++)
+        {
+            for (int col = 0; col < 9; col++)
+            {
+                var square = squares[index];
+                var gridSquare = square.GetComponent<GridSquare>();
+
+                if (gridSquare != null && gridSquare.number_text != null)
+                {
+                    var textComponent = gridSquare.number_text.GetComponent<TMPro.TextMeshProUGUI>();
+                    if (textComponent != null)
+                    {
+                        string cellValue = currentGrid[row, col];
+                        bool cellIsNote = isNote[row, col];
+
+                        // Set text (empty cells stored as "0" become empty text)
+                        textComponent.text = cellValue == "0" ? "" : cellValue;
+
+                        // Set font size based on whether it's a note
+                        textComponent.fontSize = cellIsNote ? 35 : 60;
+                    }
+                }
+                index++;
+            }
+        }
+    }
+    /// <summary>
+    /// Call this when the player makes a move or you want to auto-save
+    /// Requires the squares array to read current board state
+    /// </summary>
+    /// <param name="squares">Array of GridSquare GameObjects representing the board</param>
+    public void AutoSave(System.Collections.Generic.List<GameObject> squares = null)
+    {
+        if (squares != null)
+        {
+            UpdateGridFromBoard(squares);
+        }
+
+        if (currentGrid != null)
+        {
+            SaveGame(currentGrid, isNote);
+        }
+    }
 
     /// <summary>
-    /// Checks if save data exists
+    /// Checks if a save file exists
     /// </summary>
     /// <returns>True if save data exists</returns>
     public bool HasSaveData()
@@ -164,194 +296,30 @@ public class SudokuSaveSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// Deletes all save data
+    /// Gets the saved time from the save file
     /// </summary>
-    public void DeleteSaveData()
+    /// <returns>Saved time or 0 if no save exists</returns>
+    public float GetSavedTime()
     {
-        PlayerPrefs.DeleteKey(saveKey + SCENE_KEY);
-        PlayerPrefs.DeleteKey(saveKey + BOARD_KEY);
-        PlayerPrefs.DeleteKey(saveKey + HAS_SAVE_KEY);
+        return PlayerPrefs.GetFloat(saveKey + TIME, 0f);
+    }
+
+    /// <summary>
+    /// Deletes the current save data
+    /// </summary>
+    public void DeleteSave()
+    {
+        PlayerPrefs.DeleteKey("SudokuSave_Scene");
+        PlayerPrefs.DeleteKey("SudokuSave_Board");
+        PlayerPrefs.DeleteKey("SudokuSave_Notes");
+        PlayerPrefs.DeleteKey("SudokuSave_HasSave");
+        PlayerPrefs.DeleteKey("SudokuSave_Time");
         PlayerPrefs.Save();
 
         Debug.Log("Save data deleted");
     }
 
-    /// <summary>
-    /// Gets the saved scene name without loading
-    /// </summary>
-    /// <returns>Saved scene name or empty string if no save</returns>
-    public string GetSavedSceneName()
-    {
-        if (!HasSaveData()) return "";
-        return PlayerPrefs.GetString(saveKey + SCENE_KEY, "");
-    }
-
-    /// <summary>
-    /// Gets the saved grid without loading
-    /// </summary>
-    /// <returns>Saved grid array or null if no save</returns>
-    public string[,] GetSavedGrid()
-    {
-        if (!HasSaveData()) return null;
-
-        string gridString = PlayerPrefs.GetString(saveKey + BOARD_KEY, "");
-        if (string.IsNullOrEmpty(gridString)) return null;
-
-        try
-        {
-            string[] flatGrid = gridString.Split(',');
-            if (flatGrid.Length != 81) return null;
-
-            string[,] grid = new string[9, 9];
-            int index = 0;
-
-            for (int row = 0; row < 9; row++)
-            {
-                for (int col = 0; col < 9; col++)
-                {
-                    grid[row, col] = flatGrid[index];
-                    index++;
-                }
-            }
-
-            return grid;
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
-    // Example methods for integration with your game
-
-    /// <summary>
-    /// Call this when the player makes a move or you want to auto-save
-    /// </summary>
-    public void AutoSave()
-    {
-        if (currentGrid != null)
-        {
-            SaveGame(currentGrid);
-        }
-    }
-
-    /// <summary>
-    /// Update the current grid state (call this when player makes moves)
-    /// </summary>
-    /// <param name="row">Row index (0-8)</param>
-    /// <param name="col">Column index (0-8)</param>
-    /// <param name="value">Value to set (string, "0" for empty)</param>
-    public void UpdateGrid(int row, int col, string value)
-    {
-        if (row < 0 || row > 8 || col < 0 || col > 8)
-        {
-            Debug.LogError("Invalid grid position");
-            return;
-        }
-
-        // Handle null or empty as "0"
-        if (string.IsNullOrEmpty(value))
-            value = "0";
-
-        currentGrid[row, col] = value;
-
-        // Auto-save after each move (optional)
-        // AutoSave();
-    }
-
-    /// <summary>
-    /// Set the entire grid at once
-    /// </summary>
-    /// <param name="grid">9x9 string array representing the grid</param>
-    public void SetGrid(string[,] grid)
-    {
-        if (grid == null || grid.GetLength(0) != 9 || grid.GetLength(1) != 9)
-        {
-            Debug.LogError("Grid must be exactly 9x9!");
-            return;
-        }
-
-        // Deep copy the grid
-        for (int row = 0; row < 9; row++)
-        {
-            for (int col = 0; col < 9; col++)
-            {
-                string value = grid[row, col];
-                if (string.IsNullOrEmpty(value))
-                    value = "0";
-
-                currentGrid[row, col] = value;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Get value at specific position
-    /// </summary>
-    /// <param name="row">Row index (0-8)</param>
-    /// <param name="col">Column index (0-8)</param>
-    /// <returns>Value at position (string)</returns>
-    public string GetGridValue(int row, int col)
-    {
-        if (row < 0 || row > 8 || col < 0 || col > 8)
-        {
-            Debug.LogError("Invalid grid position");
-            return "0";
-        }
-
-        string value = currentGrid[row, col];
-        return string.IsNullOrEmpty(value) ? "0" : value;
-    }
-
-    /// <summary>
-    /// Clear the entire grid (set all values to "0")
-    /// </summary>
-    public void ClearGrid()
-    {
-        for (int row = 0; row < 9; row++)
-        {
-            for (int col = 0; col < 9; col++)
-            {
-                currentGrid[row, col] = "0";
-            }
-        }
-    }
-
-    /// <summary>
-    /// Get a copy of the current grid
-    /// </summary>
-    /// <returns>Copy of the current 9x9 string grid</returns>
-    public string[,] GetGridCopy()
-    {
-        string[,] copy = new string[9, 9];
-        for (int row = 0; row < 9; row++)
-        {
-            for (int col = 0; col < 9; col++)
-            {
-                copy[row, col] = currentGrid[row, col];
-            }
-        }
-        return copy;
-    }
-
-    /// <summary>
-    /// Print the current grid to console (for debugging)
-    /// </summary>
-    public void PrintGrid()
-    {
-        string gridOutput = "Current Grid:\n";
-        for (int row = 0; row < 9; row++)
-        {
-            for (int col = 0; col < 9; col++)
-            {
-                gridOutput += currentGrid[row, col] + " ";
-            }
-            gridOutput += "\n";
-        }
-        Debug.Log(gridOutput);
-    }
-
-    // Unity lifecycle methods for automatic saving/loading
+    // Unity lifecycle methods for automatic saving
 
     void OnApplicationPause(bool pauseStatus)
     {
@@ -368,6 +336,4 @@ public class SudokuSaveSystem : MonoBehaviour
             AutoSave();
         }
     }
-
-   
 }

@@ -21,10 +21,12 @@ public class TouchToChangeScene : MonoBehaviour
     private int PlayCount;
     public bool ifFirst;
     public static bool ifContinue;
+    public SpriteRenderer continueButton;
 
     void Start()
     {
         if (!PlayerPrefs.HasKey("PlayCount"))
+            
         {
             if(SceneManager.GetActiveScene().name != "tutorial") SceneManager.LoadScene("tutorial");
             {
@@ -44,7 +46,10 @@ public class TouchToChangeScene : MonoBehaviour
             
         }
        
-        
+        if(!PlayerPrefs.HasKey("SudokuSave_HasSave"))
+        {
+            continueButton.enabled = false;
+        }
        
         
         whichSet = PlayerPrefs.GetString("whichSet");

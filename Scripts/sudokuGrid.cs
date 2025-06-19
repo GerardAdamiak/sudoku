@@ -120,6 +120,23 @@ public class SudokuGrid : MonoBehaviour
         public string killerSum; // for killer cage sum text
     }
     List<KillerConnection> KillerConnections = new List<KillerConnection>();
+
+    [System.Serializable]
+    public class RenbanConnection
+    {
+        public int fromIndex;
+        public int toIndex;
+        public string direction;
+        public bool isDot; // for kropki dots
+        public bool isThermo; // true if this is a thermo connection
+        public bool isThermoStart; // true if this cell has the thermo bulb/circle
+        public bool isKiller; // true if this is a killer cage connection
+        public int textureID; // for killer cage textures
+        public string killerSum; // for killer cage sum text
+        public bool isRenban; // true if this is a renban line connection
+    }
+
+    List<RenbanConnection> RenbanConnections = new List<RenbanConnection>();
     public void DrawGerman()
     {
         var squareIndices = new int[]
@@ -349,6 +366,7 @@ public class SudokuGrid : MonoBehaviour
                 sudokuLog = PlayerPrefs.GetString("Sudoku5");
                 break;
         }
+        
 
         currentSceneName = SceneManager.GetActiveScene().name;
         if (currentSceneName == "tutorial") sudokuLog = "007028000050073846300000107084000002700042390602005071871904265020780010406000700";
@@ -411,10 +429,11 @@ public class SudokuGrid : MonoBehaviour
                 GetCurrentGridState();
             UnclickableDigits();
         }
-        if (ifContinue)
+        if (ifContinue == true)
         {
             SudokuSaveSystem save = FindAnyObjectByType<SudokuSaveSystem>();
             save.LoadGame();
+            save.ApplyGridToBoard(grid_squares_);
             
             for(int a = 0; a<9; a++)
             {
@@ -427,12 +446,20 @@ public class SudokuGrid : MonoBehaviour
         }
         if (currentSceneName == "Custom" || currentSceneName == "tutorial" || ifContinue == true)
         {
-            ConvertTables();
+            if(!ifContinue)ConvertTables();
+            if(ifContinue)ConvertTables2();
             // PrintGrid2(grid);
-            SetGridNumbers();
-            UnclickableDigits();
-            Timer timer = FindObjectOfType<Timer>();
-            timer.currentTime = PlayerPrefs.GetFloat("SudokuSave_Time");
+
+            if (ifContinue != true)
+            {
+                SetGridNumbers();
+                UnclickableDigits();
+            }
+            if (ifContinue == true)
+            {
+                Timer timer = FindObjectOfType<Timer>();
+                timer.currentTime = PlayerPrefs.GetFloat("SudokuSave_Time");
+            }
             // UnclickableDigits();
         }
 
@@ -835,6 +862,156 @@ public class SudokuGrid : MonoBehaviour
             }
         }
 
+        void SaveRenbanConnections()
+        {
+            string connectionData = "";
+            foreach (var connection in RenbanConnections)
+            {
+                connectionData += connection.fromIndex + "," + connection.toIndex + "," + connection.direction + "," +
+                                connection.isDot + "," + connection.isThermo + "," + connection.isThermoStart + "," +
+                                connection.isKiller + "," + connection.textureID + "," + connection.killerSum + "," +
+                                connection.isRenban + ";";
+            }
+            PlayerPrefs.SetString("RenbanConnections", connectionData);
+            PlayerPrefs.Save();
+
+            Debug.Log("=== Renban CONNECTIONS SAVED ===");
+            Debug.Log("Total connections: " + RenbanConnections.Count);
+
+            for (int i = 0; i < RenbanConnections.Count; i++)
+            {
+                var connection = RenbanConnections[i];
+                string connectionType = "";
+                if (connection.isRenban) connectionType = "Renban Renban";
+                else if (connection.isKiller && connection.direction == "sum") connectionType = "Killer Sum";
+                else if (connection.isKiller && connection.direction == "texture") connectionType = "Killer Texture";
+                else if (connection.isThermo && connection.isThermoStart) connectionType = "Thermo Bulb";
+                else if (connection.isThermo) connectionType = "Thermo Renban";
+                else if (connection.isDot) connectionType = "White Dot";
+                else connectionType = "Black Dot/Renban";
+
+                Debug.Log($"Connection {i + 1}: From index {connection.fromIndex} to index {connection.toIndex}, Direction: {connection.direction}, Type: {connectionType}");
+            }
+            Debug.Log("=== END OF SAVED CONNECTIONS ===");
+        }
+
+        // Updated Load Method
+        void LoadRenbanConnections()
+        {
+            string connectionData = PlayerPrefs.GetString("RenbanConnections", "");
+            if (connectionData != "")
+            {
+                RenbanConnections.Clear();
+                string[] connections = connectionData.Split(';');
+
+                Debug.Log("=== Renban CONNECTIONS LOADED ===");
+                Debug.Log("Total connections to load: " + (connections.Length - 1));
+
+                foreach (string conn in connections)
+                {
+                    if (conn != "")
+                    {
+                        string[] parts = conn.Split(',');
+                        if (parts.Length == 10) // Now we have 10 parts: fromIndex, toIndex, direction, isDot, isThermo, isThermoStart, isKiller, textureID, killerSum, isRenban
+                        {
+                            RenbanConnection connection = new RenbanConnection
+                            {
+                                fromIndex = int.Parse(parts[1]),
+                                toIndex = int.Parse(parts[0]),
+                                direction = parts[2],
+                                isDot = bool.Parse(parts[3]),
+                                isThermo = bool.Parse(parts[4]),
+                                isThermoStart = bool.Parse(parts[5]),
+                                isKiller = bool.Parse(parts[6]),
+                                textureID = int.Parse(parts[7]),
+                                killerSum = parts[8],
+                                isRenban = bool.Parse(parts[9])
+                            };
+                            RenbanConnections.Add(connection);
+
+                            string connectionType = "";
+                            if (connection.isRenban)
+                            {
+                                connectionType = "Renban Line";
+                                // Reconstruct renban line
+                                var square1 = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[connection.toIndex].GetComponent<GridSquare>();
+                                directionLine = connection.direction;
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+                            else if (connection.isKiller && connection.direction == "sum")
+                            {
+                                connectionType = "Killer Sum";
+                                // Reconstruct the killer sum text
+                                var killerSquare = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                var textComponents = killerSquare.GetComponentsInChildren<TextMeshProUGUI>();
+                                TextMeshProUGUI killerText = textComponents.FirstOrDefault(
+                                    tmp => tmp.gameObject.name == "killerSum"
+                                );
+                                if (killerText != null)
+                                {
+                                    killerText.text = connection.killerSum;
+                                }
+                            }
+                            else if (connection.isKiller && connection.direction == "texture")
+                            {
+                                connectionType = "Killer Texture";
+                                // Reconstruct killer cage texture
+                                var square = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                square.SetTexture(connection.textureID);
+                            }
+                            else if (connection.isThermo && connection.isThermoStart)
+                            {
+                                connectionType = "Thermo Bulb";
+                                // Reconstruct the thermo bulb
+                                var firstSquare = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                Image spriteRenderer = firstSquare.GetComponentInChildren<Image>();
+                                if (spriteRenderer != null)
+                                {
+                                    spriteRenderer.enabled = true;
+                                }
+                            }
+                            else if (connection.isThermo)
+                            {
+                                connectionType = "Thermo Line";
+                                // Reconstruct thermo line
+                                var square1 = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[connection.toIndex].GetComponent<GridSquare>();
+                                directionLine = connection.direction;
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+                            else if (connection.isDot)
+                            {
+                                connectionType = "White Dot";
+                                // Reconstruct dot
+                                var square1 = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[connection.toIndex].GetComponent<GridSquare>();
+                                directionLine = connection.direction;
+                                ifDot = connection.isDot;
+                                DrawBlackDotBetweenSquares(square1, square2);
+                            }
+                            else
+                            {
+                                connectionType = "Line";
+                                // Reconstruct line
+                                var square1 = grid_squares_[connection.fromIndex].GetComponent<GridSquare>();
+                                var square2 = grid_squares_[connection.toIndex].GetComponent<GridSquare>();
+                                directionLine = connection.direction;
+                                DrawLineBetweenSquares(square1, square2);
+                            }
+
+                            Debug.Log($"Loaded connection: From index {connection.fromIndex} to index {connection.toIndex}, Direction: {connection.direction}, Type: {connectionType}");
+                        }
+                    }
+                }
+                Debug.Log("=== END OF LOADED CONNECTIONS ===");
+            }
+            else
+            {
+                Debug.Log("No saved line connections found in PlayerPrefs");
+            }
+        }
+
 
         if ((currentSceneName == "whispers" || currentSceneName == "whispersMedium" || currentSceneName == "whispersEasy"))
         {
@@ -940,156 +1117,162 @@ public class SudokuGrid : MonoBehaviour
         }
 
 
-       
 
-        else if ((currentSceneName == "renban" || currentSceneName == "renbanEasy" || currentSceneName == "renbanMedium") && ifContinue == false)
+
+        else if ((currentSceneName == "renban" || currentSceneName == "renbanEasy" || currentSceneName == "renbanMedium"))
         {
-            // Random generator for renban line creation
-            System.Random rand = new System.Random();
-
-            bool[] visited = new bool[81];
-
-            // Possible directions: [left, right, up, down] in 1D grid terms
-            int[] directions = { -1, -10, -9, -8, 1, 10, 9, 8 };
-
-            // Function to check if a move is valid (inside grid boundaries)
-            bool IsValidMove(int index, int direction)
+            if (ifContinue == false)
             {
-                // Ensure index stays in the grid
-                if (index + direction < 0 || index + direction >= 81)
-                    return false;
+                RenbanConnections.Clear(); // Clear existing connections
 
-                // Ensure left-right wrapping isn't violated
-                if ((direction == -1 || direction == -10 || direction == 8) && index % 9 == 0) // Going left from the leftmost column
-                    return false;
-                if ((direction == 1 || direction == 10 || direction == -8) && (index + 1) % 9 == 0) // Going right from the rightmost column
-                    return false;
+                // Random generator for renban line creation
+                System.Random rand = new System.Random();
 
-                return true;
-            }
+                bool[] visited = new bool[81];
 
-            int numberOfLines = 20;
-            for (int lineCount = 0; lineCount < numberOfLines; lineCount++)
-            {
-                // Retry generating a cage if there is an overlap
-                bool lineGenerated = false;
-                while (!lineGenerated)
+                // Possible directions: [left, right, up, down] in 1D grid terms
+                int[] directions = { -1, -10, -9, -8, 1, 10, 9, 8 };
+
+                // Function to check if a move is valid (inside grid boundaries)
+                bool IsValidMove(int index, int direction)
                 {
-                    // Generate random root cell index (0 to 80 for 9x9 grid)
-                    int rootCell = rand.Next(0, 81);
+                    // Ensure index stays in the grid
+                    if (index + direction < 0 || index + direction >= 81)
+                        return false;
 
-                    //UnityEngine.Debug.Log("root cell " + rootCell);
-                    // If the root cell is already visited, retry
-                    if (visited[rootCell])
-                        continue;
+                    // Ensure left-right wrapping isn't violated
+                    if ((direction == -1 || direction == -10 || direction == 8) && index % 9 == 0) // Going left from the leftmost column
+                        return false;
+                    if ((direction == 1 || direction == 10 || direction == -8) && (index + 1) % 9 == 0) // Going right from the rightmost column
+                        return false;
 
-                    // Mark root cell as visited and add to the cage
+                    return true;
+                }
 
-                    List<int> lineCells = new List<int> { rootCell };
-                    visited[rootCell] = true;
-                    int lineSize = rand.Next(3, 6);
-                    HashSet<int> visitedThisLine = new HashSet<int>(lineCells);
-
-                    // Populate the cage
-                    loopCounter = 0;
-                    while (lineCells.Count - 1 < lineSize)
+                int numberOfLines = 20;
+                for (int lineCount = 0; lineCount < numberOfLines; lineCount++)
+                {
+                    // Retry generating a cage if there is an overlap
+                    bool lineGenerated = false;
+                    while (!lineGenerated)
                     {
-                        int currentCell = lineCells[lineCells.Count - 1];
+                        // Generate random root cell index (0 to 80 for 9x9 grid)
+                        int rootCell = rand.Next(0, 81);
 
-                        int newCell = -1;
-                        int size = lineCells.Count;
+                        //UnityEngine.Debug.Log("root cell " + rootCell);
+                        // If the root cell is already visited, retry
+                        if (visited[rootCell])
+                            continue;
 
-                        for (int z = 0; z < 8; z++)
+                        // Mark root cell as visited and add to the cage
+                        List<int> lineCells = new List<int> { rootCell };
+                        visited[rootCell] = true;
+                        int lineSize = rand.Next(3, 6);
+                        HashSet<int> visitedThisLine = new HashSet<int>(lineCells);
+
+                        // Populate the cage
+                        loopCounter = 0;
+                        while (lineCells.Count - 1 < lineSize)
                         {
-                            int direction = directions[z];
+                            int currentCell = lineCells[lineCells.Count - 1];
 
-                            if (IsValidMove(currentCell, direction))
+                            int newCell = -1;
+                            int size = lineCells.Count;
+
+                            for (int z = 0; z < 8; z++)
                             {
-                                newCell = currentCell + direction;
+                                int direction = directions[z];
 
-                                if (!visited[newCell] && !lineCells.Contains(newCell))
+                                if (IsValidMove(currentCell, direction))
                                 {
-                                    bool ifUnique = true;
-                                    for (int i = 0; i < lineCells.Count; i++)
+                                    newCell = currentCell + direction;
+
+                                    if (!visited[newCell] && !lineCells.Contains(newCell))
                                     {
-                                        if (
-                                            grid[newCell / 9, newCell % 9]
-                                            == grid[(lineCells[i] / 9), (lineCells[i] % 9)]
-                                        )
-                                            ifUnique = false;
-                                    }
-                                    if (ifUnique == true)
-                                    {
+                                        bool ifUnique = true;
                                         for (int i = 0; i < lineCells.Count; i++)
                                         {
-                                            var renbanLine = grid_squares_[
-                                                lineCells[i]
-                                            ].GetComponent<GridSquare>();
-
                                             if (
-                                                grid[((lineCells[i]) / 9), ((lineCells[i]) % 9)]
-                                                    == grid[(newCell / 9), (newCell % 9)] + 1
-                                                || grid[(lineCells[i] / 9), (lineCells[i] % 9)]
-                                                    == grid[(newCell / 9), (newCell % 9)] - 1
+                                                grid[newCell / 9, newCell % 9]
+                                                == grid[(lineCells[i] / 9), (lineCells[i] % 9)]
                                             )
+                                                ifUnique = false;
+                                        }
+                                        if (ifUnique == true)
+                                        {
+                                            for (int i = 0; i < lineCells.Count; i++)
                                             {
-                                                lineCells.Add(newCell);
-                                                var square = grid_squares_[newCell].GetComponent<GridSquare>();
-                                                var square2 = grid_squares_[currentCell].GetComponent<GridSquare>();
+                                                var renbanLine = grid_squares_[
+                                                    lineCells[i]
+                                                ].GetComponent<GridSquare>();
 
+                                                if (
+                                                    grid[((lineCells[i]) / 9), ((lineCells[i]) % 9)]
+                                                        == grid[(newCell / 9), (newCell % 9)] + 1
+                                                    || grid[(lineCells[i] / 9), (lineCells[i] % 9)]
+                                                        == grid[(newCell / 9), (newCell % 9)] - 1
+                                                )
+                                                {
+                                                    lineCells.Add(newCell);
+                                                    var square = grid_squares_[newCell].GetComponent<GridSquare>();
+                                                    var square2 = grid_squares_[currentCell].GetComponent<GridSquare>();
 
-                                                int rowDiff = (newCell / 9) - (currentCell / 9);
-                                                int colDiff = (newCell % 9) - (currentCell % 9);
-                                                directionLine = "";
+                                                    int rowDiff = (newCell / 9) - (currentCell / 9);
+                                                    int colDiff = (newCell % 9) - (currentCell % 9);
+                                                    directionLine = "";
 
-                                                if (rowDiff == -1 && colDiff == 0) directionLine = "down";
+                                                    if (rowDiff == -1 && colDiff == 0) directionLine = "down";
+                                                    else if (rowDiff == 0 && colDiff == 1) directionLine = "right";
+                                                    else if (rowDiff == 1 && colDiff == 0) directionLine = "up";
+                                                    else if (rowDiff == 0 && colDiff == -1) directionLine = "left";
+                                                    else if (rowDiff == 1 && colDiff == 1) directionLine = "right-up";
+                                                    else if (rowDiff == -1 && colDiff == 1) directionLine = "right-down";
+                                                    else if (rowDiff == 1 && colDiff == -1) directionLine = "left-up";
+                                                    else if (rowDiff == -1 && colDiff == -1) directionLine = "left-down";
 
-                                                else if (rowDiff == 0 && colDiff == 1) directionLine = "right";
+                                                    DrawLineBetweenSquares(square, square2);
 
-                                                else if (rowDiff == 1 && colDiff == 0) directionLine = "up";
+                                                    // Save renban line connection
+                                                    RenbanConnections.Add(new RenbanConnection
+                                                    {
+                                                        fromIndex = currentCell,
+                                                        toIndex = newCell,
+                                                        direction = directionLine,
+                                                        isDot = false,
+                                                        isThermo = false,
+                                                        isThermoStart = false,
+                                                        isKiller = false,
+                                                        textureID = 0,
+                                                        killerSum = "",
+                                                        isRenban = true
+                                                    });
 
-                                                else if (rowDiff == 0 && colDiff == -1) directionLine = "left";
-
-                                                else if (rowDiff == 1 && colDiff == 1) directionLine = "right-up";
-
-                                                else if (rowDiff == -1 && colDiff == 1) directionLine = "right-down";
-
-                                                else if (rowDiff == 1 && colDiff == -1) directionLine = "left-up";
-
-                                                else if (rowDiff == -1 && colDiff == -1) directionLine = "left-down";
-
-
-
-
-
-                                                DrawLineBetweenSquares(square, square2);
-                                                visited[newCell] = true;
-                                                visitedThisLine.Add(newCell); // Add to visited this cage
-                                                directionLine = "";
+                                                    visited[newCell] = true;
+                                                    visitedThisLine.Add(newCell); // Add to visited this cage
+                                                    directionLine = "";
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
+                            loopCounter++;
+                            if (loopCounter == 10)
+                            {
+                                break;
+                            }
+                        }
 
-                        }
-                        loopCounter++;
-                        if (loopCounter == 10)
-                        {
-                            break;
-                        }
+                        // Cage successfully generated, print the cells
+                        // Determine the correct texture based on neighbors within this cage only
+                        lineGenerated = true;
                     }
-
-                    // Cage successfully generated, print the cells
-
-                    // Determine the correct texture based on neighbors within this cage only
-
-
-
-
-                    lineGenerated = true;
                 }
+
+                // Save to PlayerPrefs
+                SaveRenbanConnections();
             }
+            else LoadRenbanConnections();
         }
         else if ((currentSceneName == "kropki" || currentSceneName == "kropkiEasy" || currentSceneName == "kropkiMedium"))
         {
@@ -1754,23 +1937,27 @@ public class SudokuGrid : MonoBehaviour
             EndCheck();
 
         SudokuSaveSystem sudokusave = FindObjectOfType<SudokuSaveSystem>();
-        bool hasNonZeroValues = false;
+        
+            bool hasNonZeroValues = false;
 
-        for (int i = 0; i < 9 && !hasNonZeroValues; i++)
-        {
-            for (int j = 0; j < 9 && !hasNonZeroValues; j++)
+            for (int i = 0; i < 9 && !hasNonZeroValues; i++)
             {
-                if (currentGrid[i, j] != "0")
+                for (int j = 0; j < 9 && !hasNonZeroValues; j++)
                 {
-                    hasNonZeroValues = true;
+                    if (currentGrid[i, j] != "0")
+                    {
+                        hasNonZeroValues = true;
+                    }
                 }
             }
-        }
 
-        if (hasNonZeroValues)
-        {
-            sudokusave.SaveGame(currentGrid);
-        }
+            if (hasNonZeroValues)
+            {
+            
+                sudokusave.UpdateGridFromBoard(grid_squares_);
+                sudokusave.SaveGame(sudokusave.currentGrid, sudokusave.isNote);
+            }
+        
     }
 
     public void UpdateSelectedCell(int number)
@@ -2416,6 +2603,7 @@ public class SudokuGrid : MonoBehaviour
         {
             if (done == false)
             {
+                
                 int countEasy = PlayerPrefs.GetInt("medalEasy", 0);
                 int countMed = PlayerPrefs.GetInt("medalMed", 0);
                 int countHard = PlayerPrefs.GetInt("medalHard", 0);
@@ -2601,6 +2789,8 @@ public class SudokuGrid : MonoBehaviour
     {
         PlayerPrefs.SetString("PreviousScene", currentSceneName);
         yield return new WaitForSeconds(2f);
+        SudokuSaveSystem sudokusave = FindObjectOfType<SudokuSaveSystem>();
+        sudokusave.DeleteSave();
         SceneManager.LoadScene("end");
     }
 
@@ -2861,39 +3051,7 @@ public class SudokuGrid : MonoBehaviour
         {
             for (int col = 0; col < 9; col++)
             {
-                switch (currentGrid[row, col])
-                {
-                    default:
-                        currentGridInt[row, col] = '0';
-                        break;
-                    case "1":
-                        currentGridInt[row, col] = '1';
-                        break;
-                    case "2":
-                        currentGridInt[row, col] = '2';
-                        break;
-                    case "3":
-                        currentGridInt[row, col] = '3';
-                        break;
-                    case "4":
-                        currentGridInt[row, col] = '4';
-                        break;
-                    case "5":
-                        currentGridInt[row, col] = '5';
-                        break;
-                    case "6":
-                        currentGridInt[row, col] = '6';
-                        break;
-                    case "7":
-                        currentGridInt[row, col] = '7';
-                        break;
-                    case "8":
-                        currentGridInt[row, col] = '8';
-                        break;
-                    case "9":
-                        currentGridInt[row, col] = '9';
-                        break;
-                }
+                
 
 
                 switch (currentGridInt[row, col])
@@ -2929,6 +3087,53 @@ public class SudokuGrid : MonoBehaviour
                         grid[row, col] = 9;
                         break;
                 }
+            }
+        }
+
+        return grid;
+    }
+
+    private int[,] ConvertTables2()
+    {
+        for (int row = 0; row < 9; row++)
+        {
+            for (int col = 0; col < 9; col++)
+            {
+                switch (currentGrid[row, col])
+                {
+                    default:
+                        currentGridInt[row, col] = '0';
+                        break;
+                    case "1":
+                        currentGridInt[row, col] = '1';
+                        break;
+                    case "2":
+                        currentGridInt[row, col] = '2';
+                        break;
+                    case "3":
+                        currentGridInt[row, col] = '3';
+                        break;
+                    case "4":
+                        currentGridInt[row, col] = '4';
+                        break;
+                    case "5":
+                        currentGridInt[row, col] = '5';
+                        break;
+                    case "6":
+                        currentGridInt[row, col] = '6';
+                        break;
+                    case "7":
+                        currentGridInt[row, col] = '7';
+                        break;
+                    case "8":
+                        currentGridInt[row, col] = '8';
+                        break;
+                    case "9":
+                        currentGridInt[row, col] = '9';
+                        break;
+                }
+
+
             }
         }
 
